@@ -6,41 +6,70 @@
     <title>Счетчик Статистики</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Общие стили и анимации */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
+            /* Улучшенный фоновый градиент */
+            background: linear-gradient(135deg, #f0f2f5 0%, #e2e8f0 100%);
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Changed to flex-start to allow scrolling */
+            align-items: flex-start;
             min-height: 100vh;
             padding: 20px;
             box-sizing: border-box;
+            overflow-y: auto;
+            scroll-behavior: smooth; /* Плавный скролл */
         }
+        /* Стилизация скроллбара */
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-track {
+            background: #f0f2f5;
+            border-radius: 10px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #a78bfa; /* Фиолетовый */
+            border-radius: 10px;
+            border: 2px solid #f0f2f5;
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6; /* Более темный фиолетовый */
+        }
+
         .container {
             background-color: #ffffff;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
+            border-radius: 2rem; /* Ещё более закругленные углы */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25); /* Глубже тень */
+            padding: 3rem; /* Больше отступов */
             width: 100%;
-            max-width: 800px;
-            margin-top: 20px;
-            position: relative; /* Added for absolute positioning of avatar/button */
+            max-width: 960px; /* Немного шире */
+            margin-top: 30px; /* Больше отступа сверху */
+            position: relative;
+            animation: fadeInScale 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); /* Улучшенная анимация появления */
         }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Модальные окна */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8); /* Темнее фон */
+            backdrop-filter: blur(8px); /* Сильнее размытие */
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
         .modal-overlay.active {
             opacity: 1;
@@ -48,137 +77,372 @@
         }
         .modal-content {
             background-color: #ffffff;
-            border-radius: 1rem;
-            padding: 2rem;
+            border-radius: 2rem; /* Больше закруглений */
+            padding: 3rem; /* Больше отступов */
             max-width: 90%;
             max-height: 90%;
             overflow-y: auto;
-            transform: translateY(-20px) scale(0.95); /* Added scale for animation */
+            transform: translateY(-50px) scale(0.8) rotateX(-10deg); /* Более выраженная анимация */
             opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease; /* Пружинистая анимация */
             position: relative;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4); /* Очень сильная тень */
         }
         .modal-overlay.active .modal-content {
-            transform: translateY(0) scale(1); /* Scale to normal on active */
+            transform: translateY(0) scale(1) rotateX(0deg);
             opacity: 1;
         }
         .close-button {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 1.5rem;
+            right: 1.5rem;
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 2.2rem; /* Крупнее кнопка закрытия */
             cursor: pointer;
-            color: #4a5568;
+            color: #9ca3af; /* Светлее серый */
+            transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
         }
+        .close-button:hover {
+            transform: rotate(180deg) scale(1.1); /* Полный оборот и увеличение */
+            color: #ef4444;
+            text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); /* Эффект свечения */
+        }
+
+        /* Карточки статистики */
         .statistic-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; /* Added border-color */
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s ease;
             cursor: pointer;
-            border: 1px solid transparent; /* Default transparent border */
+            border: 3px solid transparent; /* Более толстая рамка */
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.25rem; /* Более мягкие углы */
+        }
+        .statistic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(167, 139, 250, 0.1)); /* Более заметный градиент */
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+        .statistic-card:hover::before {
+            opacity: 1;
         }
         .statistic-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-            border-color: #a78bfa; /* subtle purple border on hover */
+            transform: translateY(-12px) scale(1.02); /* Более сильный подъем и увеличение */
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3); /* Очень сильная тень при наведении */
+            border-color: #6366f1; /* Индиговая рамка */
         }
-        .trade-card { /* New class for trade cards */
-            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        .statistic-card > div {
+            position: relative;
+            z-index: 1;
         }
-        .trade-card:hover {
-            background-color: #f9fafb; /* Light gray on hover */
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+
+        /* Карточки сделок */
+        .trade-card {
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
         }
-        .color-green {
-            color: #22c55e; /* Tailwind green-500 */
+        .trade-card:hover:not(.cursor-default) { /* Apply hover only if not cursor-default */
+            background-color: #ebedf0; /* Темнее серый при наведении */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Заметнее тень */
+            transform: translateY(-3px); /* Чуть больше подъем */
         }
-        .color-red {
-            color: #ef4444; /* Tailwind red-500 */
-        }
-        .color-gray {
-            color: #6b7280; /* Tailwind gray-500 */
-        }
+        .color-green { color: #059669; /* Более насыщенный зеленый */ }
+        .color-red { color: #dc2626; /* Более насыщенный красный */ }
+        .color-gray { color: #4b5563; /* Более темный серый */ }
         .profit-loss-green {
-            background-color: #dcfce7; /* Tailwind green-100 */
-            color: #166534; /* Tailwind green-800 */
+            background-color: #dcfce7; /* Светлее зеленый фон */
+            color: #047857; /* Темнее зеленый текст */
+            border-radius: 0.75rem; /* Больше закруглений */
+            padding: 0.4rem 0.8rem;
         }
         .profit-loss-red {
-            background-color: #fee2e2; /* Tailwind red-100 */
-            color: #991b1b; /* Tailwind red-800 */
+            background-color: #fee4e5; /* Светлее красный фон */
+            color: #b91c1c; /* Темнее красный текст */
+            border-radius: 0.75rem;
+            padding: 0.4rem 0.8rem;
         }
         .profit-loss-gray {
-            background-color: #e5e7eb; /* Tailwind gray-200 */
-            color: #374151; /* Tailwind gray-700 */
+            background-color: #e5e7eb;
+            color: #374151;
+            border-radius: 0.75rem;
+            padding: 0.4rem 0.8rem;
         }
 
-        /* Enhanced button styles with active state */
+        /* Кнопки */
         .btn-primary, .btn-secondary {
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.4s ease; /* Увеличенное время перехода */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12); /* Более сильная тень */
+            background-size: 250% auto; /* Более широкий градиент для анимации */
+            font-weight: 600; /* Полужирный */
+            letter-spacing: 0.025em; /* Легкий интервал между буквами */
+            border: none;
+            position: relative;
+            overflow: hidden;
         }
-        .btn-primary:active, .btn-secondary:active {
-            transform: scale(0.98);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        .btn-primary:hover {
+            background-position: right center;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5); /* Усиленная тень */
+            transform: translateY(-4px); /* Более сильный подъем */
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background-position: left center;
+            filter: brightness(0.9); /* Темнее при нажатии */
+        }
+        .btn-secondary {
+            background-color: #e2e8f0; /* Более мягкий серый */
+            color: #475569; /* Насыщенный серый */
+        }
+        .btn-secondary:hover {
+            background-color: #cbd5e1; /* Темнее серый */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        .btn-secondary:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            filter: brightness(0.9); /* Темнее при нажатии */
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 640px) {
-            .container {
-                padding: 1.5rem;
-            }
-            .modal-content {
-                padding: 1.5rem;
-            }
-        }
-        /* Avatar and new button styling */
+        /* Аватар и кнопка быстрого добавления */
         #avatar-container {
-            position: absolute;
-            top: 20px; /* Adjust as needed */
-            right: 20px; /* Adjust as needed */
+            top: 25px; /* Сместить немного вниз */
+            right: 25px; /* Сместить немного влево */
+            gap: 10px; /* Больше расстояние */
+            position: absolute; /* Убедимся, что он справа */
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px; /* Space between avatar and button */
-            z-index: 50; /* Ensure it's above other content */
+            z-index: 50;
         }
         #avatar-img {
-            border-radius: 50%;
+            border-radius: 50%; /* Сделать круглой */
             object-fit: cover;
-            width: 48px;
-            height: 48px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            width: 64px; /* Ещё крупнее аватар */
+            height: 64px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Более выраженная тень */
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        #avatar-img:hover {
+            transform: scale(1.1) rotate(8deg); /* Более сильное вращение и увеличение */
         }
         #add-statistic-avatar-btn {
-            background-color: #22c55e; /* Tailwind green-500 */
+            font-size: 1.75rem; /* Ещё крупнее плюс */
+            width: 48px; /* Крупнее кнопка */
+            height: 48px;
+            background-color: #10b981; /* Зеленый цвет */
+            border-radius: 50%; /* Круглая кнопка */
             color: white;
             font-weight: bold;
-            font-size: 1.25rem; /* Larger plus sign */
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            position: relative; /* To center the plus, or just use flex */
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5); /* Более сильная зеленая тень */
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
         }
         #add-statistic-avatar-btn:hover {
-            background-color: #16a34a; /* Darker green on hover */
-            transform: scale(1.05);
-        }
-        #add-statistic-avatar-btn:active { /* Active state for the avatar button */
-            transform: scale(0.95);
+            background-color: #047857; /* Темнее зеленый */
+            transform: scale(1.15) rotate(5deg); /* Более сильное увеличение и легкое вращение */
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.7);
         }
 
-        /* Animation for fixation warning */
-        .fixation-total-warning.active {
-            animation: flashRed 0.5s ease-in-out 3; /* Flash red 3 times */
+        /* Поля ввода и селекты */
+        input[type="text"], input[type="number"], select {
+            border: 2px solid #e2e8f0; /* Более заметная рамка */
+            border-radius: 0.8rem; /* Ещё более закругленные */
+            padding: 0.8rem 1.2rem; /* Увеличенный отступ */
+            font-size: 1.05rem; /* Немного крупнее шрифт */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #f8fafc; /* Чуть светлее фон */
+        }
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.5); /* Более заметное свечение */
+            background-color: #ffffff; /* Белый фон при фокусе */
+        }
+        /* Радио-кнопки */
+        input[type="radio"] {
+            width: 1.6rem;
+            height: 1.6rem;
+            border: 2.5px solid #a78bfa; /* Более толстая рамка */
+        }
+        input[type="radio"]:checked {
+            background-color: #8b5cf6;
+            border-color: #8b5cf6;
+            animation: bounceIn 0.3s ease-out; /* Анимация отскока при выборе */
+        }
+        input[type="radio"]:checked::after {
+            width: 0.8rem;
+            height: 0.8rem;
+        }
+        @keyframes bounceIn {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        @keyframes flashRed {
-            0% { background-color: transparent; }
-            50% { background-color: #fee2e2; } /* red-100 */
-            100% { background-color: transparent; }
+        /* Custom Date Picker for Trade Cards */
+        .trade-card .date-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            position: relative;
+            cursor: pointer;
+            width: fit-content; /* Adjust width to content */
+            margin-left: auto; /* Push to the right */
+            padding: 0.4rem 0.6rem; /* Add some padding */
+            border-radius: 0.5rem; /* Slightly rounded corners */
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .trade-card .date-wrapper:hover:not(.disabled-date-interaction) { /* Apply hover only if not disabled */
+            background-color: #eef2ff; /* Light indigo background on hover */
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2); /* Soft shadow on hover */
+        }
+        .trade-card .date-wrapper.disabled-date-interaction {
+            cursor: not-allowed;
+            opacity: 0.6;
+            background-color: transparent;
+            box-shadow: none;
+        }
+        .trade-card .date-wrapper.disabled-date-interaction:hover {
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        .trade-card .trade-date-display-text,
+        .trade-card .trade-date-input {
+            font-size: 0.9rem;
+            color: #374151; /* Dark gray for text */
+            font-weight: 500;
+            padding: 0;
+            border: none;
+            background: none;
+            text-align: right; /* Align text to the right */
+        }
+
+        .trade-card .trade-date-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0; /* Hidden by default */
+            cursor: pointer; /* Still clickable */
+        }
+
+        .trade-card .trade-date-input:focus {
+            outline: none; /* Remove outline on focus */
+        }
+
+        .trade-card .trade-date-input.active {
+            opacity: 1; /* Show when active */
+            z-index: 10; /* Ensure it's above text */
+            color: transparent; /* Hide text input's own text */
+        }
+
+        /* Hide default calendar picker indicator */
+        .trade-card .trade-date-input::-webkit-calendar-picker-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            color: transparent;
+            cursor: pointer;
+            opacity: 1; /* Keep it visible for interaction, but its content is transparent */
+        }
+        .trade-card .trade-date-input[type="date"]::-webkit-inner-spin-button,
+        .trade-card .trade-date-input[type="date"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .trade-card .calendar-icon {
+            margin-left: 0.5rem;
+            color: #6366f1; /* Indigo color for icon */
+            font-size: 1rem;
+            transition: color 0.2s ease;
+        }
+        .trade-card .date-wrapper:hover .calendar-icon {
+            color: #4f46e5; /* Darker indigo on hover */
+        }
+        .trade-card .date-wrapper.disabled-date-interaction .calendar-icon {
+            color: #9ca3af; /* Greyed out for disabled */
+        }
+
+
+        /* Кнопки фиксаций */
+        .add-fixation-btn, .remove-fixation-btn {
+            width: 3.2rem; /* Немного крупнее */
+            height: 3.2rem;
+            font-size: 1.6rem;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+        }
+        .add-fixation-btn:hover {
+            transform: translateY(-2px) scale(1.05); /* Немного больше анимация */
+            box-shadow: 0 8px 18px rgba(59, 130, 246, 0.4);
+        }
+        .remove-fixation-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 18px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Предупреждение о фиксации */
+        .fixation-total-warning {
+            font-weight: 500;
+            color: #b91c1c; /* Более темный красный */
+            background-color: #fef2f2; /* Очень светлый красный фон */
+            border-left: 4px solid #ef4444; /* Красная полоса слева */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        /* Другие мелкие визуальные улучшения */
+        /* Removed h1 specific margin-bottom to rely on parent flex spacing */
+        #detail-statistic-name {
+            color: #1f2937; /* Более темный текст */
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+        .text-gray-700.text-lg.font-semibold {
+            color: #374151; /* Более темный серый для лейблов */
+        }
+
+        /* Отзывчивость */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem;
+                margin-top: 15px;
+            }
+            .modal-content {
+                padding: 2rem;
+            }
+            #avatar-container {
+                top: 15px;
+                right: 15px;
+            }
+            #avatar-img {
+                width: 50px;
+                height: 50px;
+            }
+            #add-statistic-avatar-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
         }
     </style>
     <!-- Favicon -->
@@ -186,61 +450,60 @@
 </head>
 <body class="bg-gray-100">
     <div id="app" class="container">
+        <!-- Moved avatar-container to be directly under app to allow z-index control -->
         <div id="avatar-container">
             <img id="avatar-img" src="https://iimg.su/s/15/g6I4o0VkLLmz7zNae7XGOXhUS0s84fTjUgLQuXCF.jpg" alt="Аватар">
-            <button id="add-statistic-avatar-btn" title="Быстро добавить статистику">
+            <button id="add-statistic-avatar-btn" title="Статистика Власова">
                 +
             </button>
         </div>
 
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+        <!-- Main Title - Moved to top-left with gradient -->
+        <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 mb-10 mt-4">
             Статистика Сделок
         </h1>
 
-        <div id="header" class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
-            <button id="create-statistic-btn" class="btn-primary bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50">
+        <div id="header" class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-10 flex-col-sm-stack">
+            <button id="create-statistic-btn" class="btn-primary bg-indigo-600 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50">
                 Создать Статистику
             </button>
-            <button id="add-trade-btn" class="btn-primary bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
+            <button id="add-trade-btn" class="btn-primary bg-green-600 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
                 Добавить Сделку
             </button>
         </div>
 
         <!-- Statistics List View -->
         <div id="statistics-overview">
-            <div id="statistics-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div id="statistics-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Statistic cards will be rendered here -->
             </div>
-            <div id="no-statistics-message" class="text-center text-gray-500 text-lg mt-10 hidden">
-                <p>Пока нет созданных статистик.</p>
+            <div id="no-statistics-message" class="text-center text-gray-500 text-xl mt-16 hidden animate-fadeIn">
+                <p>Пока нет созданных статистик. Нажмите "Создать Статистику" чтобы начать!</p>
             </div>
         </div>
 
         <!-- Trade Detail View -->
         <div id="trade-detail-view" class="hidden">
-            <button id="back-to-stats-btn" class="btn-secondary bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-xl mb-6 transition duration-200 ease-in-out flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <button id="back-to-stats-btn" class="btn-secondary bg-gray-200 text-gray-800 font-semibold py-2.5 px-5 rounded-xl mb-8 transition duration-200 ease-in-out flex items-center shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
                 Назад к Статистикам
             </button>
-            <h2 id="detail-statistic-name" class="text-2xl font-bold text-gray-800 mb-6"></h2>
-            <div class="flex space-x-4 mb-6">
-                <button id="copy-current-statistic-btn" class="btn-primary bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out">
-                    Копировать
+            <h2 id="detail-statistic-name" class="text-3xl font-bold text-gray-800 mb-8"></h2>
+            <div class="flex flex-wrap gap-4 mb-8">
+                <button id="copy-current-statistic-btn" class="btn-primary bg-blue-500 text-white font-semibold py-2.5 px-6 rounded-xl shadow-md">
+                    Копировать Статистику
                 </button>
-                <button id="show-results-btn" class="btn-primary bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out">
-                    Результат
+                <button id="show-results-btn" class="btn-primary bg-purple-500 text-white font-semibold py-2.5 px-6 rounded-xl shadow-md">
+                    Показать Результаты
                 </button>
             </div>
-            <div id="trade-list" class="space-y-4">
+            <div id="trade-list" class="space-y-6">
                 <!-- Individual trade cards will be rendered here -->
             </div>
-            <div id="no-trades-message" class="text-center text-gray-500 text-lg mt-10 hidden">
+            <div id="no-trades-message" class="text-center text-gray-500 text-xl mt-16 hidden animate-fadeIn">
                 <p>Пока нет сделок в этой статистике.</p>
-                <button id="no-trades-add-btn" class="btn-primary mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out">
-                    Добавить Сделку
-                </button>
             </div>
         </div>
 
@@ -249,13 +512,13 @@
         <div id="create-statistic-modal" class="modal-overlay">
             <div class="modal-content">
                 <button id="close-create-statistic-modal-btn" class="close-button">&times;</button>
-                <h2 id="create-statistic-modal-title" class="text-2xl font-bold mb-6 text-gray-800">Создать Новую Статистику</h2>
+                <h2 id="create-statistic-modal-title" class="text-3xl font-bold mb-8 text-gray-800 text-center">Создать Новую Статистику</h2>
                 <form id="create-statistic-form">
-                    <div class="mb-4">
-                        <label for="statistic-name" class="block text-gray-700 text-sm font-semibold mb-2">Название Статистики</label>
-                        <input type="text" id="statistic-name" class="shadow appearance-none border rounded-xl w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Например: Мои Сделки" required>
+                    <div class="mb-6">
+                        <label for="statistic-name" class="block text-gray-700 text-lg font-semibold mb-3">Название Статистики</label>
+                        <input type="text" id="statistic-name" class="w-full" placeholder="Например: Мои Сделки" required>
                     </div>
-                    <button type="submit" id="create-statistic-submit-btn" class="btn-primary w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition duration-300 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50">
+                    <button type="submit" id="create-statistic-submit-btn" class="btn-primary w-full bg-indigo-600 text-white font-semibold py-3.5 px-4 rounded-xl shadow-md">
                         Создать
                     </button>
                 </form>
@@ -266,58 +529,61 @@
         <div id="add-trade-modal" class="modal-overlay">
             <div class="modal-content">
                 <button id="close-add-trade-modal-btn" class="close-button">&times;</button>
-                <h2 id="add-trade-modal-title" class="text-2xl font-bold mb-6 text-gray-800">Добавить Новую Сделку</h2>
-                <form id="add-trade-form">
+                <h2 id="add-trade-modal-title" class="text-3xl font-bold mb-8 text-gray-800 text-center">Добавить Новую Сделку</h2>
+                <form id="add-trade-form" class="space-y-6">
+                    <!-- Updated Order -->
                     <div class="mb-4" id="select-statistic-container">
-                        <label for="select-statistic" class="block text-gray-700 text-sm font-semibold mb-2">Выбрать Статистику</label>
-                        <select id="select-statistic" class="shadow appearance-none border rounded-xl w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        <label for="select-statistic" class="block text-gray-700 text-lg font-semibold mb-3">Название статистики</label>
+                        <select id="select-statistic" class="w-full" required>
                             <option value="">-- Выберите статистику --</option>
                         </select>
                     </div>
 
                     <div class="mb-4">
-                        <label for="coin-name" class="block text-gray-700 text-sm font-semibold mb-2">Монета</label>
-                        <input type="text" id="coin-name" class="shadow appearance-none border rounded-xl w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Например: BTC/USDT" required>
+                        <label for="coin-name" class="block text-gray-700 text-lg font-semibold mb-3">Монета</label>
+                        <input type="text" id="coin-name" class="w-full" placeholder="Например: BTC/USDT" required>
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Направление</label>
-                        <div class="flex space-x-4">
-                            <label class="inline-flex items-center">
-                                <input type="radio" name="direction" value="long" class="form-radio text-indigo-600 h-5 w-5" checked>
-                                <span class="ml-2 text-gray-700">Лонг</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="radio" name="direction" value="short" class="form-radio text-indigo-600 h-5 w-5">
-                                <span class="ml-2 text-gray-700">Шорт</span>
-                            </label>
-                        </div>
+                        <label for="entry-price" class="block text-gray-700 text-lg font-semibold mb-3">ENTRY (Точка входа)</label>
+                        <input type="number" step="any" id="entry-price" class="w-full" placeholder="Например: 100" required>
                     </div>
 
                     <div class="mb-4">
-                        <label for="entry-price" class="block text-gray-700 text-sm font-semibold mb-2">ENTRY (Точка входа)</label>
-                        <input type="number" step="any" id="entry-price" class="shadow appearance-none border rounded-xl w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Например: 100" required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="margin" class="block text-gray-700 text-sm font-semibold mb-2">Маржа (X)</label>
-                        <input type="number" step="any" min="0.1" id="margin" class="shadow appearance-none border rounded-xl w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" value="1.0" required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Фиксации</label>
+                        <label class="block text-gray-700 text-lg font-semibold mb-3">Фиксации</label>
                         <div id="fixations-container">
                             <!-- Dynamic fixation fields will be added here -->
-                            <div class="flex items-center space-x-2 mb-2">
-                                <input type="number" step="any" class="fixation-price shadow appearance-none border rounded-xl w-1/2 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Цена фиксации">
-                                <input type="number" step="any" min="0" max="100" class="fixation-percent shadow appearance-none border rounded-xl w-1/2 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Процент (%)">
-                                <button type="button" class="add-fixation-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">+</button>
+                            <div class="flex items-center space-x-3 mb-3">
+                                <input type="number" step="any" class="fixation-price w-1/2" placeholder="Цена фиксации">
+                                <input type="number" step="any" min="0" max="100" class="fixation-percent w-1/2" placeholder="Процент (%)">
+                                <button type="button" class="add-fixation-btn bg-blue-500 text-white font-bold rounded-full">+</button>
                             </div>
                         </div>
-                        <p id="fixation-total-warning" class="text-red-500 text-xs mt-1 hidden">Общий процент фиксаций не может превышать 100%.</p>
+                        <p id="fixation-total-warning" class="text-red-500 text-sm mt-2 hidden">Общий процент фиксаций не может превышать 100%.</p>
                     </div>
 
-                    <button type="submit" id="add-trade-submit-btn" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition duration-300 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-lg font-semibold mb-3">Направление</label>
+                        <div class="flex space-x-6">
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="radio" name="direction" value="long" class="h-5 w-5" checked>
+                                <span class="ml-2 text-gray-700 text-base">Лонг</span>
+                            </label>
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="radio" name="direction" value="short" class="h-5 w-5">
+                                <span class="ml-2 text-gray-700 text-base">Шорт</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="margin" class="block text-gray-700 text-lg font-semibold mb-3">Маржа (X)</label>
+                        <input type="number" step="0.5" id="margin" class="w-full" value="1.0" required>
+                    </div>
+
+                    <!-- Date field is intentionally removed from this modal -->
+
+                    <button type="submit" id="add-trade-submit-btn" class="btn-primary w-full bg-green-600 text-white font-semibold py-3.5 px-4 rounded-xl shadow-md">
                         Добавить Сделку
                     </button>
                 </form>
@@ -327,12 +593,13 @@
         <!-- Confirmation Modal -->
         <div id="confirmation-modal" class="modal-overlay">
             <div class="modal-content text-center">
-                <h3 id="confirmation-message" class="text-xl font-semibold mb-6 text-gray-800">Вы уверены?</h3>
-                <div class="flex justify-center space-x-4">
-                    <button id="confirm-yes-btn" class="btn-primary bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition duration-300 ease-in-out">
+                <button id="close-confirmation-modal-btn" class="close-button">&times;</button>
+                <h3 id="confirmation-message" class="text-2xl font-semibold mb-8 text-gray-800">Вы уверены?</h3>
+                <div class="flex justify-center space-x-6">
+                    <button id="confirm-yes-btn" class="btn-primary bg-red-600 text-white font-semibold py-3 px-6 rounded-xl shadow-md">
                         Да
                     </button>
-                    <button id="confirm-no-btn" class="btn-secondary bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-5 rounded-lg shadow-md transition duration-300 ease-in-out">
+                    <button id="confirm-no-btn" class="btn-secondary bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-xl shadow-md">
                         Отмена
                     </button>
                 </div>
@@ -343,18 +610,18 @@
         <div id="results-modal" class="modal-overlay">
             <div class="modal-content">
                 <button id="close-results-modal-btn" class="close-button">&times;</button>
-                <h2 class="text-2xl font-bold mb-6 text-gray-800">Результаты Статистики</h2>
-                <div id="results-content" class="space-y-4">
-                    <p class="text-lg">Чистое движение: <span id="results-net-movement" class="font-bold"></span></p>
-                    <p class="text-lg">Количество сделок: <span id="results-total-trades" class="font-bold"></span></p>
-                    <p class="text-lg">Винрейт: <span id="results-winrate" class="font-bold"></span></p>
-                    <button id="results-details-btn" class="btn-primary mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition duration-300 ease-in-out">
+                <h2 class="text-3xl font-bold mb-8 text-gray-800 text-center">Результаты Статистики</h2>
+                <div id="results-content" class="space-y-4 text-center">
+                    <p class="text-xl">Чистое движение: <span id="results-net-movement" class="font-bold"></span></p>
+                    <p class="text-xl">Количество сделок: <span id="results-total-trades" class="font-bold"></span></p>
+                    <p class="text-xl">Винрейт: <span id="results-winrate" class="font-bold"></span></p>
+                    <button id="results-details-btn" class="btn-primary mt-6 bg-blue-500 text-white font-semibold py-2.5 px-6 rounded-xl shadow-md">
                         Подробнее...
                     </button>
-                    <div id="results-additional-info" class="hidden mt-4 space-y-2">
-                        <p>Успешных сделок: <span id="results-successful-trades" class="font-bold color-green"></span></p>
-                        <p>Отклоненных сделок: <span id="results-rejected-trades" class="font-bold color-red"></span></p>
-                        <p>Несостоявшиеся сделки (б/у): <span id="results-breakeven-trades" class="font-bold color-gray"></span></p>
+                    <div id="results-additional-info" class="hidden mt-4 space-y-3">
+                        <p class="text-lg">Успешных сделок: <span id="results-successful-trades" class="font-bold color-green"></span></p>
+                        <p class="text-lg">Отклоненных сделок: <span id="results-rejected-trades" class="font-bold color-red"></span></p>
+                        <p class="text-lg">Несостоявшиеся сделки (б/у): <span id="results-breakeven-trades" class="font-bold color-gray"></span></p>
                     </div>
                 </div>
             </div>
@@ -912,6 +1179,8 @@ ENTRY: 22.566
                 const isVlasovStatistic = (stat.name === VLADOV_STATISTIC_NAME);
                 const editButtonDisabled = isVlasovStatistic ? 'disabled' : '';
                 const editButtonClass = isVlasovStatistic ? 'text-gray-300 cursor-not-allowed' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100';
+                const deleteButtonClass = isVlasovStatistic ? 'text-gray-300 cursor-not-allowed' : 'text-red-500 hover:text-red-700 transition duration-200 ease-in-out p-1 rounded-full hover:bg-red-50';
+
 
                 let displayName = stat.name;
                 if (isVlasovStatistic && stat.name.endsWith(VLADOV_STATISTIC_SUFFIX)) {
@@ -944,10 +1213,10 @@ ENTRY: 22.566
                             </div>
                         </div>
                         <div class="flex justify-between items-center text-sm mt-auto">
-                            <button class="open-statistic-btn btn-primary bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out" data-id="${id}">
+                            <button class="open-statistic-btn btn-primary bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md" data-id="${id}">
                                 Открыть статистику
                             </button>
-                            <button class="delete-statistic-btn text-red-500 hover:text-red-700 transition duration-200 ease-in-out p-1 rounded-full hover:bg-red-50" data-id="${id}">
+                            <button class="delete-statistic-btn ${deleteButtonClass}" data-id="${id}" ${isVlasovStatistic ? '' : ''}>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm6 3a1 1 0 100 2v1a1 1 0 102 0v-1a1 1 0 00-2 0z" clip-rule="evenodd"></path>
                                 </svg>
@@ -974,9 +1243,9 @@ ENTRY: 22.566
             document.querySelectorAll('.edit-statistic-name-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const id = e.currentTarget.dataset.id; // Use currentTarget for buttons with SVG children
-                    if (statistics[id].name === VLADOV_STATISTIC_NAME) {
-                        console.warn('Изменение названия статистики "' + VLADOV_STATISTIC_NAME + '" отключено.');
-                        return; // Prevent action
+                    if (e.currentTarget.disabled) { // Check if the button is disabled
+                        console.warn('Изменение названия статистики отключено для этой статистики.');
+                        return;
                     }
                     editStatisticName(id);
                 });
@@ -1022,15 +1291,10 @@ ENTRY: 22.566
 
             const isVlasovStatistic = (stat.name === VLADOV_STATISTIC_NAME);
 
-            // Conditional visibility for "Добавить Сделку" button if no trades
-            const noTradesAddBtn = document.getElementById('no-trades-add-btn');
-            // Hide the "Добавить Сделку" button if it's Vlasov's statistic
             if (isVlasovStatistic) {
                 document.getElementById('add-trade-btn').classList.add('hidden');
-                noTradesAddBtn.classList.add('hidden');
             } else {
                 document.getElementById('add-trade-btn').classList.remove('hidden');
-                noTradesAddBtn.classList.remove('hidden');
             }
 
 
@@ -1060,10 +1324,13 @@ ENTRY: 22.566
                 tradesToRender = [...stat.trades].sort((a, b) => {
                     const dateA = a.date ? new Date(a.date).getTime() : 0;
                     const dateB = b.date ? new Date(b.date).getTime() : 0;
-                    if (dateA === dateB) {
-                        return 0; // Dates are the same, maintain original relative order
+
+                    // If both dates are valid, sort by date descending
+                    if (dateA !== 0 && dateB !== 0) {
+                        return dateB - dateA;
                     }
-                    return dateB - dateA; // Newest date first
+                    // If dates are invalid (0), put them at the end for descending order.
+                    return dateB - dateA;
                 });
             }
 
@@ -1087,19 +1354,16 @@ ENTRY: 22.566
 
                 // Format date for display (DD.MM.YY)
                 let displayDate = 'Не добавлена';
-                let dateButtonHtml = `<button class="add-date-btn text-blue-500 hover:text-blue-700 ml-2 text-xs" data-trade-id="${trade.id}">Добавить</button>`;
                 if (trade.date) {
                     const tradeDate = new Date(trade.date);
-                    // Check if the date is valid before formatting
                     if (!isNaN(tradeDate.getTime())) {
                         displayDate = tradeDate.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit' });
-                        dateButtonHtml = `<button class="edit-date-btn text-blue-500 hover:text-blue-700 ml-2 text-xs" data-trade-id="${trade.id}">Изменить дату</button>`;
                     }
                 }
 
-                const directionText = trade.direction === 'long' ? '<span class="color-green">Лонг</span>' : '<span class="color-red">Шорт</span>';
+                // Changed direction text to English
+                const directionText = trade.direction === 'long' ? '<span class="color-green">long</span>' : '<span class="color-red">short</span>';
 
-                // Removed the edit-trade-btn from here as per user request
                 const actionButtonsHtml = isVlasovStatistic ? `
                     <div class="flex justify-end space-x-2 text-sm mt-4 text-gray-400">
                         <span title="Редактирование сделок отключено для этой статистики">
@@ -1124,7 +1388,7 @@ ENTRY: 22.566
                     `;
 
                 const tradeCardHtml = `
-                    <div class="trade-card bg-white p-6 rounded-xl shadow-md" data-trade-id="${trade.id}">
+                    <div class="trade-card bg-white p-6 rounded-xl shadow-md ${isVlasovStatistic ? 'cursor-default' : 'cursor-pointer'}" data-trade-id="${trade.id}" ${isVlasovStatistic ? 'data-vlasov-readonly="true"' : ''}>
                         <div class="flex justify-between items-center mb-2">
                             <h4 class="text-lg font-semibold text-gray-800">${trade.coin} (${directionText})</h4>
                             <span class="px-3 py-1 rounded-full text-sm font-bold ${profitLossClass}">
@@ -1134,11 +1398,13 @@ ENTRY: 22.566
                         <p class="text-sm text-gray-600 mb-2">ENTRY: ${isNaN(trade.entry) ? 'N/A' : trade.entry}</p>
                         <p class="text-sm text-gray-600 mb-2">Маржа: X${isNaN(trade.margin) ? 'N/A' : trade.margin}</p>
                         <p class="text-sm text-gray-600 mb-2">Фиксации: ${fixationsString}</p>
-                        <p class="text-xs text-gray-500 text-right mt-2">
-                            Дата: <span class="trade-date-display">${displayDate}</span>
-                            <input type="date" class="trade-date-input hidden border rounded-md px-1 py-0.5 text-xs">
-                            ${isVlasovStatistic ? `<span class="text-gray-400 ml-2 text-xs" title="Изменение даты отключено">Изменить дату</span>` : dateButtonHtml}
-                        </p>
+                        <div class="trade-date-display-wrapper">
+                            <div class="date-wrapper ${isVlasovStatistic ? 'disabled-date-interaction' : ''}" data-trade-id="${trade.id}" title="${isVlasovStatistic ? 'Изменение даты отключено' : ''}">
+                                <span class="trade-date-display-text">${displayDate}</span>
+                                <input type="date" class="trade-date-input" onkeydown="return false;">
+                                <span class="calendar-icon">📅</span>
+                            </div>
+                        </div>
                         ${actionButtonsHtml}
                     </div>
                 `;
@@ -1147,25 +1413,80 @@ ENTRY: 22.566
 
             // Add event listeners for trade actions, only if not Vlasov's statistic
             if (!isVlasovStatistic) {
-                // Removed event listener for edit-trade-btn as per user request
                 document.querySelectorAll('.delete-trade-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const tradeId = e.currentTarget.dataset.tradeId;
                         confirmAction('Вы уверены, что хотите удалить эту сделку?', () => deleteTrade(currentStatisticId, tradeId));
                     });
                 });
-                document.querySelectorAll('.add-date-btn, .edit-date-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const tradeId = e.currentTarget.dataset.tradeId;
-                        toggleDateInput(tradeId);
+
+                // Add click listener for the trade card to open edit modal (only for non-Vlasov trades)
+                document.querySelectorAll(`#trade-list .trade-card:not([data-vlasov-readonly="true"])`).forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        // Only proceed if not clicking the delete button or date wrapper (which have their own handlers)
+                        if (!e.target.closest('.delete-trade-btn') && !e.target.closest('.date-wrapper')) {
+                            const tradeId = e.currentTarget.dataset.tradeId;
+                            editTrade(currentStatisticId, tradeId);
+                        }
                     });
                 });
-                document.querySelectorAll('.trade-date-input').forEach(input => {
-                    input.addEventListener('change', (e) => {
-                        const tradeCard = e.target.closest('.bg-white');
-                        const tradeId = tradeCard.dataset.tradeId;
-                        const selectedDate = e.target.value; // FormatYYYY-MM-DD
+
+                // Event listener for the date-wrapper in trade cards (only for non-Vlasov trades)
+                document.querySelectorAll('.trade-card .date-wrapper:not(.disabled-date-interaction)').forEach(wrapper => {
+                    wrapper.addEventListener('click', (e) => {
+                        const tradeId = e.currentTarget.dataset.tradeId;
+                        const tradeCard = e.currentTarget.closest('.trade-card');
+                        const dateTextSpan = tradeCard.querySelector('.trade-date-display-text');
+                        const dateInput = tradeCard.querySelector('.trade-date-input');
+
+                        // Hide text, show input, set value, and focus
+                        dateTextSpan.classList.add('hidden');
+                        dateInput.classList.add('active'); // Use active for visibility and z-index
+                        dateInput.focus(); // Open the native date picker
+
+                        // Pre-fill input if a date exists
+                        const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
+                        if (trade && trade.date) {
+                            const d = new Date(trade.date);
+                            const year = d.getFullYear();
+                            const month = (d.getMonth() + 1).toString().padStart(2, '0');
+                            const day = d.getDate().toString().padStart(2, '0');
+                            dateInput.value = `${year}-${month}-${day}`;
+                        } else {
+                            dateInput.value = '';
+                        }
+                    });
+
+                    // Handle change event for the native date input
+                    wrapper.querySelector('.trade-date-input').addEventListener('change', (e) => {
+                        const tradeId = e.currentTarget.closest('.date-wrapper').dataset.tradeId;
+                        const selectedDate = e.target.value; //YYYY-MM-DD format
                         updateTradeDate(currentStatisticId, tradeId, selectedDate);
+                        // Re-render is handled by updateTradeDate, which will hide the input
+                    });
+
+                     // Handle blur event to hide input and update if necessary
+                    wrapper.querySelector('.trade-date-input').addEventListener('blur', (e) => {
+                        const tradeId = e.currentTarget.closest('.date-wrapper').dataset.tradeId;
+                        const dateInput = e.currentTarget;
+                        const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
+
+                        let currentStoredDateFormatted = '';
+                        if (trade && trade.date) {
+                            const d = new Date(trade.date);
+                            currentStoredDateFormatted = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
+                        }
+
+                        // Only call update if the value in the input is different from what's stored,
+                        // or if the input is now empty but a date was previously stored.
+                        if (dateInput.value !== currentStoredDateFormatted) {
+                            updateTradeDate(currentStatisticId, tradeId, dateInput.value);
+                        } else {
+                            // If no change, just hide the input and show the text.
+                            // The text should already be correct based on the stored date.
+                            dateInput.classList.remove('active');
+                            dateInput.closest('.date-wrapper').querySelector('.trade-date-display-text').classList.remove('hidden');
+                        }
                     });
                 });
             }
@@ -1192,10 +1513,10 @@ ENTRY: 22.566
                 // Reset fixations to one field
                 const fixationsContainer = document.getElementById('fixations-container');
                 fixationsContainer.innerHTML = `
-                    <div class="flex items-center space-x-2 mb-2">
-                        <input type="number" step="any" class="fixation-price shadow appearance-none border rounded-xl w-1/2 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Цена фиксации">
-                        <input type="number" step="any" min="0" max="100" class="fixation-percent shadow appearance-none border rounded-xl w-1/2 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Процент (%)">
-                        <button type="button" class="add-fixation-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">+</button>
+                    <div class="flex items-center space-x-3 mb-3">
+                        <input type="number" step="any" class="fixation-price w-1/2" placeholder="Цена фиксации">
+                        <input type="number" step="any" min="0" max="100" class="fixation-percent w-1/2" placeholder="Процент (%)">
+                        <button type="button" class="add-fixation-btn bg-blue-500 text-white font-bold rounded-full">+</button>
                     </div>
                 `;
                 addFixationListeners(); // Re-add listeners for the new plus button
@@ -1206,6 +1527,7 @@ ENTRY: 22.566
                 document.getElementById('add-trade-submit-btn').textContent = 'Добавить Сделку';
                 document.getElementById('select-statistic-container').classList.remove('hidden'); // Show select for new trade
                 currentEditingTrade = null; // Clear editing flag
+
             } else if (modalId === 'confirmation-modal') {
                 confirmationCallback = null;
             } else if (modalId === 'results-modal') {
@@ -1265,7 +1587,6 @@ ENTRY: 22.566
         }
 
         // Trade Actions
-        // Keeping this function as it might be used internally for logic, but removing UI access.
         function editTrade(statisticId, tradeId) {
             const stat = statistics[statisticId];
             if (!stat) {
@@ -1290,9 +1611,12 @@ ENTRY: 22.566
 
             // Populate form fields
             document.getElementById('coin-name').value = currentEditingTrade.coin;
+            document.querySelector(`input[name="direction"]:checked`).checked = false; // Deselect existing radio
             document.querySelector(`input[name="direction"][value="${currentEditingTrade.direction}"]`).checked = true;
             document.getElementById('entry-price').value = currentEditingTrade.entry;
             document.getElementById('margin').value = currentEditingTrade.margin;
+
+            // Date field is not in the modal anymore.
 
             // Populate fixations
             const fixationsContainer = document.getElementById('fixations-container');
@@ -1300,20 +1624,20 @@ ENTRY: 22.566
             if (currentEditingTrade.fixations && currentEditingTrade.fixations.length > 0) {
                 currentEditingTrade.fixations.forEach((fix, index) => {
                     const newFixationDiv = document.createElement('div');
-                    newFixationDiv.className = 'flex items-center space-x-2 mb-2';
+                    newFixationDiv.className = 'flex items-center space-x-3 mb-3';
                     newFixationDiv.innerHTML = `
-                        <input type="number" step="any" class="fixation-price shadow appearance-none border rounded-xl w-1/2 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Цена фиксации" value="${fix.price}" required>
-                        <input type="number" step="any" min="0" max="100" class="fixation-percent shadow appearance-none border rounded-xl w-1/2 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Процент (%)" value="${fix.percent}" required>
-                        ${index === 0 ? `<button type="button" class="add-fixation-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">+</button>` : `<button type="button" class="remove-fixation-btn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">-</button>`}
+                        <input type="number" step="any" class="fixation-price w-1/2" placeholder="Цена фиксации" value="${fix.price}" required>
+                        <input type="number" step="any" min="0" max="100" class="fixation-percent w-1/2" placeholder="Процент (%)" value="${fix.percent}" required>
+                        ${index === 0 ? `<button type="button" class="add-fixation-btn bg-blue-500 text-white font-bold rounded-full">+</button>` : `<button type="button" class="remove-fixation-btn bg-red-500 text-white font-bold rounded-full">-</button>`}
                     `;
                     fixationsContainer.appendChild(newFixationDiv);
                 });
             } else { // If no fixations, add a default empty one
                  fixationsContainer.innerHTML = `
-                    <div class="flex items-center space-x-2 mb-2">
-                        <input type="number" step="any" class="fixation-price shadow appearance-none border rounded-xl w-1/2 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Цена фиксации">
-                        <input type="number" step="any" min="0" max="100" class="fixation-percent shadow appearance-none border rounded-xl w-1/2 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Процент (%)">
-                        <button type="button" class="add-fixation-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">+</button>
+                    <div class="flex items-center space-x-3 mb-3">
+                        <input type="number" step="any" class="fixation-price w-1/2" placeholder="Цена фиксации">
+                        <input type="number" step="any" min="0" max="100" class="fixation-percent w-1/2" placeholder="Процент (%)">
+                        <button type="button" class="add-fixation-btn bg-blue-500 text-white font-bold rounded-full">+</button>
                     </div>
                 `;
             }
@@ -1344,59 +1668,6 @@ ENTRY: 22.566
             closeModal('confirmation-modal');
         }
 
-        function toggleDateInput(tradeId) {
-            const tradeCard = document.querySelector(`.bg-white[data-trade-id="${tradeId}"]`);
-            if (!tradeCard) {
-                console.error('Карточка сделки для изменения даты не найдена.');
-                return;
-            }
-            const stat = statistics[currentStatisticId];
-            if (stat.name === VLADOV_STATISTIC_NAME) {
-                console.warn('Изменение даты сделок статистики "' + VLADOV_STATISTIC_NAME + '" отключено.');
-                return;
-            }
-
-            const dateDisplaySpan = tradeCard.querySelector('.trade-date-display');
-            const dateInput = tradeCard.querySelector('.trade-date-input');
-            const dateButton = tradeCard.querySelector('.add-date-btn, .edit-date-btn');
-
-            if (dateInput.classList.contains('hidden')) {
-                dateDisplaySpan.classList.add('hidden');
-                dateInput.classList.remove('hidden');
-                dateButton.textContent = 'Сохранить дату';
-                dateInput.focus(); // Focus on the input when opened
-
-                // Pre-fill input if a date exists
-                const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
-                if (trade && trade.date) {
-                    const d = new Date(trade.date);
-                    const year = d.getFullYear();
-                    const month = (d.getMonth() + 1).toString().padStart(2, '0');
-                    const day = d.getDate().toString().padStart(2, '0');
-                    dateInput.value = `${year}-${month}-${day}`;
-                } else {
-                    dateInput.value = '';
-                }
-            } else {
-                // If input is visible, save the date
-                const selectedDate = dateInput.value;
-                updateTradeDate(currentStatisticId, tradeId, selectedDate);
-                // After saving, hide input and show display
-                dateInput.classList.add('hidden');
-                dateDisplaySpan.classList.remove('hidden');
-                const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
-                if (trade && trade.date) {
-                    const tradeDate = new Date(trade.date);
-                    dateDisplaySpan.textContent = tradeDate.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit' });
-                    dateButton.textContent = 'Изменить дату';
-                } else {
-                    dateDisplaySpan.textContent = 'Не добавлена';
-                    dateButton.textContent = 'Добавить';
-                }
-            }
-        }
-
-
         function updateTradeDate(statisticId, tradeId, newDateString) {
             const stat = statistics[statisticId];
             if (stat) {
@@ -1409,9 +1680,7 @@ ENTRY: 22.566
                     }
                     saveData();
                     loadData(); // Re-load data after date update
-                    // Re-render only the specific trade card or the entire detail view for simplicity
-                    // Re-rendering the whole detail view ensures sorting by date is correct
-                    renderTradeDetail(statisticId);
+                    renderTradeDetail(statisticId); // Re-render the detail view to update date display
                 }
             }
         }
@@ -1442,7 +1711,8 @@ ENTRY: 22.566
 
 
             tradesToExport.forEach(trade => {
-                const directionText = trade.direction === 'long' ? 'Лонг' : 'Шорт';
+                // Change direction text to English for export
+                const directionText = trade.direction === 'long' ? 'long' : 'short';
                 const fixationsString = trade.fixations.map(f => `${parseFloat(f.price)} (${parseFloat(f.percent)}%)`).join(' ');
 
                 let tradeDateString = 'Не добавлена';
@@ -1563,14 +1833,6 @@ ENTRY: 22.566
             renderStatisticsList(); // Re-render to update metrics if trades were added/removed
         });
 
-        // "Add Trade" button in trade detail view (if no trades)
-        document.getElementById('no-trades-add-btn').addEventListener('click', () => {
-            // Check if the current statistic is Vlasov's. If so, don't pre-select it.
-            const preSelect = (currentStatisticId && statistics[currentStatisticId].name !== VLADOV_STATISTIC_NAME) ? currentStatisticId : null;
-            populateStatisticSelect(preSelect);
-            openModal('add-trade-modal');
-        });
-
         // Confirmation Modal Buttons
         document.getElementById('confirm-yes-btn').addEventListener('click', () => {
             if (confirmationCallback) {
@@ -1581,6 +1843,8 @@ ENTRY: 22.566
         document.getElementById('confirm-no-btn').addEventListener('click', () => {
             closeModal('confirmation-modal');
         });
+        document.getElementById('close-confirmation-modal-btn').addEventListener('click', () => closeModal('confirmation-modal'));
+
 
         // Results Modal "Подробнее..." button
         document.getElementById('results-details-btn').addEventListener('click', () => {
@@ -1652,6 +1916,9 @@ ENTRY: 22.566
             const direction = document.querySelector('input[name="direction"]:checked').value;
             const entryPrice = parseFloat(document.getElementById('entry-price').value);
             const margin = parseFloat(document.getElementById('margin').value);
+            // Date is now always null on creation from this modal
+            const tradeDate = null;
+
 
             const fixationPriceInputs = document.querySelectorAll('.fixation-price');
             const fixationPercentInputs = document.querySelectorAll('.fixation-percent');
@@ -1720,7 +1987,6 @@ ENTRY: 22.566
             // Prevent adding new trades to Vlasov's statistic
             if (!currentEditingTrade && statistics[targetStatisticId] && statistics[targetStatisticId].name === VLADOV_STATISTIC_NAME) {
                 console.error('Невозможно добавить новые сделки в статистику "' + VLADOV_STATISTIC_NAME + '".');
-                // You might want to display a user-friendly message here, not just console.error
                 return;
             }
 
@@ -1741,8 +2007,7 @@ ENTRY: 22.566
                         stat.trades[tradeIndex].entry = entryPrice;
                         stat.trades[tradeIndex].fixations = fixations;
                         stat.trades[tradeIndex].margin = margin;
-                        // Preserve original date for edited trade
-                        // stat.trades[tradeIndex].date remains unchanged
+                        // Date remains unchanged as it's not in the modal.
                         // Recalculate metrics for the updated trade
                         const metrics = calculateTradeMetrics(stat.trades[tradeIndex]);
                         stat.trades[tradeIndex].netMovement = metrics.netMovement;
@@ -1758,7 +2023,7 @@ ENTRY: 22.566
                     entry: entryPrice,
                     fixations: fixations,
                     margin: margin,
-                    date: null // Set date to null for new trades as per user request
+                    date: null // Date is explicitly null on creation via modal
                 };
                  // Add new trade to the correct statistic
                 if (statistics[targetStatisticId]) {
@@ -1787,11 +2052,11 @@ ENTRY: 22.566
         function addFixationField() {
             const container = document.getElementById('fixations-container');
             const newFixationDiv = document.createElement('div');
-            newFixationDiv.className = 'flex items-center space-x-2 mb-2';
+            newFixationDiv.className = 'flex items-center space-x-3 mb-3';
             newFixationDiv.innerHTML = `
-                <input type="number" step="any" class="fixation-price shadow appearance-none border rounded-xl w-1/2 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Цена фиксации">
-                <input type="number" step="any" min="0" max="100" class="fixation-percent shadow appearance-none border rounded-xl w-1/2 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Процент (%)">
-                <button type="button" class="remove-fixation-btn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">-</button>
+                <input type="number" step="any" class="fixation-price w-1/2" placeholder="Цена фиксации">
+                <input type="number" step="any" min="0" max="100" class="fixation-percent w-1/2" placeholder="Процент (%)">
+                <button type="button" class="remove-fixation-btn bg-red-500 text-white font-bold rounded-full">-</button>
             `;
             container.appendChild(newFixationDiv);
             addFixationListeners(); // Re-add listeners to all plus/minus buttons
