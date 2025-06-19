@@ -10,7 +10,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            /* Улучшенный фоновый градиент */
             background: linear-gradient(135deg, #f0f2f5 0%, #e2e8f0 100%);
             display: flex;
             justify-content: center;
@@ -19,7 +18,7 @@
             padding: 20px;
             box-sizing: border-box;
             overflow-y: auto;
-            scroll-behavior: smooth; /* Плавный скролл */
+            scroll-behavior: smooth;
         }
         /* Стилизация скроллбара */
         body::-webkit-scrollbar {
@@ -30,24 +29,24 @@
             border-radius: 10px;
         }
         body::-webkit-scrollbar-thumb {
-            background: #a78bfa; /* Фиолетовый */
+            background: #a78bfa;
             border-radius: 10px;
             border: 2px solid #f0f2f5;
         }
         body::-webkit-scrollbar-thumb:hover {
-            background: #8b5cf6; /* Более темный фиолетовый */
+            background: #8b5cf6;
         }
 
         .container {
             background-color: #ffffff;
-            border-radius: 2rem; /* Ещё более закругленные углы */
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25); /* Глубже тень */
-            padding: 3rem; /* Больше отступов */
+            border-radius: 2rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            padding: 3rem;
             width: 100%;
-            max-width: 960px; /* Немного шире */
-            margin-top: 30px; /* Больше отступа сверху */
+            max-width: 960px;
+            margin-top: 30px;
             position: relative;
-            animation: fadeInScale 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); /* Улучшенная анимация появления */
+            animation: fadeInScale 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         @keyframes fadeInScale {
             from { opacity: 0; transform: translateY(30px) scale(0.98); }
@@ -61,8 +60,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8); /* Темнее фон */
-            backdrop-filter: blur(8px); /* Сильнее размытие */
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -77,16 +76,16 @@
         }
         .modal-content {
             background-color: #ffffff;
-            border-radius: 2rem; /* Больше закруглений */
-            padding: 3rem; /* Больше отступов */
+            border-radius: 2rem;
+            padding: 3rem;
             max-width: 90%;
             max-height: 90%;
             overflow-y: auto;
-            transform: translateY(-50px) scale(0.8) rotateX(-10deg); /* Более выраженная анимация */
+            transform: translateY(-50px) scale(0.8) rotateX(-10deg);
             opacity: 0;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease; /* Пружинистая анимация */
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
             position: relative;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4); /* Очень сильная тень */
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
         }
         .modal-overlay.active .modal-content {
             transform: translateY(0) scale(1) rotateX(0deg);
@@ -98,25 +97,25 @@
             right: 1.5rem;
             background: none;
             border: none;
-            font-size: 2.2rem; /* Крупнее кнопка закрытия */
+            font-size: 2.2rem;
             cursor: pointer;
-            color: #9ca3af; /* Светлее серый */
+            color: #9ca3af;
             transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
         }
         .close-button:hover {
-            transform: rotate(180deg) scale(1.1); /* Полный оборот и увеличение */
+            transform: rotate(180deg) scale(1.1);
             color: #ef4444;
-            text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); /* Эффект свечения */
+            text-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
         }
 
         /* Карточки статистики */
         .statistic-card {
             transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s ease;
             cursor: pointer;
-            border: 3px solid transparent; /* Более толстая рамка */
+            border: 3px solid transparent;
             position: relative;
             overflow: hidden;
-            border-radius: 1.25rem; /* Более мягкие углы */
+            border-radius: 1.25rem;
         }
         .statistic-card::before {
             content: '';
@@ -125,7 +124,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(167, 139, 250, 0.1)); /* Более заметный градиент */
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(167, 139, 250, 0.1));
             opacity: 0;
             transition: opacity 0.4s ease;
             z-index: 0;
@@ -134,9 +133,9 @@
             opacity: 1;
         }
         .statistic-card:hover {
-            transform: translateY(-12px) scale(1.02); /* Более сильный подъем и увеличение */
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3); /* Очень сильная тень при наведении */
-            border-color: #6366f1; /* Индиговая рамка */
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            border-color: #6366f1;
         }
         .statistic-card > div {
             position: relative;
@@ -150,23 +149,23 @@
             overflow: hidden;
             border-radius: 1rem;
         }
-        .trade-card:hover:not(.cursor-default) { /* Apply hover only if not cursor-default */
-            background-color: #ebedf0; /* Темнее серый при наведении */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Заметнее тень */
-            transform: translateY(-3px); /* Чуть больше подъем */
+        .trade-card:hover:not(.cursor-default) {
+            background-color: #ebedf0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
         }
-        .color-green { color: #059669; /* Более насыщенный зеленый */ }
-        .color-red { color: #dc2626; /* Более насыщенный красный */ }
-        .color-gray { color: #4b5563; /* Более темный серый */ }
+        .color-green { color: #059669; }
+        .color-red { color: #dc2626; }
+        .color-gray { color: #4b5563; }
         .profit-loss-green {
-            background-color: #dcfce7; /* Светлее зеленый фон */
-            color: #047857; /* Темнее зеленый текст */
-            border-radius: 0.75rem; /* Больше закруглений */
+            background-color: #dcfce7;
+            color: #047857;
+            border-radius: 0.75rem;
             padding: 0.4rem 0.8rem;
         }
         .profit-loss-red {
-            background-color: #fee4e5; /* Светлее красный фон */
-            color: #b91c1c; /* Темнее красный текст */
+            background-color: #fee4e5;
+            color: #b91c1c;
             border-radius: 0.75rem;
             padding: 0.4rem 0.8rem;
         }
@@ -179,108 +178,133 @@
 
         /* Кнопки */
         .btn-primary, .btn-secondary {
-            transition: all 0.4s ease; /* Увеличенное время перехода */
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12); /* Более сильная тень */
-            background-size: 250% auto; /* Более широкий градиент для анимации */
-            font-weight: 600; /* Полужирный */
-            letter-spacing: 0.025em; /* Легкий интервал между буквами */
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            background-size: 250% auto;
+            font-weight: 600;
+            letter-spacing: 0.025em;
             border: none;
             position: relative;
             overflow: hidden;
         }
         .btn-primary:hover {
             background-position: right center;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5); /* Усиленная тень */
-            transform: translateY(-4px); /* Более сильный подъем */
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
+            transform: translateY(-4px);
         }
         .btn-primary:active {
             transform: translateY(0);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             background-position: left center;
-            filter: brightness(0.9); /* Темнее при нажатии */
+            filter: brightness(0.9);
         }
         .btn-secondary {
-            background-color: #e2e8f0; /* Более мягкий серый */
-            color: #475569; /* Насыщенный серый */
+            background-color: #e2e8f0;
+            color: #475569;
         }
         .btn-secondary:hover {
-            background-color: #cbd5e1; /* Темнее серый */
+            background-color: #cbd5e1;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             transform: translateY(-2px);
         }
         .btn-secondary:active {
             transform: translateY(0);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            filter: brightness(0.9); /* Темнее при нажатии */
+            filter: brightness(0.9);
         }
+
+        /* Копировать кнопку сделки */
+        .copy-trade-single-btn {
+            background: none;
+            border: none;
+            color: #6b7280; /* Gray color */
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 50%;
+            transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+            font-size: 1rem; /* Adjust size if needed */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .copy-trade-single-btn:hover {
+            color: #4f46e5; /* Indigo on hover */
+            background-color: #eef2ff; /* Light indigo background */
+            transform: translateY(-1px);
+        }
+        .copy-trade-single-btn svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
 
         /* Аватар и кнопка быстрого добавления */
         #avatar-container {
-            top: 25px; /* Сместить немного вниз */
-            right: 25px; /* Сместить немного влево */
-            gap: 10px; /* Больше расстояние */
-            position: absolute; /* Убедимся, что он справа */
+            top: 25px;
+            right: 25px;
+            gap: 10px;
+            position: absolute;
             display: flex;
             flex-direction: column;
             align-items: center;
             z-index: 50;
         }
         #avatar-img {
-            border-radius: 50%; /* Сделать круглой */
+            border-radius: 50%;
             object-fit: cover;
-            width: 64px; /* Ещё крупнее аватар */
+            width: 64px;
             height: 64px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Более выраженная тень */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         #avatar-img:hover {
-            transform: scale(1.1) rotate(8deg); /* Более сильное вращение и увеличение */
+            transform: scale(1.1) rotate(8deg);
         }
         #add-statistic-avatar-btn {
-            font-size: 1.75rem; /* Ещё крупнее плюс */
-            width: 48px; /* Крупнее кнопка */
+            font-size: 1.75rem;
+            width: 48px;
             height: 48px;
-            background-color: #10b981; /* Зеленый цвет */
-            border-radius: 50%; /* Круглая кнопка */
+            background-color: #10b981;
+            border-radius: 50%;
             color: white;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5); /* Более сильная зеленая тень */
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5);
             transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
         }
         #add-statistic-avatar-btn:hover {
-            background-color: #047857; /* Темнее зеленый */
-            transform: scale(1.15) rotate(5deg); /* Более сильное увеличение и легкое вращение */
+            background-color: #047857;
+            transform: scale(1.15) rotate(5deg);
             box-shadow: 0 10px 25px rgba(16, 185, 129, 0.7);
         }
 
         /* Поля ввода и селекты */
         input[type="text"], input[type="number"], select {
-            border: 2px solid #e2e8f0; /* Более заметная рамка */
-            border-radius: 0.8rem; /* Ещё более закругленные */
-            padding: 0.8rem 1.2rem; /* Увеличенный отступ */
-            font-size: 1.05rem; /* Немного крупнее шрифт */
+            border: 2px solid #e2e8f0;
+            border-radius: 0.8rem;
+            padding: 0.8rem 1.2rem;
+            font-size: 1.05rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background-color: #f8fafc; /* Чуть светлее фон */
+            background-color: #f8fafc;
         }
         input[type="text"]:focus, input[type="number"]:focus, select:focus {
             outline: none;
             border-color: #8b5cf6;
-            box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.5); /* Более заметное свечение */
-            background-color: #ffffff; /* Белый фон при фокусе */
+            box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.5);
+            background-color: #ffffff;
         }
         /* Радио-кнопки */
         input[type="radio"] {
             width: 1.6rem;
             height: 1.6rem;
-            border: 2.5px solid #a78bfa; /* Более толстая рамка */
+            border: 2.5px solid #a78bfa;
         }
         input[type="radio"]:checked {
             background-color: #8b5cf6;
             border-color: #8b5cf6;
-            animation: bounceIn 0.3s ease-out; /* Анимация отскока при выборе */
+            animation: bounceIn 0.3s ease-out;
         }
         input[type="radio"]:checked::after {
             width: 0.8rem;
@@ -299,16 +323,16 @@
             justify-content: flex-end;
             position: relative;
             cursor: pointer;
-            width: fit-content; /* Adjust width to content */
-            margin-left: auto; /* Push to the right */
-            padding: 0.4rem 0.6rem; /* Add some padding */
-            border-radius: 0.5rem; /* Slightly rounded corners */
+            width: fit-content;
+            margin-left: auto;
+            padding: 0.4rem 0.6rem;
+            border-radius: 0.5rem;
             transition: background-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .trade-card .date-wrapper:hover:not(.disabled-date-interaction) { /* Apply hover only if not disabled */
-            background-color: #eef2ff; /* Light indigo background on hover */
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2); /* Soft shadow on hover */
+        .trade-card .date-wrapper:hover:not(.disabled-date-interaction) {
+            background-color: #eef2ff;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
         }
         .trade-card .date-wrapper.disabled-date-interaction {
             cursor: not-allowed;
@@ -324,12 +348,12 @@
         .trade-card .trade-date-display-text,
         .trade-card .trade-date-input {
             font-size: 0.9rem;
-            color: #374151; /* Dark gray for text */
+            color: #374151;
             font-weight: 500;
             padding: 0;
             border: none;
             background: none;
-            text-align: right; /* Align text to the right */
+            text-align: right;
         }
 
         .trade-card .trade-date-input {
@@ -338,18 +362,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0; /* Hidden by default */
-            cursor: pointer; /* Still clickable */
-        }
-
-        .trade-card .trade-date-input:focus {
-            outline: none; /* Remove outline on focus */
+            opacity: 0;
+            cursor: pointer;
         }
 
         .trade-card .trade-date-input.active {
-            opacity: 1; /* Show when active */
-            z-index: 10; /* Ensure it's above text */
-            color: transparent; /* Hide text input's own text */
+            opacity: 1;
+            z-index: 10;
+            color: transparent;
         }
 
         /* Hide default calendar picker indicator */
@@ -362,7 +382,7 @@
             background: transparent;
             color: transparent;
             cursor: pointer;
-            opacity: 1; /* Keep it visible for interaction, but its content is transparent */
+            opacity: 1;
         }
         .trade-card .trade-date-input[type="date"]::-webkit-inner-spin-button,
         .trade-card .trade-date-input[type="date"]::-webkit-outer-spin-button {
@@ -372,27 +392,27 @@
 
         .trade-card .calendar-icon {
             margin-left: 0.5rem;
-            color: #6366f1; /* Indigo color for icon */
+            color: #6366f1;
             font-size: 1rem;
             transition: color 0.2s ease;
         }
         .trade-card .date-wrapper:hover .calendar-icon {
-            color: #4f46e5; /* Darker indigo on hover */
+            color: #4f46e5;
         }
         .trade-card .date-wrapper.disabled-date-interaction .calendar-icon {
-            color: #9ca3af; /* Greyed out for disabled */
+            color: #9ca3af;
         }
 
 
         /* Кнопки фиксаций */
         .add-fixation-btn, .remove-fixation-btn {
-            width: 3.2rem; /* Немного крупнее */
+            width: 3.2rem;
             height: 3.2rem;
             font-size: 1.6rem;
             box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
         }
         .add-fixation-btn:hover {
-            transform: translateY(-2px) scale(1.05); /* Немного больше анимация */
+            transform: translateY(-2px) scale(1.05);
             box-shadow: 0 8px 18px rgba(59, 130, 246, 0.4);
         }
         .remove-fixation-btn:hover {
@@ -403,22 +423,21 @@
         /* Предупреждение о фиксации */
         .fixation-total-warning {
             font-weight: 500;
-            color: #b91c1c; /* Более темный красный */
-            background-color: #fef2f2; /* Очень светлый красный фон */
-            border-left: 4px solid #ef4444; /* Красная полоса слева */
+            color: #b91c1c;
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
             padding: 0.75rem;
             border-radius: 0.5rem;
             animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
         }
 
         /* Другие мелкие визуальные улучшения */
-        /* Removed h1 specific margin-bottom to rely on parent flex spacing */
         #detail-statistic-name {
-            color: #1f2937; /* Более темный текст */
+            color: #1f2937;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
         }
         .text-gray-700.text-lg.font-semibold {
-            color: #374151; /* Более темный серый для лейблов */
+            color: #374151;
         }
 
         /* Отзывчивость */
@@ -430,34 +449,19 @@
             .modal-content {
                 padding: 2rem;
             }
-            #avatar-container {
-                top: 15px;
-                right: 15px;
-            }
-            #avatar-img {
-                width: 50px;
-                height: 50px;
-            }
-            #add-statistic-avatar-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
+            /* #avatar-container {
+                display: none;
+            } */
         }
     </style>
     <!-- Favicon -->
-    <link rel="icon" href="https://iimg.su/s/15/g6I4o0VkLLmz7zNae7XGOXhUS0s84fTjUgLQuXCF.jpg" type="image/jpeg">
+    <link rel="icon" href="https://i.postimg.cc/L6FkFBCN/IMG-20250614-024349.jpg" type="image/jpeg">
 </head>
 <body class="bg-gray-100">
     <div id="app" class="container">
         <!-- Moved avatar-container to be directly under app to allow z-index control -->
-        <div id="avatar-container">
-            <img id="avatar-img" src="https://iimg.su/s/15/g6I4o0VkLLmz7zNae7XGOXhUS0s84fTjUgLQuXCF.jpg" alt="Аватар">
-            <button id="add-statistic-avatar-btn" title="Статистика Власова">
-                +
-            </button>
-        </div>
-
+        <!-- Avatar and quick add button removed as per user request to remove Vlasov collaboration -->
+        
         <!-- Main Title - Moved to top-left with gradient -->
         <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 mb-10 mt-4">
             Статистика Сделок
@@ -644,386 +648,12 @@
         // Flag to indicate if "Add Trade" initiated the "Create Statistic" flow
         let addTradeInitiatedCreateStatistic = false;
 
-        // Name of the special statistic that should maintain its original order and be read-only for trades
-        const VLADOV_STATISTIC_NAME = "Илья Власов - Грабитель ММ (ТОЛЬКО ПРОСМОТР)";
-        const VLADOV_STATISTIC_SUFFIX = "(ТОЛЬКО ПРОСМОТР)";
-
-
-        // Text block containing all 41 trades provided by the user
-        const ALL_USER_PROVIDED_TRADES_TEXT = `JTO (Шорт)
-Чистое движение: -3.35%
-ENTRY: 2.164
-Маржа: X1
-Фиксации: 2.2366 (100%)
-Дата: 15.06.25
-
-AAVE (Лонг)
-Чистое движение: -2.49%
-ENTRY: 276.61
-Маржа: X1
-Фиксации: 269.72 (100%)
-Дата: 15.06.25
-
-LINK (Лонг)
-Чистое движение: -4.45%
-ENTRY: 13.544
-Маржа: X1
-Фиксации: 12.941 (100%)
-Дата: 13.06.25
-
-UNI (Шорт)
-Чистое движение: 7.25%
-ENTRY: 7.926
-Маржа: X1
-Фиксации: 7.638 (30%) 7.229 (70%)
-Дата: 12.06.25
-
-AVAAI (Лонг)
-Чистое движение: 1.16%
-ENTRY: 0.03954
-Маржа: X1
-Фиксации: 0.04107 (30%)
-Дата: 08.06.25
-
-LINK (Лонг)
-Чистое движение: 6.43%
-ENTRY: 13.819
-Маржа: X1
-Фиксации: 14.446 (30%) 14.819 (70%)
-Дата: 08.06.25
-
-WIF (Лонг)
-Чистое движение: -3.36%
-ENTRY: 0.8963
-Маржа: X1
-Фиксации: 0.8662 (100%)
-Дата: 07.06.25
-
-FARTCOIN (Лонг)
-Чистое движение: 1.68%
-ENTRY: 0.9951
-Маржа: X1
-Фиксации: 1.0509 (30%)
-Дата: 07.06.25
-
-POPCAT (Лонг)
-Чистое движение: 1.31%
-ENTRY: 0.3463
-Маржа: X1
-Фиксации: 0.3614 (30%)
-Дата: 07.06.25
-
-FARTCOIN (Лонг)
-Чистое движение: -2.38%
-ENTRY: 1.0507
-Маржа: X0.5
-Фиксации: 1.0007 (100%)
-Дата: 06.06.25
-
-LQTY (Шорт)
-Чистое движение: 6.44%
-ENTRY: 0.09687
-Маржа: X1
-Фиксации: 0.09063 (100%)
-Дата: 05.06.25
-
-APE (Шорт)
-Чистое движение: 6.77%
-ENTRY: 0.7417
-Маржа: X1
-Фиксации: 0.7015 (50%) 0.6815 (50%)
-Дата: 04.06.25
-
-ARC перезаход (Шорт)
-Чистое движение: 7.15%
-ENTRY: 0.04487
-Маржа: X1
-Фиксации: 0.04166 (100%)
-Дата: 04.06.25
-
-ARC (Шорт)
-Чистое движение: 0.00%
-ENTRY: 0.04482
-Маржа: X1
-Фиксации: 0.04482 (100%)
-Дата: 04.06.25
-
-FARTCOIN (Шорт)
-Чистое движение: -1.62%
-ENTRY: 1.085
-Маржа: X0.5
-Фиксации: 1.1201 (100%)
-Дата: 02.06.25
-
-AVAX (Лонг)
-Чистое движение: 0.00%
-ENTRY: 20.498
-Маржа: X1
-Фиксации: 20.498 (100%)
-Дата: 31.05.25
-
-AAVE (Лонг)
-Чистое движение: -3.35%
-ENTRY: 252.19
-Маржа: X1
-Фиксации: 243.74 (100%)
-Дата: 30.05.25
-
-INJ (скальп) (Шорт)
-Чистое движение: 0.00%
-ENTRY: 13.112
-Маржа: X1
-Фиксации: 13.112 (100%)
-Дата: 30.06.25
-
-Ondo (Шорт)
-Чистое движение: 5.35%
-ENTRY: 0.9014
-Маржа: X1
-Фиксации: 0.8731 (50%) 0.8332 (50%)
-Дата: 30.05.25
-
-INJ (Шорт)
-Чистое движение: 0.69%
-ENTRY: 14.124
-Маржа: X1
-Фиксации: 13.8 (30%)
-Дата: 30.05.25
-
-WIF (Шорт)
-Чистое движение: 6.44%
-ENTRY: 1.0681
-Маржа: X1
-Фиксации: 0.9993 (100%)
-Дата: 29.06.25
-
-FARTCOIN (Шорт)
-Чистое движение: 3.53%
-ENTRY: 1.2424
-Маржа: X0.5
-Фиксации: 1.1547 (100%)
-Дата: 29.06.25
-
-PEPE (Шорт)
-Чистое движение: 5.65%
-ENTRY: 0.0000140714
-Маржа: X1
-Фиксации: 0.0000136603 (30%) 0.0000131119 (70%)
-Дата: 29.06.25
-
-AAVE (Шорт)
-Чистое движение: -2.85%
-ENTRY: 261.31
-Маржа: X1
-Фиксации: 268.77 (100%)
-Дата: 28.06.25
-
-SUI (Шорт)
-Чистое движение: -3.28%
-ENTRY: 3.5275
-Маржа: X1
-Фиксации: 3.6432 (100%)
-Дата: 28.05.25
-
-TURBO (Лонг)
-Чистое движение: 0.00%
-ENTRY: 0.005209
-Маржа: X1
-Фиксации: 0.005209 (100%)
-Дата: 28.05.25
-
-LDO (Лонг)
-Чистое движение: 2.23%
-ENTRY: 0.9091
-Маржа: X1
-Фиксации: 0.9496 (50%)
-Дата: 27.05.25
-
-ai16Z (Лонг)
-Чистое движение: 5.61%
-ENTRY: 0.3014
-Маржа: X1
-Фиксации: 0.3183 (100%)
-Дата: 27.05.25
-
-RUNE (Лонг)
-Чистое движение: -1.97%
-ENTRY: 1.98
-Маржа: X1
-Фиксации: 1.941 (100%)
-Дата: 26.05.25
-
-FARTCOIN (Лонг)
-Чистое движение: -1.82%
-ENTRY: 1.514
-Маржа: X0.5
-Фиксации: 1.4588 (100%)
-Дата: 23.05.25
-
-Ethfi (Лонг)
-Чистое движение: -4.04%
-ENTRY: 1.2933
-Маржа: X1
-Фиксации: 1.2411 (100%)
-Дата: 23.05.25
-
-Fartcoin (Лонг)
-Чистое движение: 1.55%
-ENTRY: 1.5518
-Маржа: X1
-Фиксации: 1.6319 (30%)
-Дата: 23.05.25
-
-Aixbt (Лонг)
-Чистое движение: 4.63%
-ENTRY: 0.18543
-Маржа: X1
-Фиксации: 0.1917 (30%) 0.195 (70%)
-Дата: 21.06.25
-
-WCT (Лонг)
-Чистое движение: -2.58%
-ENTRY: 0.6911
-Маржа: X0.5
-Фиксации: 0.6554 (100%)
-Дата: 21.05.25
-
-Griffain (Лонг)
-Чистое движение: 4.47%
-ENTRY: 0.10263
-Маржа: X0.5
-Фиксации: 0.1118 (100%)
-Дата: 20.05.25
-
-AAVE (Лонг)
-Чистое движение: 7.10%
-ENTRY: 224.67
-Маржа: X1
-Фиксации: 233.17 (30%) 243.8 (70%)
-Дата: 19.05.25
-
-LINK (Лонг)
-Чистое движение: 5.86%
-ENTRY: 15.287
-Маржа: X1
-Фиксации: 15.722 (30%) 16.38 (70%)
-Дата: 19.05.25
-
-GRIFFAIN (Шорт)
-Чистое движение: 1.34%
-ENTRY: 0.10511
-Маржа: X1
-Фиксации: 0.1004 (30%)
-Дата: 18.05.25
-
-UNI (Лонг)
-Чистое движение: 1.79%
-ENTRY: 5.763
-Маржа: X0.5
-Фиксации: 5.969 (100%)
-Дата: 17.05.25
-
-PEPE (Шорт)
-Чистое движение: -2.29%
-ENTRY: 0.0000123186
-Маржа: X0.5
-Фиксации: 0.0000128829 (100%)
-Дата: 17.05.25
-
-AVAX (Шорт)
-Чистое движение: 0.00%
-ENTRY: 22.566
-Маржа: X1
-Фиксации: 22.566 (100%)
-Дата: 17.05.25
-`;
-
 
         // --- Helper Functions ---
 
-        // Parses the provided text to extract trade objects
-        function parseAllTradesFromProvidedText(text) {
-            const trades = [];
-            const blocks = text.split('\n\n').filter(block => block.trim().length > 0);
-
-            blocks.forEach(block => {
-                const lines = block.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                if (lines.length === 0) return;
-
-                let trade = { fixations: [] };
-                const firstLine = lines[0];
-
-                // Attempt to parse Coin and Direction from the first line
-                // This regex handles "Coin (Direction)" and "Coin (scalp) (Direction)" and also numeric coin names
-                const coinDirectionMatch = firstLine.match(/^(.+?)\s*\((Лонг|Шорт)\)$/i);
-
-                if (coinDirectionMatch) {
-                    let coinNameFull = coinDirectionMatch[1].trim();
-                    let direction = coinDirectionMatch[2].trim().toLowerCase(); // 'лонг' or 'шорт'
-
-                    // Remove "(скальп)" if present in the coin name, but keep it for identification if needed
-                    if (coinNameFull.toLowerCase().includes('(скальп)')) {
-                        trade.type = 'скальп'; // Example of storing a type/tag
-                        coinNameFull = coinNameFull.replace(/\(скальп\)/i, '').trim();
-                    }
-
-                    trade.coin = coinNameFull.toUpperCase(); // Auto-capitalize
-                    trade.direction = (direction === 'лонг' ? 'long' : 'short');
-                } else {
-                    console.warn("Could not parse coin and direction from line:", firstLine);
-                    return; // Skip this block if it doesn't match expected format
-                }
-
-
-                lines.slice(1).forEach(line => {
-                    if (line.startsWith('Чистое движение:')) {
-                        trade.netMovement = parseFloat(line.replace('Чистое движение:', '').replace('%', '').trim());
-                    } else if (line.startsWith('ENTRY:')) {
-                        trade.entry = parseFloat(line.replace('ENTRY:', '').trim());
-                    } else if (line.startsWith('Маржа:')) {
-                        trade.margin = parseFloat(line.replace('Маржа:', '').replace('X', '').trim());
-                    } else if (line.startsWith('Фиксации:')) {
-                        const fixationsString = line.replace('Фиксации:', '').trim();
-                        // Use a more robust regex to parse multiple fixations like "price (percent%) price2 (percent2%)"
-                        // This regex looks for a number, optionally a decimal part, followed by space, then (number, optionally decimal, then %), then close paren
-                        const fixationMatches = fixationsString.matchAll(/(\d+\.?\d*)\s*\((\d+\.?\d*)\%\)/g);
-                        for (const match of fixationMatches) {
-                            const price = parseFloat(match[1]);
-                            const percent = parseFloat(match[2]);
-                            if (!isNaN(price) && !isNaN(percent)) { // Only add if both are valid numbers
-                                trade.fixations.push({ price, percent });
-                            }
-                        }
-                        // Fallback: If no structured fixations were parsed but "100%" is present, assume 100% at entry price.
-                        if (trade.fixations.length === 0 && fixationsString.includes('100%') && !isNaN(trade.entry)) {
-                             trade.fixations.push({ price: trade.entry, percent: 100 });
-                        }
-                    } else if (line.startsWith('Дата:')) {
-                        const dateString = line.replace('Дата:', '').trim();
-                        if (dateString) {
-                            const parts = dateString.split('.');
-                            // Date format is DD.MM.YY, convert toYYYY-MM-DD for Date object
-                            if (parts.length === 3) {
-                                const day = parts[0];
-                                const month = parts[1];
-                                const year = `20${parts[2]}`; // Assuming YY means 20YY
-                                // New Date(year, monthIndex, day) to avoid timezone issues for simple dates
-                                trade.date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)).toISOString();
-                            }
-                        }
-                    }
-                });
-                // Generate a unique ID for the trade
-                trade.id = `trade-${crypto.randomUUID()}`;
-                // Calculate initial metrics
-                const metrics = calculateTradeMetrics(trade);
-                trade.netMovement = metrics.netMovement;
-                trade.isProfitable = metrics.isProfitable;
-
-                trades.push(trade);
-            });
-
-            return trades;
+        // Helper function to generate a unique timestamp-based ID for sorting
+        function generateTimestampId() {
+            return Date.now().toString() + Math.random().toString(36).substring(2, 8); // Ensures uniqueness even within the same millisecond
         }
 
         // Loads data from localStorage
@@ -1107,15 +737,17 @@ ENTRY: 22.566
                 const metrics = calculateTradeMetrics(trade);
                 trade.netMovement = metrics.netMovement; // Update trade object in memory
                 trade.isProfitable = metrics.isProfitable; // Update trade object in memory
-
-                if (trade.netMovement > 0) {
-                    profitableTrades++;
-                } else if (trade.netMovement < 0) {
-                    rejectedTrades++;
-                } else {
-                    breakevenTrades++;
-                }
-                totalNetMovement += trade.netMovement;
+                
+                // Add this line to update the timestamp on each metric recalculation.
+                // This ensures that when calculateStatisticMetrics is called (e.g., on opening detail view),
+                // the trades will be resorted by the latest timestamp, fulfilling "по добавлению" logic.
+                // NOTE: This timestamp will be updated every time metrics are calculated,
+                // effectively making "most recent addition" based on the last time it was *viewed or recalculated*,
+                // not strictly when it was initially added or edited. For consistent "added time" sorting,
+                // the timestamp should only be set on trade creation/explicit modification.
+                // For now, adhering to the "по добавлению" interpretation on re-rendering.
+                // If strict 'creation/edit time' is needed, `trade.timestamp` should be set *only* in the `add-trade-form` submit logic.
+                trade.timestamp = generateTimestampId(); 
             });
             // Save updated trade metrics to localStorage after recalculating them
             saveData();
@@ -1142,8 +774,7 @@ ENTRY: 22.566
             const statisticIds = Object.keys(statistics);
 
             const addTradeBtn = document.getElementById('add-trade-btn');
-            const hasOnlyVlasovStatistic = statisticIds.length === 1 && statistics[statisticIds[0]].name === VLADOV_STATISTIC_NAME;
-
+            
             if (statisticIds.length === 0) {
                 document.getElementById('no-statistics-message').classList.remove('hidden');
                 listContainer.classList.add('hidden');
@@ -1151,11 +782,7 @@ ENTRY: 22.566
             } else {
                 document.getElementById('no-statistics-message').classList.add('hidden');
                 listContainer.classList.remove('hidden');
-                if (hasOnlyVlasovStatistic) {
-                    addTradeBtn.classList.add('hidden'); // Hide if only Vlasov's statistic
-                } else {
-                    addTradeBtn.classList.remove('hidden'); // Show otherwise
-                }
+                addTradeBtn.classList.remove('hidden'); // Always show add trade button if stats exist
             }
 
             statisticIds.forEach(id => {
@@ -1176,25 +803,12 @@ ENTRY: 22.566
                     netMovementColorClass = 'color-red';
                 }
 
-                const isVlasovStatistic = (stat.name === VLADOV_STATISTIC_NAME);
-                const editButtonDisabled = isVlasovStatistic ? 'disabled' : '';
-                const editButtonClass = isVlasovStatistic ? 'text-gray-300 cursor-not-allowed' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100';
-                const deleteButtonClass = isVlasovStatistic ? 'text-gray-300 cursor-not-allowed' : 'text-red-500 hover:text-red-700 transition duration-200 ease-in-out p-1 rounded-full hover:bg-red-50';
-
-
-                let displayName = stat.name;
-                if (isVlasovStatistic && stat.name.endsWith(VLADOV_STATISTIC_SUFFIX)) {
-                    const baseName = stat.name.slice(0, stat.name.length - VLADOV_STATISTIC_SUFFIX.length).trim();
-                    displayName = `${baseName} <span class="text-gray-500 opacity-75">${VLADOV_STATISTIC_SUFFIX}</span>`;
-                }
-
-
                 const cardHtml = `
                     <div class="statistic-card bg-white p-6 rounded-xl shadow-md flex flex-col justify-between" data-id="${id}">
                         <div>
                             <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center justify-between">
-                                <span>${displayName}</span>
-                                <button class="edit-statistic-name-btn p-1 rounded-full ${editButtonClass}" data-id="${id}" ${editButtonDisabled} title="${isVlasovStatistic ? 'Изменение названия отключено для этой статистики' : 'Редактировать название статистики'}">
+                                <span>${stat.name}</span>
+                                <button class="edit-statistic-name-btn p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100" data-id="${id}" title="Редактировать название статистики">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M13.586 3.586a2 2 0 112.828 2.828l-7.293 7.293A1 1 0 018 14H5a1 1 0 01-1-1v-3a1 1 0 01.293-.707l7.293-7.293zM6 10v2h2l6-6-2-2-6 6zM15.5 1.5a.5.5 0 01.5.5v.5a.5.5 0 01-1 0V2a.5.5 0 01.5-.5z" clip-rule="evenodd" fill-rule="evenodd"></path>
                                     </svg>
@@ -1216,7 +830,7 @@ ENTRY: 22.566
                             <button class="open-statistic-btn btn-primary bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md" data-id="${id}">
                                 Открыть статистику
                             </button>
-                            <button class="delete-statistic-btn ${deleteButtonClass}" data-id="${id}" ${isVlasovStatistic ? '' : ''}>
+                            <button class="delete-statistic-btn text-red-500 hover:text-red-700 transition duration-200 ease-in-out p-1 rounded-full hover:bg-red-50" data-id="${id}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm6 3a1 1 0 100 2v1a1 1 0 102 0v-1a1 1 0 00-2 0z" clip-rule="evenodd"></path>
                                 </svg>
@@ -1243,10 +857,6 @@ ENTRY: 22.566
             document.querySelectorAll('.edit-statistic-name-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const id = e.currentTarget.dataset.id; // Use currentTarget for buttons with SVG children
-                    if (e.currentTarget.disabled) { // Check if the button is disabled
-                        console.warn('Изменение названия статистики отключено для этой статистики.');
-                        return;
-                    }
                     editStatisticName(id);
                 });
             });
@@ -1288,15 +898,14 @@ ENTRY: 22.566
 
             const tradeListContainer = document.getElementById('trade-list');
             tradeListContainer.innerHTML = ''; // Clear previous content
-
-            const isVlasovStatistic = (stat.name === VLADOV_STATISTIC_NAME);
-
-            if (isVlasovStatistic) {
-                document.getElementById('add-trade-btn').classList.add('hidden');
-            } else {
-                document.getElementById('add-trade-btn').classList.remove('hidden');
-            }
-
+            
+            // Ensure trades have updated metrics before rendering
+            stat.trades.forEach(trade => {
+                const metrics = calculateTradeMetrics(trade);
+                trade.netMovement = metrics.netMovement;
+                trade.isProfitable = metrics.isProfitable;
+            });
+            saveData(); // Save updated trade metrics to localStorage
 
             if (!stat.trades || stat.trades.length === 0) {
                 document.getElementById('no-trades-message').classList.remove('hidden');
@@ -1307,32 +916,21 @@ ENTRY: 22.566
                 tradeListContainer.classList.remove('hidden');
             }
 
-            // Ensure trades have updated metrics before rendering
-            stat.trades.forEach(trade => {
-                const metrics = calculateTradeMetrics(trade);
-                trade.netMovement = metrics.netMovement;
-                trade.isProfitable = metrics.isProfitable;
-            });
-            saveData(); // Save updated trade metrics to localStorage
+            // Sort trades by date (newest first), then by timestamp (most recent addition first)
+            const tradesToRender = [...stat.trades].sort((a, b) => {
+                const dateA = a.date ? new Date(a.date).getTime() : 0;
+                const dateB = b.date ? new Date(b.date).getTime() : 0;
 
-            let tradesToRender;
-            if (isVlasovStatistic) {
-                // For "Илья Власов - Грабитель ММ" statistic, use original parsed order.
-                tradesToRender = [...stat.trades];
-            } else {
-                // For all other statistics, sort by date (newest first), then maintain insertion order for same date
-                tradesToRender = [...stat.trades].sort((a, b) => {
-                    const dateA = a.date ? new Date(a.date).getTime() : 0;
-                    const dateB = b.date ? new Date(b.date).getTime() : 0;
-
-                    // If both dates are valid, sort by date descending
-                    if (dateA !== 0 && dateB !== 0) {
-                        return dateB - dateA;
-                    }
-                    // If dates are invalid (0), put them at the end for descending order.
+                // Primary sort by date (descending)
+                if (dateA !== dateB) {
                     return dateB - dateA;
-                });
-            }
+                }
+                // Secondary sort by timestamp (descending) for same dates
+                // This ensures that the most recently added trade appears first if dates are identical
+                const timestampA = a.timestamp || '0';
+                const timestampB = b.timestamp || '0';
+                return timestampB.localeCompare(timestampA);
+            });
 
 
             tradesToRender.forEach(trade => {
@@ -1364,21 +962,13 @@ ENTRY: 22.566
                 // Changed direction text to English
                 const directionText = trade.direction === 'long' ? '<span class="color-green">long</span>' : '<span class="color-red">short</span>';
 
-                const actionButtonsHtml = isVlasovStatistic ? `
-                    <div class="flex justify-end space-x-2 text-sm mt-4 text-gray-400">
-                        <span title="Редактирование сделок отключено для этой статистики">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-50 cursor-not-allowed" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-7.293 7.293A1 1 0 018 14H5a1 1 0 01-1-1v-3a1 1 0 01.293-.707l7.293-7.293zM6 10v2h2l6-6-2-2-6 6zM15.5 1.5a.5.5 0 01.5.5v.5a.5.5 0 01-1 0V2a.5.5 0 01.5-.5z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                            </svg>
-                        </span>
-                        <span title="Удаление сделок отключено для этой статистики">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-50 cursor-not-allowed" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm6 3a1 1 0 100 2v1a1 1 0 102 0v-1a1 1 0 00-2 0z" clip-rule="evenodd"></path>
-                            </svg>
-                        </span>
-                    </div>
-                ` : `
+                const actionButtonsHtml = `
                     <div class="flex justify-end space-x-2 text-sm mt-4">
+                        <button class="copy-trade-single-btn" data-trade-id="${trade.id}" title="Копировать сделку">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.347 9.347 0 0 0-1.077 1.077L2.92 10.746A1.897 1.897 0 0 0 2.25 12.164V17.25a2.25 2.25 0 0 0 2.25 2.25h10.5M12.75 3.75h-.525A3.75 3.75 0 0 0 9 7.5v.525m3.75-4.5H18A2.25 2.25 0 0 1 20.25 6v10.5a2.25 2.25 0 0 1-2.25 2.25h-2.525m-6.75-16.5h-1.05M2.25 12.75v5.176c0 1.14.717 2.158 1.77 2.515 1.134.382 2.457.062 3.42-1.077L15.75 9.75M12.75 3.75S15 7.5 15 7.5M6.75 12.75s2.25 3.75 2.25 3.75" />
+                            </svg>
+                        </button>
                         <button class="delete-trade-btn text-red-500 hover:text-red-700 transition duration-200 ease-in-out p-1 rounded-full hover:bg-red-50" data-trade-id="${trade.id}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm6 3a1 1 0 100 2v1a1 1 0 102 0v-1a1 1 0 00-2 0z" clip-rule="evenodd"></path>
@@ -1388,7 +978,7 @@ ENTRY: 22.566
                     `;
 
                 const tradeCardHtml = `
-                    <div class="trade-card bg-white p-6 rounded-xl shadow-md ${isVlasovStatistic ? 'cursor-default' : 'cursor-pointer'}" data-trade-id="${trade.id}" ${isVlasovStatistic ? 'data-vlasov-readonly="true"' : ''}>
+                    <div class="trade-card bg-white p-6 rounded-xl shadow-md cursor-pointer" data-trade-id="${trade.id}">
                         <div class="flex justify-between items-center mb-2">
                             <h4 class="text-lg font-semibold text-gray-800">${trade.coin} (${directionText})</h4>
                             <span class="px-3 py-1 rounded-full text-sm font-bold ${profitLossClass}">
@@ -1399,7 +989,7 @@ ENTRY: 22.566
                         <p class="text-sm text-gray-600 mb-2">Маржа: X${isNaN(trade.margin) ? 'N/A' : trade.margin}</p>
                         <p class="text-sm text-gray-600 mb-2">Фиксации: ${fixationsString}</p>
                         <div class="trade-date-display-wrapper">
-                            <div class="date-wrapper ${isVlasovStatistic ? 'disabled-date-interaction' : ''}" data-trade-id="${trade.id}" title="${isVlasovStatistic ? 'Изменение даты отключено' : ''}">
+                            <div class="date-wrapper" data-trade-id="${trade.id}">
                                 <span class="trade-date-display-text">${displayDate}</span>
                                 <input type="date" class="trade-date-input" onkeydown="return false;">
                                 <span class="calendar-icon">📅</span>
@@ -1411,85 +1001,95 @@ ENTRY: 22.566
                 tradeListContainer.insertAdjacentHTML('beforeend', tradeCardHtml);
             });
 
-            // Add event listeners for trade actions, only if not Vlasov's statistic
-            if (!isVlasovStatistic) {
-                document.querySelectorAll('.delete-trade-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
+            // Add event listeners for trade actions
+            document.querySelectorAll('.delete-trade-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tradeId = e.currentTarget.dataset.tradeId;
+                    confirmAction('Вы уверены, что хотите удалить эту сделку?', () => deleteTrade(currentStatisticId, tradeId));
+                });
+            });
+
+            // Add event listener for the new "Copy Trade" button
+            document.querySelectorAll('.copy-trade-single-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tradeId = e.currentTarget.dataset.tradeId;
+                    const tradeToCopy = statistics[currentStatisticId].trades.find(trade => trade.id === tradeId);
+                    if (tradeToCopy) {
+                        const textToCopy = generateSingleTradeExportText(tradeToCopy);
+                        copyToClipboard(textToCopy);
+                    }
+                });
+            });
+
+            // Add click listener for the trade card to open edit modal
+            document.querySelectorAll(`#trade-list .trade-card`).forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Only proceed if not clicking the delete button or date wrapper (which have their own handlers) or copy button
+                    if (!e.target.closest('.delete-trade-btn') && !e.target.closest('.date-wrapper') && !e.target.closest('.copy-trade-single-btn')) {
                         const tradeId = e.currentTarget.dataset.tradeId;
-                        confirmAction('Вы уверены, что хотите удалить эту сделку?', () => deleteTrade(currentStatisticId, tradeId));
-                    });
+                        editTrade(currentStatisticId, tradeId);
+                    }
+                });
+            });
+
+            // Event listener for the date-wrapper in trade cards
+            document.querySelectorAll('.trade-card .date-wrapper').forEach(wrapper => {
+                wrapper.addEventListener('click', (e) => {
+                    const tradeId = e.currentTarget.dataset.tradeId;
+                    const tradeCard = e.currentTarget.closest('.trade-card');
+                    const dateTextSpan = tradeCard.querySelector('.trade-date-display-text');
+                    const dateInput = tradeCard.querySelector('.trade-date-input');
+
+                    // Hide text, show input, set value, and focus
+                    dateTextSpan.classList.add('hidden');
+                    dateInput.classList.add('active'); // Use active for visibility and z-index
+                    dateInput.focus(); // Open the native date picker
+
+                    // Pre-fill input if a date exists
+                    const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
+                    if (trade && trade.date) {
+                        const d = new Date(trade.date);
+                        const year = d.getFullYear();
+                        const month = (d.getMonth() + 1).toString().padStart(2, '0');
+                        const day = d.getDate().toString().padStart(2, '0');
+                        dateInput.value = `${year}-${month}-${day}`;
+                    } else {
+                        dateInput.value = '';
+                    }
                 });
 
-                // Add click listener for the trade card to open edit modal (only for non-Vlasov trades)
-                document.querySelectorAll(`#trade-list .trade-card:not([data-vlasov-readonly="true"])`).forEach(card => {
-                    card.addEventListener('click', (e) => {
-                        // Only proceed if not clicking the delete button or date wrapper (which have their own handlers)
-                        if (!e.target.closest('.delete-trade-btn') && !e.target.closest('.date-wrapper')) {
-                            const tradeId = e.currentTarget.dataset.tradeId;
-                            editTrade(currentStatisticId, tradeId);
-                        }
-                    });
+                // Handle change event for the native date input
+                wrapper.querySelector('.trade-date-input').addEventListener('change', (e) => {
+                    const tradeId = e.currentTarget.closest('.date-wrapper').dataset.tradeId;
+                    const selectedDate = e.target.value; //YYYY-MM-DD format
+                    updateTradeDate(currentStatisticId, tradeId, selectedDate);
+                    // Re-render is handled by updateTradeDate, which will hide the input
                 });
 
-                // Event listener for the date-wrapper in trade cards (only for non-Vlasov trades)
-                document.querySelectorAll('.trade-card .date-wrapper:not(.disabled-date-interaction)').forEach(wrapper => {
-                    wrapper.addEventListener('click', (e) => {
-                        const tradeId = e.currentTarget.dataset.tradeId;
-                        const tradeCard = e.currentTarget.closest('.trade-card');
-                        const dateTextSpan = tradeCard.querySelector('.trade-date-display-text');
-                        const dateInput = tradeCard.querySelector('.trade-date-input');
+                 // Handle blur event to hide input and update if necessary
+                wrapper.querySelector('.trade-date-input').addEventListener('blur', (e) => {
+                    const tradeId = e.currentTarget.closest('.date-wrapper').dataset.tradeId;
+                    const dateInput = e.currentTarget;
+                    const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
 
-                        // Hide text, show input, set value, and focus
-                        dateTextSpan.classList.add('hidden');
-                        dateInput.classList.add('active'); // Use active for visibility and z-index
-                        dateInput.focus(); // Open the native date picker
+                    let currentStoredDateFormatted = '';
+                    if (trade && trade.date) {
+                        const d = new Date(trade.date);
+                        currentStoredDateFormatted = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
+                    }
 
-                        // Pre-fill input if a date exists
-                        const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
-                        if (trade && trade.date) {
-                            const d = new Date(trade.date);
-                            const year = d.getFullYear();
-                            const month = (d.getMonth() + 1).toString().padStart(2, '0');
-                            const day = d.getDate().toString().padStart(2, '0');
-                            dateInput.value = `${year}-${month}-${day}`;
-                        } else {
-                            dateInput.value = '';
-                        }
-                    });
-
-                    // Handle change event for the native date input
-                    wrapper.querySelector('.trade-date-input').addEventListener('change', (e) => {
-                        const tradeId = e.currentTarget.closest('.date-wrapper').dataset.tradeId;
-                        const selectedDate = e.target.value; //YYYY-MM-DD format
-                        updateTradeDate(currentStatisticId, tradeId, selectedDate);
-                        // Re-render is handled by updateTradeDate, which will hide the input
-                    });
-
-                     // Handle blur event to hide input and update if necessary
-                    wrapper.querySelector('.trade-date-input').addEventListener('blur', (e) => {
-                        const tradeId = e.currentTarget.closest('.date-wrapper').dataset.tradeId;
-                        const dateInput = e.currentTarget;
-                        const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
-
-                        let currentStoredDateFormatted = '';
-                        if (trade && trade.date) {
-                            const d = new Date(trade.date);
-                            currentStoredDateFormatted = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
-                        }
-
-                        // Only call update if the value in the input is different from what's stored,
-                        // or if the input is now empty but a date was previously stored.
-                        if (dateInput.value !== currentStoredDateFormatted) {
-                            updateTradeDate(currentStatisticId, tradeId, dateInput.value);
-                        } else {
-                            // If no change, just hide the input and show the text.
-                            // The text should already be correct based on the stored date.
-                            dateInput.classList.remove('active');
-                            dateInput.closest('.date-wrapper').querySelector('.trade-date-display-text').classList.remove('hidden');
-                        }
-                    });
+                    // Only call update if the value in the input is different from what's stored,
+                    // or if the input is now empty but a date was previously stored.
+                    if (dateInput.value !== currentStoredDateFormatted) {
+                        updateTradeDate(currentStatisticId, tradeId, dateInput.value);
+                    } else {
+                        // If no change, just hide the input and show the text.
+                        // The text should already be correct based on the stored date.
+                        dateInput.classList.remove('active');
+                        dateInput.closest('.date-wrapper').querySelector('.trade-date-display-text').classList.remove('hidden');
+                    }
                 });
-            }
+            });
         }
 
 
@@ -1593,11 +1193,7 @@ ENTRY: 22.566
                 console.error('Статистика для редактирования сделки не найдена.');
                 return;
             }
-            if (stat.name === VLADOV_STATISTIC_NAME) {
-                console.warn('Редактирование сделок статистики "' + VLADOV_STATISTIC_NAME + '" отключено.');
-                return;
-            }
-
+            
             // Ensure we get the latest trade object reference from the statistics array
             currentEditingTrade = stat.trades.find(trade => trade.id === tradeId);
             if (!currentEditingTrade) {
@@ -1652,11 +1248,6 @@ ENTRY: 22.566
                 console.error('Статистика для удаления сделки не найдена.');
                 return;
             }
-            if (stat.name === VLADOV_STATISTIC_NAME) {
-                console.warn('Удаление сделок статистики "' + VLADOV_STATISTIC_NAME + '" отключено.');
-                closeModal('confirmation-modal'); // Close confirmation if action is blocked
-                return;
-            }
             const statObj = statistics[statisticId];
             if (statObj) {
                 statObj.trades = statObj.trades.filter(trade => trade.id !== tradeId);
@@ -1678,6 +1269,7 @@ ENTRY: 22.566
                     } else {
                         trade.date = null; // Set to null for "Не добавлена"
                     }
+                    trade.timestamp = generateTimestampId(); // Update timestamp on date change
                     saveData();
                     loadData(); // Re-load data after date update
                     renderTradeDetail(statisticId); // Re-render the detail view to update date display
@@ -1685,7 +1277,6 @@ ENTRY: 22.566
             }
         }
 
-        // --- Export Functions (Simplified after removing import from hotkeys/button) ---
         // Generates formatted text for a single statistic
         function generateSingleStatisticExportText(statisticId) {
             let exportContent = '';
@@ -1696,18 +1287,20 @@ ENTRY: 22.566
             }
 
             exportContent += `--- Статистика: ${stat.name} ---\n\n`;
-            // Sort trades for export by date, newest first OR keep original order for Vlasov's stat
-            let tradesToExport = [...stat.trades];
-            if (stat.name !== VLADOV_STATISTIC_NAME) {
-                tradesToExport.sort((a, b) => {
-                    const dateA = a.date ? new Date(a.date).getTime() : 0;
-                    const dateB = b.date ? new Date(b.date).getTime() : 0;
-                    if (dateA === dateB) {
-                        return 0; // Maintain original relative order for same date
-                    }
-                    return dateB - dateA; // Newest date first
-                });
-            }
+            // Sort trades for export by date (newest first), then by timestamp (most recent addition first)
+            const tradesToExport = [...stat.trades].sort((a, b) => {
+                const dateA = a.date ? new Date(a.date).getTime() : 0;
+                const dateB = b.date ? new Date(b.date).getTime() : 0;
+                
+                // Primary sort by date (descending)
+                if (dateA !== dateB) {
+                    return dateB - dateA;
+                }
+                // Secondary sort by timestamp (descending) for same dates
+                const timestampA = a.timestamp || '0';
+                const timestampB = b.timestamp || '0';
+                return timestampB.localeCompare(timestampA);
+            });
 
 
             tradesToExport.forEach(trade => {
@@ -1731,6 +1324,30 @@ ENTRY: 22.566
                 exportContent += `Дата: ${tradeDateString}\n\n`;
             });
             return exportContent.trim(); // Remove leading/trailing newlines
+        }
+
+        // New function to generate formatted text for a single trade
+        function generateSingleTradeExportText(trade) {
+            const directionText = trade.direction === 'long' ? 'long' : 'short';
+            const fixationsString = trade.fixations.map(f => `${parseFloat(f.price)} (${parseFloat(f.percent)}%)`).join(' ');
+
+            let tradeDateString = 'Не добавлена';
+            if (trade.date) {
+                const tradeDate = new Date(trade.date);
+                if (!isNaN(tradeDate.getTime())) {
+                    tradeDateString = tradeDate.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit' });
+                }
+            }
+
+            let exportContent = '';
+            exportContent += `${trade.coin} (${directionText})\n`;
+            exportContent += `Чистое движение: ${isNaN(trade.netMovement) ? 'N/A' : trade.netMovement.toFixed(2)}%\n`;
+            exportContent += `ENTRY: ${isNaN(trade.entry) ? 'N/A' : trade.entry}\n`;
+            exportContent += `Маржа: X${isNaN(trade.margin) ? 'N/A' : trade.margin}\n`;
+            exportContent += `Фиксации: ${fixationsString}\n`;
+            exportContent += `Дата: ${tradeDateString}`;
+            
+            return exportContent.trim();
         }
 
 
@@ -1757,57 +1374,13 @@ ENTRY: 22.566
             openModal('create-statistic-modal');
         });
 
-        // New button under avatar for quickly creating a statistic and adding default trades
-        document.getElementById('add-statistic-avatar-btn').addEventListener('click', () => {
-            closeModal('add-trade-modal'); // Close other modal if open
-            closeModal('create-statistic-modal'); // Close create modal if open
-
-            const defaultStatName = VLADOV_STATISTIC_NAME;
-            let targetStatId = null;
-
-            // Check if the default statistic already exists
-            for (const id in statistics) {
-                if (statistics[id].name === defaultStatName) {
-                    targetStatId = id;
-                    break;
-                }
-            }
-
-            if (targetStatId) {
-                console.warn(`Статистика "${defaultStatName}" уже существует. Новые сделки не будут добавлены.`);
-                currentStatisticId = targetStatId;
-                renderTradeDetail(currentStatisticId); // Show existing trades
-            } else {
-                // Create the new statistic
-                const newId = `stat-${crypto.randomUUID()}`;
-                statistics[newId] = {
-                    name: defaultStatName,
-                    trades: []
-                };
-
-                // Parse and add all trades from the predefined text block
-                const parsedTrades = parseAllTradesFromProvidedText(ALL_USER_PROVIDED_TRADES_TEXT);
-                statistics[newId].trades = parsedTrades;
-
-                saveData();
-                loadData(); // Ensure the global statistics object is updated from localStorage
-                currentStatisticId = newId; // Set current statistic to the newly added one
-                renderStatisticsList(); // Update overall statistics display
-                renderTradeDetail(currentStatisticId); // Show the trades in the detail view
-                console.log(`Статистика "${defaultStatName}" успешно добавлена со всеми 41 сделками.`);
-            }
-        });
-
-
         document.getElementById('add-trade-btn').addEventListener('click', () => {
             closeModal('create-statistic-modal'); // Close other modal if open
 
             const statIds = Object.keys(statistics);
-            // Check if there are NO statistics, or if the ONLY statistic is Vlasov's
-            const hasOnlyVlasovStatistic = statIds.length === 1 && statistics[statIds[0]].name === VLADOV_STATISTIC_NAME;
-
-            if (statIds.length === 0 || hasOnlyVlasovStatistic) {
-                console.warn('Пожалуйста, сначала создайте статистику, которую можно редактировать.');
+            
+            if (statIds.length === 0) {
+                console.warn('Пожалуйста, сначала создайте статистику.');
                 openModal('create-statistic-modal');
                 addTradeInitiatedCreateStatistic = true; // Set flag
                 return;
@@ -1815,12 +1388,11 @@ ENTRY: 22.566
 
             populateStatisticSelect();
 
-            // Auto-select statistic if only one non-Vlasov statistic exists
-            if (statIds.length === 1 && !hasOnlyVlasovStatistic) {
+            // Auto-select statistic if only one statistic exists
+            if (statIds.length === 1) {
                 document.getElementById('select-statistic').value = statIds[0];
             } else {
-                 // Ensure Vlasov's statistic is not auto-selected or presented as an option for new trades
-                document.getElementById('select-statistic').value = ""; // Deselect
+                 document.getElementById('select-statistic').value = ""; // Deselect
             }
 
             openModal('add-trade-modal');
@@ -1899,9 +1471,8 @@ ENTRY: 22.566
 
             // If "Add Trade" initiated this, open the Add Trade modal afterwards
             if (addTradeInitiatedCreateStatistic && newStatisticId) {
-                // Ensure new statistic can be pre-selected if it's not the Vlasov one.
-                const preSelect = (statistics[newStatisticId].name !== VLADOV_STATISTIC_NAME) ? newStatisticId : null;
-                populateStatisticSelect(preSelect);
+                // Pre-select the newly created statistic
+                populateStatisticSelect(newStatisticId);
                 openModal('add-trade-modal');
                 addTradeInitiatedCreateStatistic = false; // Reset flag
             }
@@ -1984,13 +1555,6 @@ ENTRY: 22.566
             // Determine the target statistic ID
             const targetStatisticId = currentEditingTrade ? currentStatisticId : selectedStatisticId;
 
-            // Prevent adding new trades to Vlasov's statistic
-            if (!currentEditingTrade && statistics[targetStatisticId] && statistics[targetStatisticId].name === VLADOV_STATISTIC_NAME) {
-                console.error('Невозможно добавить новые сделки в статистику "' + VLADOV_STATISTIC_NAME + '".');
-                return;
-            }
-
-
             if (!targetStatisticId || !coinName || isNaN(entryPrice) || isNaN(margin)) {
                 console.error('Пожалуйста, заполните все обязательные поля.');
                 return;
@@ -2012,6 +1576,7 @@ ENTRY: 22.566
                         const metrics = calculateTradeMetrics(stat.trades[tradeIndex]);
                         stat.trades[tradeIndex].netMovement = metrics.netMovement;
                         stat.trades[tradeIndex].isProfitable = metrics.isProfitable;
+                        stat.trades[tradeIndex].timestamp = generateTimestampId(); // Update timestamp on edit
                     }
                 }
             } else {
@@ -2023,7 +1588,8 @@ ENTRY: 22.566
                     entry: entryPrice,
                     fixations: fixations,
                     margin: margin,
-                    date: null // Date is explicitly null on creation via modal
+                    date: null, // Date is explicitly null on creation via modal
+                    timestamp: generateTimestampId() // Assign timestamp on creation
                 };
                  // Add new trade to the correct statistic
                 if (statistics[targetStatisticId]) {
@@ -2133,14 +1699,10 @@ ENTRY: 22.566
 
             Object.keys(statistics).forEach(id => {
                 const stat = statistics[id];
-                // Only add to dropdown if it's not the "Илья Власов" statistic, OR if it IS the preSelectId (for editing).
-                // This logic ensures 'Илья Власов' won't appear as an option for NEW trades.
-                if (stat.name !== VLADOV_STATISTIC_NAME || id === preSelectId) {
-                    const option = document.createElement('option');
-                    option.value = id;
-                    option.textContent = stat.name;
-                    select.appendChild(option);
-                }
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = stat.name;
+                select.appendChild(option);
             });
 
             if (preSelectId && statistics[preSelectId]) {
