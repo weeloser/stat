@@ -449,9 +449,6 @@
             .modal-content {
                 padding: 2rem;
             }
-            /* #avatar-container {
-                display: none;
-            } */
         }
     </style>
     <!-- Favicon -->
@@ -459,9 +456,6 @@
 </head>
 <body class="bg-gray-100">
     <div id="app" class="container">
-        <!-- Moved avatar-container to be directly under app to allow z-index control -->
-        <!-- Avatar and quick add button removed as per user request to remove Vlasov collaboration -->
-        
         <!-- Main Title - Moved to top-left with gradient -->
         <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 mb-10 mt-4">
             Статистика Сделок
@@ -585,8 +579,6 @@
                         <input type="number" step="0.5" id="margin" class="w-full" value="1.0" required>
                     </div>
 
-                    <!-- Date field is intentionally removed from this modal -->
-
                     <button type="submit" id="add-trade-submit-btn" class="btn-primary w-full bg-green-600 text-white font-semibold py-3.5 px-4 rounded-xl shadow-md">
                         Добавить Сделку
                     </button>
@@ -648,6 +640,333 @@
         // Flag to indicate if "Add Trade" initiated the "Create Statistic" flow
         let addTradeInitiatedCreateStatistic = false;
 
+        const VLADOV_STATISTIC_NAME = "Илья Власов - Грабитель ММ";
+        const ALL_USER_PROVIDED_TRADES_TEXT = `INJ (long)
+Чистое движение: 0.21%
+ENTRY: 11.345
+Маржа: X1
+Фиксации: 11.425 (30%) 11.345 (70%)
+18.06.25
+📅
+
+LINK (short)
+Чистое движение: 1.18%
+ENTRY: 12.925
+Маржа: X1
+Фиксации: 12.772 (100%)
+18.06.25
+📅
+
+AVAX (short)
+Чистое движение: 0.00%
+ENTRY: 268.25
+Маржа: X1
+Фиксации: 268.25 (100%)
+17.06.25
+📅
+
+ZKJ (Лонг)
+Чистое движение: -2.24%
+ENTRY: 0.4394
+Маржа: X0.25
+Фиксации: 0.4 (100%)
+Дата: 17.06.25
+
+PNUT (Лонг)
+Чистое движение: 0.00%
+ENTRY: 0.24207
+Маржа: X1
+Фиксации: 0.24207 (100%)
+Дата: 16.06.25
+
+JTO (Шорт)
+Чистое движение: -3.35%
+ENTRY: 2.164
+Маржа: X1
+Фиксации: 2.2366 (100%)
+Дата: 15.06.25
+
+AAVE (Лонг)
+Чистое движение: -2.49%
+ENTRY: 276.61
+Маржа: X1
+Фиксации: 269.72 (100%)
+Дата: 15.06.25
+
+LINK (Лонг)
+Чистое движение: -4.45%
+ENTRY: 13.544
+Маржа: X1
+Фиксации: 12.941 (100%)
+Дата: 13.06.25
+
+UNI (Шорт)
+Чистое движение: 7.25%
+ENTRY: 7.926
+Маржа: X1
+Фиксации: 7.638 (30%) 7.229 (70%)
+Дата: 12.06.25
+
+AVAAI (Лонг)
+Чистое движение: 1.16%
+ENTRY: 0.03954
+Маржа: X1
+Фиксации: 0.04107 (30%)
+Дата: 08.06.25
+
+LINK (Лонг)
+Чистое движение: 6.43%
+ENTRY: 13.819
+Маржа: X1
+Фиксации: 14.446 (30%) 14.819 (70%)
+Дата: 08.06.25
+
+WIF (Лонг)
+Чистое движение: -3.36%
+ENTRY: 0.8963
+Маржа: X1
+Фиксации: 0.8662 (100%)
+Дата: 07.06.25
+
+FARTCOIN (Лонг)
+Чистое движение: 1.68%
+ENTRY: 0.9951
+Маржа: X1
+Фиксации: 1.0509 (30%)
+Дата: 07.06.25
+
+POPCAT (Лонг)
+Чистое движение: 1.31%
+ENTRY: 0.3463
+Маржа: X1
+Фиксации: 0.3614 (30%)
+Дата: 07.06.25
+
+FARTCOIN (Лонг)
+Чистое движение: -2.38%
+ENTRY: 1.0507
+Маржа: X0.5
+Фиксации: 1.0007 (100%)
+Дата: 06.06.25
+
+LQTY (Шорт)
+Чистое движение: 6.44%
+ENTRY: 0.09687
+Маржа: X1
+Фиксации: 0.09063 (100%)
+Дата: 05.06.25
+
+APE (Шорт)
+Чистое движение: 6.77%
+ENTRY: 0.7417
+Маржа: X1
+Фиксации: 0.7015 (50%) 0.6815 (50%)
+Дата: 04.06.25
+
+ARC перезаход (Шорт)
+Чистое движение: 7.15%
+ENTRY: 0.04487
+Маржа: X1
+Фиксации: 0.04166 (100%)
+Дата: 04.06.25
+
+ARC (Шорт)
+Чистое движение: 0.00%
+ENTRY: 0.04482
+Маржа: X1
+Фиксации: 0.04482 (100%)
+Дата: 04.06.25
+
+FARTCOIN (Шорт)
+Чистое движение: -1.62%
+ENTRY: 1.085
+Маржа: X0.5
+Фиксации: 1.1201 (100%)
+Дата: 02.06.25
+
+AVAX (Лонг)
+Чистое движение: 0.00%
+ENTRY: 20.498
+Маржа: X1
+Фиксации: 20.498 (100%)
+Дата: 31.05.25
+
+AAVE (Лонг)
+Чистое движение: -3.35%
+ENTRY: 252.19
+Маржа: X1
+Фиксации: 243.74 (100%)
+Дата: 30.05.25
+
+INJ (скальп) (Шорт)
+Чистое движение: 0.00%
+ENTRY: 13.112
+Маржа: X1
+Фиксации: 13.112 (100%)
+Дата: 30.05.25
+
+Ondo (Шорт)
+Чистое движение: 5.35%
+ENTRY: 0.9014
+Маржа: X1
+Фиксации: 0.8731 (50%) 0.8332 (50%)
+Дата: 30.05.25
+
+INJ (Шорт)
+Чистое движение: 0.69%
+ENTRY: 14.124
+Маржа: X1
+Фиксации: 13.8 (30%)
+Дата: 30.05.25
+
+WIF (Шорт)
+Чистое движение: 6.44%
+ENTRY: 1.0681
+Маржа: X1
+Фиксации: 0.9993 (100%)
+Дата: 29.05.25
+
+FARTCOIN (Шорт)
+Чистое движение: 3.53%
+ENTRY: 1.2424
+Маржа: X0.5
+Фиксации: 1.1547 (100%)
+Дата: 29.05.25
+
+PEPE (Шорт)
+Чистое движение: 5.65%
+ENTRY: 0.0000140714
+Маржа: X1
+Фиксации: 0.0000136603 (30%) 0.0000131119 (70%)
+Дата: 29.05.25
+
+AAVE (Шорт)
+Чистое движение: -2.85%
+ENTRY: 261.31
+Маржа: X1
+Фиксации: 268.77 (100%)
+Дата: 28.05.25
+
+SUI (Шорт)
+Чистое движение: -3.28%
+ENTRY: 3.5275
+Маржа: X1
+Фиксации: 3.6432 (100%)
+Дата: 28.05.25
+
+TURBO (Лонг)
+Чистое движение: 0.00%
+ENTRY: 0.005209
+Маржа: X1
+Фиксации: 0.005209 (100%)
+Дата: 28.05.25
+
+LDO (Лонг)
+Чистое движение: 2.23%
+ENTRY: 0.9091
+Маржа: X1
+Фиксации: 0.9496 (50%)
+Дата: 27.05.25
+
+ai16Z (Лонг)
+Чистое движение: 5.61%
+ENTRY: 0.3014
+Маржа: X1
+Фиксации: 0.3183 (100%)
+Дата: 27.05.25
+
+RUNE (Лонг)
+Чистое движение: -1.97%
+ENTRY: 1.98
+Маржа: X1
+Фиксации: 1.941 (100%)
+Дата: 26.05.25
+
+FARTCOIN (Лонг)
+Чистое движение: -1.82%
+ENTRY: 1.514
+Маржа: X0.5
+Фиксации: 1.4588 (100%)
+Дата: 23.05.25
+
+Ethfi (Лонг)
+Чистое движение: -4.04%
+ENTRY: 1.2933
+Маржа: X1
+Фиксации: 1.2411 (100%)
+Дата: 23.05.25
+
+Fartcoin (Лонг)
+Чистое движение: 1.55%
+ENTRY: 1.5518
+Маржа: X1
+Фиксации: 1.6319 (30%)
+Дата: 23.05.25
+
+Aixbt (Лонг)
+Чистое движение: 4.63%
+ENTRY: 0.18543
+Маржа: X1
+Фиксации: 0.1917 (30%) 0.195 (70%)
+Дата: 21.05.25
+
+WCT (Лонг)
+Чистое движение: -2.58%
+ENTRY: 0.6911
+Маржа: X0.5
+Фиксации: 0.6554 (100%)
+Дата: 21.05.25
+
+Griffain (Лонг)
+Чистое движение: 4.47%
+ENTRY: 0.10263
+Маржа: X0.5
+Фиксации: 0.1118 (100%)
+Дата: 20.05.25
+
+AAVE (Лонг)
+Чистое движение: 7.10%
+ENTRY: 224.67
+Маржа: X1
+Фиксации: 233.17 (30%) 243.8 (70%)
+Дата: 19.05.25
+
+LINK (Лонг)
+Чистое движение: 5.86%
+ENTRY: 15.287
+Маржа: X1
+Фиксации: 15.722 (30%) 16.38 (70%)
+Дата: 19.05.25
+
+GRIFFAIN (Шорт)
+Чистое движение: 1.34%
+ENTRY: 0.10511
+Маржа: X1
+Фиксации: 0.1004 (30%)
+Дата: 18.05.25
+
+UNI (Лонг)
+Чистое движение: 1.79%
+ENTRY: 5.763
+Маржа: X0.5
+Фиксации: 5.969 (100%)
+Дата: 17.05.25
+
+PEPE (Шорт)
+Чистое движение: -2.29%
+ENTRY: 0.0000123186
+Маржа: X0.5
+Фиксации: 0.0000128829 (100%)
+Дата: 17.05.25
+
+AVAX (Шорт)
+Чистое движение: 0.00%
+ENTRY: 22.566
+Маржа: X1
+Фиксации: 22.566 (100%)
+Дата: 17.05.25
+`;
+
 
         // --- Helper Functions ---
 
@@ -662,8 +981,8 @@
             if (storedData) {
                 statistics = JSON.parse(storedData);
             } else {
-                // If no data, start with an empty statistics object
-                statistics = {};
+                // If no data, initialize with Vlasov's statistic
+                initializeVlasovStatistic();
             }
         }
 
@@ -738,24 +1057,23 @@
                 trade.netMovement = metrics.netMovement; // Update trade object in memory
                 trade.isProfitable = metrics.isProfitable; // Update trade object in memory
                 
-                // Add this line to update the timestamp on each metric recalculation.
-                // This ensures that when calculateStatisticMetrics is called (e.g., on opening detail view),
-                // the trades will be resorted by the latest timestamp, fulfilling "по добавлению" logic.
-                // NOTE: This timestamp will be updated every time metrics are calculated,
-                // effectively making "most recent addition" based on the last time it was *viewed or recalculated*,
-                // not strictly when it was initially added or edited. For consistent "added time" sorting,
-                // the timestamp should only be set on trade creation/explicit modification.
-                // For now, adhering to the "по добавлению" interpretation on re-rendering.
-                // If strict 'creation/edit time' is needed, `trade.timestamp` should be set *only* in the `add-trade-form` submit logic.
-                trade.timestamp = generateTimestampId(); 
+                if (trade.netMovement > 0) {
+                    profitableTrades++;
+                } else if (trade.netMovement < 0) {
+                    rejectedTrades++;
+                } else { // Net movement is 0
+                    breakevenTrades++;
+                }
+                totalNetMovement += trade.netMovement;
             });
             // Save updated trade metrics to localStorage after recalculating them
             saveData();
 
-            const winRate = (profitableTrades / stat.trades.length) * 100;
+            const completedTradesCount = profitableTrades + rejectedTrades + breakevenTrades;
+            const winRate = (completedTradesCount > 0) ? (profitableTrades / completedTradesCount) * 100 : 0;
 
             return {
-                totalTrades: stat.trades.length,
+                totalTrades: stat.trades.length, // Общее количество всех сделок
                 profitableTrades: profitableTrades,
                 rejectedTrades: rejectedTrades,
                 breakevenTrades: breakevenTrades,
@@ -763,6 +1081,115 @@
                 totalNetMovement: totalNetMovement
             };
         }
+
+        function parseAllTradesFromProvidedText(text) {
+            const trades = [];
+            const blocks = text.split('\n\n').filter(block => block.trim().length > 0);
+
+            blocks.forEach(block => {
+                const lines = block.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                if (lines.length === 0) return;
+
+                let trade = { fixations: [] };
+                const firstLine = lines[0];
+
+                const coinDirectionMatch = firstLine.match(/^(.+?)\s*\((Лонг|Шорт|short|long|скальп)\)$/i);
+
+                if (coinDirectionMatch) {
+                    let coinNameFull = coinDirectionMatch[1].trim();
+                    let direction = coinDirectionMatch[2].trim().toLowerCase();
+
+                    if (coinNameFull.toLowerCase().includes('(скальп)')) {
+                        trade.type = 'скальп';
+                        coinNameFull = coinNameFull.replace(/\(скальп\)/i, '').trim();
+                    }
+
+                    trade.coin = coinNameFull.toUpperCase();
+                    trade.direction = (direction === 'лонг' || direction === 'long' ? 'long' : 'short');
+                } else {
+                    console.warn("Could not parse coin and direction from line:", firstLine);
+                    return;
+                }
+
+                let hasNetMovementInText = false;
+                let hasFixationsInText = false;
+
+                lines.slice(1).forEach(line => {
+                    if (line.startsWith('Чистое движение:')) {
+                        trade.netMovement = parseFloat(line.replace('Чистое движение:', '').replace('%', '').trim());
+                        hasNetMovementInText = true;
+                    } else if (line.startsWith('ENTRY:')) {
+                        trade.entry = parseFloat(line.replace('ENTRY:', '').trim());
+                    } else if (line.startsWith('Маржа:')) {
+                        trade.margin = parseFloat(line.replace('Маржа:', '').replace('X', '').trim());
+                    } else if (line.startsWith('Фиксации:')) {
+                        const fixationsString = line.replace('Фиксации:', '').trim();
+                        const fixationMatches = fixationsString.matchAll(/(\d+\.?\d*)\s*\((\d+\.?\d*)\%\)/g);
+                        for (const match of fixationMatches) {
+                            const price = parseFloat(match[1]);
+                            const percent = parseFloat(match[2]);
+                            if (!isNaN(price) && !isNaN(percent)) {
+                                trade.fixations.push({ price, percent });
+                            }
+                        }
+                        if (trade.fixations.length === 0 && fixationsString.includes('100%') && !isNaN(trade.entry)) {
+                             trade.fixations.push({ price: trade.entry, percent: 100 });
+                        }
+                        hasFixationsInText = true;
+                    } else if (line.startsWith('Дата:')) {
+                        const dateString = line.replace('Дата:', '').trim();
+                        if (dateString) {
+                            const parts = dateString.split('.');
+                            if (parts.length === 3) {
+                                const day = parts[0];
+                                const month = parts[1];
+                                const year = `20${parts[2]}`;
+                                trade.date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)).toISOString();
+                            }
+                        }
+                    } else if (line.match(/^(\d{2})\.(\d{2})\.(\d{2})$/)) {
+                        const dateMatch = line.match(/^(\d{2})\.(\d{2})\.(\d{2})$/);
+                        if (dateMatch) {
+                            const day = dateMatch[1];
+                            const month = dateMatch[2];
+                            const year = `20${dateMatch[3]}`;
+                            trade.date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)).toISOString();
+                        }
+                    }
+                    if (line === '📅') {
+                        // Просто пропускаем
+                    }
+                });
+
+                trade.id = `trade-${crypto.randomUUID()}`;
+                
+                // If netMovement was not explicitly provided in the text, calculate it based on fixations
+                if (!hasNetMovementInText) {
+                    const metrics = calculateTradeMetrics(trade);
+                    trade.netMovement = metrics.netMovement;
+                    trade.isProfitable = metrics.isProfitable;
+                } else {
+                    // If netMovement was provided, just set isProfitable based on it
+                    trade.isProfitable = trade.netMovement > 0;
+                }
+                
+                trade.timestamp = generateTimestampId(); // Add timestamp when parsing
+                trades.push(trade);
+            });
+            return trades;
+        }
+
+        function initializeVlasovStatistic() {
+            const vlasovId = `stat-${crypto.randomUUID()}`;
+            statistics[vlasovId] = {
+                name: VLADOV_STATISTIC_NAME,
+                trades: parseAllTradesFromProvidedText(ALL_USER_PROVIDED_TRADES_TEXT)
+            };
+            // Set this as the current statistic if it's the only one
+            currentStatisticId = vlasovId;
+            saveData(); // Save it immediately
+        }
+
 
         // --- UI Rendering Functions ---
 
@@ -916,24 +1343,9 @@
                 tradeListContainer.classList.remove('hidden');
             }
 
-            // Sort trades by date (newest first), then by timestamp (most recent addition first)
-            const tradesToRender = [...stat.trades].sort((a, b) => {
-                const dateA = a.date ? new Date(a.date).getTime() : 0;
-                const dateB = b.date ? new Date(b.date).getTime() : 0;
-
-                // Primary sort by date (descending)
-                if (dateA !== dateB) {
-                    return dateB - dateA;
-                }
-                // Secondary sort by timestamp (descending) for same dates
-                // This ensures that the most recently added trade appears first if dates are identical
-                const timestampA = a.timestamp || '0';
-                const timestampB = b.timestamp || '0';
-                return timestampB.localeCompare(timestampA);
-            });
-
-
-            tradesToRender.forEach(trade => {
+            // Render trades in the order they appear in the `stat.trades` array
+            // No custom sorting here, as the user wants the order from the source text
+            stat.trades.forEach(trade => {
                 let profitLossClass = '';
                 if (trade.netMovement > 0) {
                     profitLossClass = 'profit-loss-green';
@@ -1212,8 +1624,6 @@
             document.getElementById('entry-price').value = currentEditingTrade.entry;
             document.getElementById('margin').value = currentEditingTrade.margin;
 
-            // Date field is not in the modal anymore.
-
             // Populate fixations
             const fixationsContainer = document.getElementById('fixations-container');
             fixationsContainer.innerHTML = ''; // Clear existing
@@ -1287,23 +1697,8 @@
             }
 
             exportContent += `--- Статистика: ${stat.name} ---\n\n`;
-            // Sort trades for export by date (newest first), then by timestamp (most recent addition first)
-            const tradesToExport = [...stat.trades].sort((a, b) => {
-                const dateA = a.date ? new Date(a.date).getTime() : 0;
-                const dateB = b.date ? new Date(b.date).getTime() : 0;
-                
-                // Primary sort by date (descending)
-                if (dateA !== dateB) {
-                    return dateB - dateA;
-                }
-                // Secondary sort by timestamp (descending) for same dates
-                const timestampA = a.timestamp || '0';
-                const timestampB = b.timestamp || '0';
-                return timestampB.localeCompare(timestampA);
-            });
-
-
-            tradesToExport.forEach(trade => {
+            // Iterate through trades in their current order (which is the order from the source text)
+            stat.trades.forEach(trade => {
                 // Change direction text to English for export
                 const directionText = trade.direction === 'long' ? 'long' : 'short';
                 const fixationsString = trade.fixations.map(f => `${parseFloat(f.price)} (${parseFloat(f.percent)}%)`).join(' ');
@@ -1720,6 +2115,11 @@
             document.getElementById('close-create-statistic-modal-btn').addEventListener('click', () => closeModal('create-statistic-modal'));
             document.getElementById('close-add-trade-modal-btn').addEventListener('click', () => closeModal('add-trade-modal'));
             document.getElementById('close-results-modal-btn').addEventListener('click', () => closeModal('results-modal'));
+
+            // If a default statistic was loaded, set it as current and render its details
+            if (currentStatisticId && Object.keys(statistics).length === 1) {
+                renderTradeDetail(currentStatisticId);
+            }
         });
     </script>
 </body>
