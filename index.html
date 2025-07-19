@@ -1,66 +1,163 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Счетчик Статистики</title>
+    <title>Счетчик Статистики Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="https://i.ibb.co/2Yg0Wn4/favicon.png" type="image/png">
     <style>
-        /* Общие стили и анимации */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            --bg-primary-light: #f4f7fe;
+            --bg-secondary-light: #ffffff;
+            --text-primary-light: #111827;
+            --text-secondary-light: #4b5563;
+            --border-light: #e5e7eb;
+            --accent-primary: #4f46e5;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            --success-light: #10b981;
+            --danger-light: #ef4444;
+            --success-bg-light: #f0fdf4;
+            --danger-bg-light: #fef2f2;
+            --success-border-light: #a7f3d0;
+            --danger-border-light: #fecaca;
+            --gray-bg-light: #f3f4f6;
+
+            --bg-primary-dark: #111827;
+            --bg-secondary-dark: #1f2937;
+            --text-primary-dark: #f9fafb;
+            --text-secondary-dark: #9ca3af;
+            --border-dark: #374151;
+            --success-dark: #34d399;
+            --danger-dark: #f87171;
+            --success-bg-dark: #052e16;
+            --danger-bg-dark: #450a0a;
+            --success-border-dark: #15803d;
+            --danger-border-dark: #b91c1c;
+            --gray-bg-dark: #374151;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: var(--bg-primary-light);
+            --bg-secondary: var(--bg-secondary-light);
+            --text-primary: var(--text-primary-light);
+            --text-secondary: var(--text-secondary-light);
+            --border-color: var(--border-light);
+            --success-color: var(--success-light);
+            --danger-color: var(--danger-light);
+            --success-bg: var(--success-bg-light);
+            --danger-bg: var(--danger-bg-light);
+            --success-border: var(--success-border-light);
+            --danger-border: var(--danger-border-light);
+            --gray-bg: var(--gray-bg-light);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: var(--bg-primary-dark);
+            --bg-secondary: var(--bg-secondary-dark);
+            --text-primary: var(--text-primary-dark);
+            --text-secondary: var(--text-secondary-dark);
+            --border-color: var(--border-dark);
+            --success-color: var(--success-dark);
+            --danger-color: var(--danger-dark);
+            --success-bg: var(--success-bg-dark);
+            --danger-bg: var(--danger-bg-dark);
+            --success-border: var(--success-border-dark);
+            --danger-border: var(--danger-border-dark);
+            --gray-bg: var(--gray-bg-dark);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f0f2f5 0%, #e2e8f0 100%);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            scroll-behavior: smooth;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        /* Стилизация скроллбара */
-        body::-webkit-scrollbar {
-            width: 8px;
-        }
-        body::-webkit-scrollbar-track {
-            background: #f0f2f5;
-            border-radius: 10px;
-        }
-        body::-webkit-scrollbar-thumb {
-            background: #a78bfa;
-            border-radius: 10px;
-            border: 2px solid #f0f2f5;
-        }
-        body::-webkit-scrollbar-thumb:hover {
-            background: #8b5cf6;
+        
+        body.animations-disabled *,
+        body.animations-disabled *::before,
+        body.animations-disabled *::after {
+             animation: none !important;
+             transition: none !important;
         }
 
         .container {
-            background-color: #ffffff;
-            border-radius: 2rem;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-            padding: 3rem;
             width: 100%;
-            max-width: 960px;
-            margin-top: 30px;
-            position: relative;
-            animation: fadeInScale 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 1rem;
         }
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: translateY(30px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
         }
 
-        /* Модальные окна */
+        .main-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-image: var(--accent-gradient);
+            color: white;
+            box-shadow: 0 4px 15px -5px rgba(79, 70, 229, 0.6);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(79, 70, 229, 0.5);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+             background-color: var(--gray-bg);
+        }
+        
+        .btn-icon {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.6rem;
+            border-radius: 0.75rem;
+        }
+        .btn-icon:hover {
+            background: var(--gray-bg);
+            color: var(--accent-primary);
+        }
+
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
@@ -68,580 +165,424 @@
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
         .modal-overlay.active {
             opacity: 1;
             visibility: visible;
         }
         .modal-content {
-            background-color: #ffffff;
-            border-radius: 2rem;
-            padding: 3rem;
-            max-width: 90%;
-            max-height: 90%;
+            background-color: var(--bg-secondary);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
             overflow-y: auto;
-            transform: translateY(-50px) scale(0.8) rotateX(-10deg);
+            transform: scale(0.95) translateY(10px);
             opacity: 0;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+            transition: transform 0.3s ease, opacity 0.3s ease;
             position: relative;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
         .modal-overlay.active .modal-content {
-            transform: translateY(0) scale(1) rotateX(0deg);
+            transform: scale(1) translateY(0);
             opacity: 1;
+        }
+        .modal-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
         }
         .close-button {
             position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
+            top: 1rem;
+            right: 1rem;
             background: none;
             border: none;
-            font-size: 2.2rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            color: #9ca3af;
-            transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+            color: var(--text-secondary);
+            padding: 0.5rem;
+            border-radius: 99px;
+            line-height: 1;
         }
         .close-button:hover {
-            transform: rotate(180deg) scale(1.1);
-            color: #ef4444;
-            text-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+            background-color: var(--gray-bg);
         }
-
-        /* Карточки статистики */
-        .statistic-card {
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s ease;
-            cursor: pointer;
-            border: 3px solid transparent;
-            position: relative;
-            overflow: hidden;
-            border-radius: 1.25rem;
+        
+        .form-group {
+            margin-bottom: 1.5rem;
         }
-        .statistic-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        .form-input, .form-select {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(167, 139, 250, 0.1));
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: 0;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .statistic-card:hover::before {
-            opacity: 1;
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+        
+        .statistic-card {
+            background-color: var(--bg-secondary);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            opacity: 0;
         }
         .statistic-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-            border-color: #6366f1;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -4px rgba(0,0,0,0.07);
         }
-        .statistic-card > div {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Карточки сделок */
+        
         .trade-card {
-            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            background-color: var(--bg-secondary);
             border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            cursor: pointer;
+            opacity: 0;
         }
-        .trade-card:hover:not(.cursor-default) {
-            background-color: #ebedf0;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        .trade-card:hover {
+            background-color: var(--bg-primary);
             transform: translateY(-3px);
         }
-        .color-green { color: #059669; }
-        .color-red { color: #dc2626; }
-        .color-gray { color: #4b5563; }
-        .profit-loss-green {
-            background-color: #dcfce7;
-            color: #047857;
-            border-radius: 0.75rem;
-            padding: 0.4rem 0.8rem;
-        }
-        .profit-loss-red {
-            background-color: #fee4e5;
-            color: #b91c1c;
-            border-radius: 0.75rem;
-            padding: 0.4rem 0.8rem;
-        }
-        .profit-loss-gray {
-            background-color: #e5e7eb;
-            color: #374151;
-            border-radius: 0.75rem;
-            padding: 0.4rem 0.8rem;
-        }
 
-        /* Кнопки */
-        .btn-primary, .btn-secondary {
-            transition: all 0.4s ease;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-            background-size: 250% auto;
-            font-weight: 600;
-            letter-spacing: 0.025em;
-            border: none;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary:hover {
-            background-position: right center;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
-            transform: translateY(-4px);
-        }
-        .btn-primary:active {
-            transform: translateY(0);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            background-position: left center;
-            filter: brightness(0.9);
-        }
-        .btn-secondary {
-            background-color: #e2e8f0;
-            color: #475569;
-        }
-        .btn-secondary:hover {
-            background-color: #cbd5e1;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-        .btn-secondary:active {
-            transform: translateY(0);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            filter: brightness(0.9);
-        }
+        .profit-loss-green { background-color: var(--success-bg); color: var(--success-color); }
+        .profit-loss-red { background-color: var(--danger-bg); color: var(--danger-color); }
+        .profit-loss-gray { background-color: var(--gray-bg); color: var(--text-secondary); }
 
-        /* Копировать кнопку сделки */
-        .copy-trade-single-btn {
-            background: none;
-            border: none;
-            color: #6b7280; /* Gray color */
-            cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 50%;
-            transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
-            font-size: 1rem; /* Adjust size if needed */
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .copy-trade-single-btn:hover {
-            color: #4f46e5; /* Indigo on hover */
-            background-color: #eef2ff; /* Light indigo background */
-            transform: translateY(-1px);
-        }
-        .copy-trade-single-btn svg {
-            width: 1.25rem;
-            height: 1.25rem;
-        }
-
-
-        /* Аватар и кнопка быстрого добавления */
-        #avatar-container {
-            top: 25px;
-            right: 25px;
-            gap: 10px;
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 50;
-        }
-        #avatar-img {
-            border-radius: 50%;
-            object-fit: cover;
-            width: 64px;
-            height: 64px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        #avatar-img:hover {
-            transform: scale(1.1) rotate(8deg);
-        }
-        #add-statistic-avatar-btn {
-            font-size: 1.75rem;
-            width: 48px;
-            height: 48px;
-            background-color: #10b981;
-            border-radius: 50%;
+        .color-green { color: var(--success-color); }
+        .color-red { color: var(--danger-color); }
+        .color-gray { color: var(--text-secondary); }
+        
+        #toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2c3e50;
             color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5);
-            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        #add-statistic-avatar-btn:hover {
-            background-color: #047857;
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.7);
-        }
-
-        /* Поля ввода и селекты */
-        input[type="text"], input[type="number"], select {
-            border: 2px solid #e2e8f0;
-            border-radius: 0.8rem;
-            padding: 0.8rem 1.2rem;
-            font-size: 1.05rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background-color: #f8fafc;
-        }
-        input[type="text"]:focus, input[type="number"]:focus, select:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.5);
-            background-color: #ffffff;
-        }
-        /* Радио-кнопки */
-        input[type="radio"] {
-            width: 1.6rem;
-            height: 1.6rem;
-            border: 2.5px solid #a78bfa;
-        }
-        input[type="radio"]:checked {
-            background-color: #8b5cf6;
-            border-color: #8b5cf6;
-            animation: bounceIn 0.3s ease-out;
-        }
-        input[type="radio"]:checked::after {
-            width: 0.8rem;
-            height: 0.8rem;
-        }
-        @keyframes bounceIn {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); }
-        }
-
-        /* Custom Date Picker for Trade Cards */
-        .trade-card .date-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            position: relative;
-            cursor: pointer;
-            width: fit-content;
-            margin-left: auto;
-            padding: 0.4rem 0.6rem;
+            padding: 1rem 2rem;
             border-radius: 0.5rem;
-            transition: background-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .trade-card .date-wrapper:hover:not(.disabled-date-interaction) {
-            background-color: #eef2ff;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
-        }
-        .trade-card .date-wrapper.disabled-date-interaction {
-            cursor: not-allowed;
-            opacity: 0.6;
-            background-color: transparent;
-            box-shadow: none;
-        }
-        .trade-card .date-wrapper.disabled-date-interaction:hover {
-            background-color: transparent;
-            box-shadow: none;
-        }
-
-        .trade-card .trade-date-display-text,
-        .trade-card .trade-date-input {
-            font-size: 0.9rem;
-            color: #374151;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 2000;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             font-weight: 500;
-            padding: 0;
-            border: none;
-            background: none;
-            text-align: right;
+        }
+        #toast.show {
+            bottom: 30px;
+            transform: translateX(-50%) scale(1);
         }
 
-        .trade-card .trade-date-input {
-            position: absolute;
+        .settings-panel {
+            position: fixed;
             top: 0;
-            left: 0;
+            right: -400px;
             width: 100%;
+            max-width: 350px;
             height: 100%;
+            background-color: var(--bg-secondary);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            z-index: 1100;
+            transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding: 1.5rem;
+            overflow-y: auto;
+            border-left: 1px solid var(--border-color);
+        }
+        .settings-panel.active {
+            right: 0;
+        }
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .settings-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+        .toggle-switch input {
             opacity: 0;
-            cursor: pointer;
+            width: 0;
+            height: 0;
         }
-
-        .trade-card .trade-date-input.active {
-            opacity: 1;
-            z-index: 10;
-            color: transparent;
-        }
-
-        /* Hide default calendar picker indicator */
-        .trade-card .trade-date-input::-webkit-calendar-picker-indicator {
+        .slider {
             position: absolute;
+            cursor: pointer;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            color: transparent;
-            cursor: pointer;
-            opacity: 1;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 28px;
         }
-        .trade-card .trade-date-input[type="date"]::-webkit-inner-spin-button,
-        .trade-card .trade-date-input[type="date"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
         }
-
-        .trade-card .calendar-icon {
-            margin-left: 0.5rem;
-            color: #6366f1;
-            font-size: 1rem;
-            transition: color 0.2s ease;
+        input:checked + .slider {
+            background-color: var(--accent-primary);
         }
-        .trade-card .date-wrapper:hover .calendar-icon {
-            color: #4f46e5;
+        input:checked + .slider:before {
+            transform: translateX(22px);
         }
-        .trade-card .date-wrapper.disabled-date-interaction .calendar-icon {
-            color: #9ca3af;
-        }
-
-
-        /* Кнопки фиксаций */
-        .add-fixation-btn, .remove-fixation-btn {
-            width: 3.2rem;
-            height: 3.2rem;
-            font-size: 1.6rem;
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
-        }
-        .add-fixation-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 8px 18px rgba(59, 130, 246, 0.4);
-        }
-        .remove-fixation-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 8px 18px rgba(239, 68, 68, 0.4);
-        }
-
-        /* Предупреждение о фиксации */
-        .fixation-total-warning {
-            font-weight: 500;
-            color: #b91c1c;
-            background-color: #fef2f2;
-            border-left: 4px solid #ef4444;
+        
+        .direction-btn {
+            transition: all 0.2s ease-in-out;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: 2px solid transparent;
+            flex: 1;
             padding: 0.75rem;
             border-radius: 0.5rem;
-            animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        .direction-btn.selected-long {
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border-color: var(--success-border);
+            box-shadow: 0 0 15px -5px var(--success-bg);
+        }
+        .direction-btn.selected-short {
+            background-color: var(--danger-bg);
+            color: var(--danger-color);
+            border-color: var(--danger-border);
+            box-shadow: 0 0 15px -5px var(--danger-bg);
         }
 
-        /* Другие мелкие визуальные улучшения */
-        #detail-statistic-name {
-            color: #1f2937;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-        }
-        .text-gray-700.text-lg.font-semibold {
-            color: #374151;
-        }
-
-        /* Отзывчивость */
-        @media (max-width: 768px) {
-            .container {
-                padding: 2rem;
-                margin-top: 15px;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            .modal-content {
-                padding: 2rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s ease-out forwards;
         }
     </style>
-    <!-- Favicon -->
-    <link rel="icon" href="https://i.postimg.cc/L6FkFBCN/IMG-20250614-024349.jpg" type="image/jpeg">
 </head>
-<body class="bg-gray-100">
+<body>
     <div id="app" class="container">
-        <!-- Main Title - Moved to top-left with gradient -->
-        <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 mb-10 mt-4">
-            Статистика Сделок
-        </h1>
+        <header class="main-header animate-fade-in-up">
+            <h1 class="main-title">Статистика Сделок</h1>
+            <div class="flex items-center gap-4">
+                 <button id="settings-btn" class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+            </div>
+        </header>
 
-        <div id="header" class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-10 flex-col-sm-stack">
-            <button id="create-statistic-btn" class="btn-primary bg-indigo-600 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50">
+        <div id="header-actions" class="flex flex-col sm:flex-row justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-8 animate-fade-in-up" style="animation-delay: 100ms;">
+            <button id="create-statistic-btn" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                 Создать Статистику
             </button>
-            <button id="add-trade-btn" class="btn-primary bg-green-600 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
+            <button id="add-trade-btn" class="btn btn-secondary">
                 Добавить Сделку
             </button>
         </div>
 
-        <!-- Statistics List View -->
         <div id="statistics-overview">
-            <div id="statistics-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Statistic cards will be rendered here -->
-            </div>
-            <div id="no-statistics-message" class="text-center text-gray-500 text-xl mt-16 hidden animate-fadeIn">
-                <p>Пока нет созданных статистик. Нажмите "Создать Статистику" чтобы начать!</p>
+            <div id="statistics-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="no-statistics-message" class="text-center text-gray-500 text-xl mt-16 hidden">
+                <p>Пока нет созданных статистик. Начните с создания новой!</p>
             </div>
         </div>
 
-        <!-- Trade Detail View -->
         <div id="trade-detail-view" class="hidden">
-            <button id="back-to-stats-btn" class="btn-secondary bg-gray-200 text-gray-800 font-semibold py-2.5 px-5 rounded-xl mb-8 transition duration-200 ease-in-out flex items-center shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-                Назад к Статистикам
+            <button id="back-to-stats-btn" class="btn btn-secondary mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+                Назад
             </button>
-            <h2 id="detail-statistic-name" class="text-3xl font-bold text-gray-800 mb-8"></h2>
-            <div class="flex flex-wrap gap-4 mb-8">
-                <button id="copy-current-statistic-btn" class="btn-primary bg-blue-500 text-white font-semibold py-2.5 px-6 rounded-xl shadow-md">
-                    Копировать Статистику
-                </button>
-                <button id="show-results-btn" class="btn-primary bg-purple-500 text-white font-semibold py-2.5 px-6 rounded-xl shadow-md">
-                    Показать Результаты
-                </button>
+            <h2 id="detail-statistic-name" class="text-3xl font-bold mb-6"></h2>
+            <div class="flex flex-wrap gap-4 mb-6">
+                <button id="copy-current-statistic-btn" class="btn btn-secondary">Копировать</button>
+                <button id="show-results-btn" class="btn btn-secondary">Результаты</button>
             </div>
-            <div id="trade-list" class="space-y-6">
-                <!-- Individual trade cards will be rendered here -->
-            </div>
-            <div id="no-trades-message" class="text-center text-gray-500 text-xl mt-16 hidden animate-fadeIn">
-                <p>Пока нет сделок в этой статистике.</p>
+            <div id="trade-list" class="space-y-4"></div>
+            <div id="no-trades-message" class="text-center text-gray-500 text-xl mt-16 hidden">
+                <p>В этой статистике пока нет сделок.</p>
             </div>
         </div>
-
-        <!-- Modals -->
-        <!-- Create/Edit Statistic Modal -->
-        <div id="create-statistic-modal" class="modal-overlay">
-            <div class="modal-content">
-                <button id="close-create-statistic-modal-btn" class="close-button">&times;</button>
-                <h2 id="create-statistic-modal-title" class="text-3xl font-bold mb-8 text-gray-800 text-center">Создать Новую Статистику</h2>
-                <form id="create-statistic-form">
-                    <div class="mb-6">
-                        <label for="statistic-name" class="block text-gray-700 text-lg font-semibold mb-3">Название Статистики</label>
-                        <input type="text" id="statistic-name" class="w-full" placeholder="Например: Мои Сделки" required>
-                    </div>
-                    <button type="submit" id="create-statistic-submit-btn" class="btn-primary w-full bg-indigo-600 text-white font-semibold py-3.5 px-4 rounded-xl shadow-md">
-                        Создать
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Add/Edit Trade Modal -->
-        <div id="add-trade-modal" class="modal-overlay">
-            <div class="modal-content">
-                <button id="close-add-trade-modal-btn" class="close-button">&times;</button>
-                <h2 id="add-trade-modal-title" class="text-3xl font-bold mb-8 text-gray-800 text-center">Добавить Новую Сделку</h2>
-                <form id="add-trade-form" class="space-y-6">
-                    <!-- Updated Order -->
-                    <div class="mb-4" id="select-statistic-container">
-                        <label for="select-statistic" class="block text-gray-700 text-lg font-semibold mb-3">Название статистики</label>
-                        <select id="select-statistic" class="w-full" required>
-                            <option value="">-- Выберите статистику --</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="coin-name" class="block text-gray-700 text-lg font-semibold mb-3">Монета</label>
-                        <input type="text" id="coin-name" class="w-full" placeholder="Например: BTC/USDT" required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="entry-price" class="block text-gray-700 text-lg font-semibold mb-3">ENTRY (Точка входа)</label>
-                        <input type="number" step="any" id="entry-price" class="w-full" placeholder="Например: 100" required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-lg font-semibold mb-3">Фиксации</label>
-                        <div id="fixations-container">
-                            <!-- Dynamic fixation fields will be added here -->
-                            <div class="flex items-center space-x-3 mb-3">
-                                <input type="number" step="any" class="fixation-price w-1/2" placeholder="Цена фиксации">
-                                <input type="number" step="any" min="0" max="100" class="fixation-percent w-1/2" placeholder="Процент (%)">
-                                <button type="button" class="add-fixation-btn bg-blue-500 text-white font-bold rounded-full">+</button>
-                            </div>
-                        </div>
-                        <p id="fixation-total-warning" class="text-red-500 text-sm mt-2 hidden">Общий процент фиксаций не может превышать 100%.</p>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-lg font-semibold mb-3">Направление</label>
-                        <div class="flex space-x-6">
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input type="radio" name="direction" value="long" class="h-5 w-5" checked>
-                                <span class="ml-2 text-gray-700 text-base">Лонг</span>
-                            </label>
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input type="radio" name="direction" value="short" class="h-5 w-5">
-                                <span class="ml-2 text-gray-700 text-base">Шорт</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="margin" class="block text-gray-700 text-lg font-semibold mb-3">Маржа (X)</label>
-                        <input type="number" step="0.5" id="margin" class="w-full" value="1.0" required>
-                    </div>
-
-                    <button type="submit" id="add-trade-submit-btn" class="btn-primary w-full bg-green-600 text-white font-semibold py-3.5 px-4 rounded-xl shadow-md">
-                        Добавить Сделку
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Confirmation Modal -->
-        <div id="confirmation-modal" class="modal-overlay">
-            <div class="modal-content text-center">
-                <button id="close-confirmation-modal-btn" class="close-button">&times;</button>
-                <h3 id="confirmation-message" class="text-2xl font-semibold mb-8 text-gray-800">Вы уверены?</h3>
-                <div class="flex justify-center space-x-6">
-                    <button id="confirm-yes-btn" class="btn-primary bg-red-600 text-white font-semibold py-3 px-6 rounded-xl shadow-md">
-                        Да
-                    </button>
-                    <button id="confirm-no-btn" class="btn-secondary bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-xl shadow-md">
-                        Отмена
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Results Modal -->
-        <div id="results-modal" class="modal-overlay">
-            <div class="modal-content">
-                <button id="close-results-modal-btn" class="close-button">&times;</button>
-                <h2 class="text-3xl font-bold mb-8 text-gray-800 text-center">Результаты Статистики</h2>
-                <div id="results-content" class="space-y-4 text-center">
-                    <p class="text-xl">Чистое движение: <span id="results-net-movement" class="font-bold"></span></p>
-                    <p class="text-xl">Количество сделок: <span id="results-total-trades" class="font-bold"></span></p>
-                    <p class="text-xl">Винрейт: <span id="results-winrate" class="font-bold"></span></p>
-                    <button id="results-details-btn" class="btn-primary mt-6 bg-blue-500 text-white font-semibold py-2.5 px-6 rounded-xl shadow-md">
-                        Подробнее...
-                    </button>
-                    <div id="results-additional-info" class="hidden mt-4 space-y-3">
-                        <p class="text-lg">Успешных сделок: <span id="results-successful-trades" class="font-bold color-green"></span></p>
-                        <p class="text-lg">Отклоненных сделок: <span id="results-rejected-trades" class="font-bold color-red"></span></p>
-                        <p class="text-lg">Несостоявшиеся сделки (б/у): <span id="results-breakeven-trades" class="font-bold color-gray"></span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
+    <div id="create-statistic-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-button" data-modal-id="create-statistic-modal">&times;</button>
+            <h2 id="create-statistic-modal-title" class="modal-title">Создать Статистику</h2>
+            <form id="create-statistic-form">
+                <div class="form-group">
+                    <label for="statistic-name" class="form-label">Название Статистики</label>
+                    <input type="text" id="statistic-name" class="form-input" placeholder="Например: Мои Сделки" required>
+                </div>
+                <button type="submit" id="create-statistic-submit-btn" class="btn btn-primary w-full">Создать</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="add-trade-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-button" data-modal-id="add-trade-modal">&times;</button>
+            <h2 id="add-trade-modal-title" class="modal-title">Добавить Сделку</h2>
+            <form id="add-trade-form" class="space-y-4">
+                <div class="form-group" id="select-statistic-container">
+                    <label for="select-statistic" class="form-label">Статистика</label>
+                    <select id="select-statistic" class="form-select" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="coin-name" class="form-label">Монета</label>
+                    <input type="text" id="coin-name" class="form-input" placeholder="Например: BTC/USDT" required>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label for="entry-price" class="form-label">Точка входа</label>
+                        <input type="number" step="any" id="entry-price" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="margin" class="form-label">Маржа (X)</label>
+                        <input type="number" step="any" id="margin" class="form-input" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Направление</label>
+                    <div id="direction-selector" class="flex rounded-lg border border-[var(--border-color)] p-1 space-x-1">
+                        <button type="button" data-value="long" class="direction-btn">LONG</button>
+                        <button type="button" data-value="short" class="direction-btn">SHORT</button>
+                    </div>
+                    <input type="hidden" id="direction-hidden-input" name="direction">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Фиксации</label>
+                    <div id="fixations-container" class="space-y-2"></div>
+                    <p id="fixation-total-warning" class="text-red-500 text-sm mt-2 hidden">Общий процент фиксаций не может превышать 100%.</p>
+                </div>
+                <button type="submit" id="add-trade-submit-btn" class="btn btn-primary w-full mt-4">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h3 id="confirmation-message" class="text-xl font-semibold mb-6">Вы уверены?</h3>
+            <div class="flex justify-center gap-4">
+                <button id="confirm-yes-btn" class="btn bg-red-600 text-white hover:bg-red-700">Да</button>
+                <button id="confirm-no-btn" class="btn btn-secondary">Отмена</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="results-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-button" data-modal-id="results-modal">&times;</button>
+            <h2 class="modal-title">Результаты</h2>
+            <div id="results-content" class="space-y-3 text-lg text-center"></div>
+        </div>
+    </div>
+    
+    <div id="settings-panel" class="settings-panel">
+        <div class="settings-header">
+            <h3 class="settings-title">Настройки</h3>
+            <button id="close-settings-btn" class="close-button">&times;</button>
+        </div>
+        <div class="space-y-6">
+            <div class="form-group">
+                <label class="form-label flex justify-between items-center">
+                    <span>Темная тема</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-label flex justify-between items-center">
+                    <span>Отключить анимации</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="animations-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="sort-trades-by" class="form-label">Сортировать сделки по</label>
+                <select id="sort-trades-by" class="form-select">
+                    <option value="date_desc">Сначала новые</option>
+                    <option value="date_asc">Сначала старые</option>
+                    <option value="profit_desc">Самые прибыльные</option>
+                    <option value="profit_asc">Самые убыточные</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="default-margin" class="form-label">Маржа по умолчанию</label>
+                <input type="number" id="default-margin" class="form-input" placeholder="1">
+            </div>
+            <div class="space-y-3">
+                <button id="export-data-btn" class="btn btn-secondary w-full">Экспорт данных</button>
+                <button id="import-data-btn" class="btn btn-secondary w-full">Импорт данных</button>
+                <input type="file" id="import-file-input" class="hidden" accept=".json">
+            </div>
+            <div class="border-t border-dashed pt-6 mt-6 space-y-3 border-red-500/50">
+                 <button id="delete-all-stats-btn" class="btn bg-red-600/10 text-red-500 hover:bg-red-600/20 w-full">Удалить все статистики</button>
+                 <button id="clear-memory-btn" class="btn bg-red-600/10 text-red-500 hover:bg-red-600/20 w-full">Очистить память</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
     <script>
-        // Store all statistics data
-        let statistics = {};
-        // Current statistic being viewed in detail
-        let currentStatisticId = null;
-        // Flag for editing trade
-        let currentEditingTrade = null; // Stores the trade object being edited
-        // Flag for editing statistic name
-        let currentEditingStatisticIdForName = null;
-        // Callback for confirmation modal
-        let confirmationCallback = null;
+        document.addEventListener('DOMContentLoaded', () => {
+            let statistics = {};
+            let currentStatisticId = null;
+            let currentEditingTrade = null;
+            let currentEditingStatisticIdForName = null;
+            let confirmationCallback = null;
+            let addTradeInitiatedCreateStatistic = false;
+            let settings = {};
 
-        // Flag to indicate if "Add Trade" initiated the "Create Statistic" flow
-        let addTradeInitiatedCreateStatistic = false;
+            const $ = (selector) => document.querySelector(selector);
+            const $$ = (selector) => document.querySelectorAll(selector);
 
-        const VLADOV_STATISTIC_NAME = "Илья Власов - Грабитель ММ";
-        const ALL_USER_PROVIDED_TRADES_TEXT = `INJ (long)
+            const VLADOV_STATISTIC_NAME = "Илья Власов - Грабитель ММ";
+            const ALL_USER_PROVIDED_TRADES_TEXT = `INJ (long)
 Чистое движение: 0.21%
 ENTRY: 11.345
 Маржа: X1
@@ -964,1162 +905,711 @@ AVAX (Шорт)
 ENTRY: 22.566
 Маржа: X1
 Фиксации: 22.566 (100%)
-Дата: 17.05.25
-`;
+Дата: 17.05.25`;
 
-
-        // --- Helper Functions ---
-
-        // Helper function to generate a unique timestamp-based ID for sorting
-        function generateTimestampId() {
-            return Date.now().toString() + Math.random().toString(36).substring(2, 8); // Ensures uniqueness even within the same millisecond
-        }
-
-        // Loads data from localStorage
-        function loadData() {
-            const storedData = localStorage.getItem('tradeStatistics');
-            if (storedData) {
-                statistics = JSON.parse(storedData);
-            } else {
-                // If no data, initialize with Vlasov's statistic
-                initializeVlasovStatistic();
-            }
-        }
-
-        // Saves data to localStorage
-        function saveData() {
-            localStorage.setItem('tradeStatistics', JSON.stringify(statistics));
-        }
-
-        // Calculates net movement and profitability for a single trade
-        function calculateTradeMetrics(trade) {
-            let totalContribution = 0; // This will accumulate the percentage-scaled movements (as decimals)
-
-            if (trade.fixations && trade.fixations.length > 0) {
-                trade.fixations.forEach(fix => {
-                    const price = parseFloat(fix.price);
-                    const percent = parseFloat(fix.percent);
-
-                    // Ensure price and percent are valid numbers before using them
-                    if (isNaN(price) || isNaN(percent) || percent === 0) {
-                        console.warn('Skipping invalid fixation:', fix);
-                        return; // Skip invalid or zero-percent fixations
+            const app = {
+                init() {
+                    this.loadSettings();
+                    this.applySettings();
+                    this.loadData();
+                    this.renderStatisticsList();
+                    this.attachEventListeners();
+                    if (currentStatisticId && Object.keys(statistics).length === 1) {
+                        this.renderTradeDetail(currentStatisticId);
                     }
+                },
 
-                    const entry = parseFloat(trade.entry);
-                    const direction = trade.direction;
-
-                    let movementDecimal; // Movement as a decimal (e.g., 0.01 for 1%)
-                    if (direction === 'long') {
-                        movementDecimal = (price - entry) / entry;
-                    } else { // short
-                        movementDecimal = (entry - price) / entry;
-                    }
-                    // Contribution of this fixation to the total movement, based on its percentage (as decimal)
-                    totalContribution += movementDecimal * (percent / 100);
-                });
-            } else {
-                // If no fixations are provided (or all were invalid/skipped), assume 100% at entry price, resulting in 0% net movement.
-                // This handles the validation rule: "если пользователь не пишет фиксацию прям вообще, то будет считаться 100% фиксация по цене точки входа."
-                totalContribution = 0;
-            }
-
-            // Convert totalContribution to a percentage and then apply margin
-            const netMovementPercentage = totalContribution * 100 * parseFloat(trade.margin || 1); // Default margin to 1
-            const isProfitable = netMovementPercentage > 0;
-
-            return { netMovement: netMovementPercentage, isProfitable: isProfitable };
-        }
-
-
-        // Calculates metrics for a given statistic (winrate, total trades, total net movement)
-        function calculateStatisticMetrics(statisticId) {
-            const stat = statistics[statisticId];
-            if (!stat || !stat.trades || stat.trades.length === 0) {
-                return {
-                    totalTrades: 0,
-                    profitableTrades: 0,
-                    rejectedTrades: 0,
-                    breakevenTrades: 0,
-                    winRate: 0,
-                    totalNetMovement: 0
-                };
-            }
-
-            let profitableTrades = 0;
-            let rejectedTrades = 0;
-            let breakevenTrades = 0; // Trades with 0% net movement
-            let totalNetMovement = 0;
-
-            stat.trades.forEach(trade => {
-                // Recalculate metrics for each trade during stat calculation to ensure consistency
-                const metrics = calculateTradeMetrics(trade);
-                trade.netMovement = metrics.netMovement; // Update trade object in memory
-                trade.isProfitable = metrics.isProfitable; // Update trade object in memory
-                
-                if (trade.netMovement > 0) {
-                    profitableTrades++;
-                } else if (trade.netMovement < 0) {
-                    rejectedTrades++;
-                } else { // Net movement is 0
-                    breakevenTrades++;
-                }
-                totalNetMovement += trade.netMovement;
-            });
-            // Save updated trade metrics to localStorage after recalculating them
-            saveData();
-
-            const completedTradesCount = profitableTrades + rejectedTrades + breakevenTrades;
-            const winRate = (completedTradesCount > 0) ? (profitableTrades / completedTradesCount) * 100 : 0;
-
-            return {
-                totalTrades: stat.trades.length, // Общее количество всех сделок
-                profitableTrades: profitableTrades,
-                rejectedTrades: rejectedTrades,
-                breakevenTrades: breakevenTrades,
-                winRate: winRate,
-                totalNetMovement: totalNetMovement
-            };
-        }
-
-        function parseAllTradesFromProvidedText(text) {
-            const trades = [];
-            const blocks = text.split('\n\n').filter(block => block.trim().length > 0);
-
-            blocks.forEach(block => {
-                const lines = block.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                if (lines.length === 0) return;
-
-                let trade = { fixations: [] };
-                const firstLine = lines[0];
-
-                const coinDirectionMatch = firstLine.match(/^(.+?)\s*\((Лонг|Шорт|short|long|скальп)\)$/i);
-
-                if (coinDirectionMatch) {
-                    let coinNameFull = coinDirectionMatch[1].trim();
-                    let direction = coinDirectionMatch[2].trim().toLowerCase();
-
-                    if (coinNameFull.toLowerCase().includes('(скальп)')) {
-                        trade.type = 'скальп';
-                        coinNameFull = coinNameFull.replace(/\(скальп\)/i, '').trim();
-                    }
-
-                    trade.coin = coinNameFull.toUpperCase();
-                    trade.direction = (direction === 'лонг' || direction === 'long' ? 'long' : 'short');
-                } else {
-                    console.warn("Could not parse coin and direction from line:", firstLine);
-                    return;
-                }
-
-                let hasNetMovementInText = false;
-                let hasFixationsInText = false;
-
-                lines.slice(1).forEach(line => {
-                    if (line.startsWith('Чистое движение:')) {
-                        trade.netMovement = parseFloat(line.replace('Чистое движение:', '').replace('%', '').trim());
-                        hasNetMovementInText = true;
-                    } else if (line.startsWith('ENTRY:')) {
-                        trade.entry = parseFloat(line.replace('ENTRY:', '').trim());
-                    } else if (line.startsWith('Маржа:')) {
-                        trade.margin = parseFloat(line.replace('Маржа:', '').replace('X', '').trim());
-                    } else if (line.startsWith('Фиксации:')) {
-                        const fixationsString = line.replace('Фиксации:', '').trim();
-                        const fixationMatches = fixationsString.matchAll(/(\d+\.?\d*)\s*\((\d+\.?\d*)\%\)/g);
-                        for (const match of fixationMatches) {
-                            const price = parseFloat(match[1]);
-                            const percent = parseFloat(match[2]);
-                            if (!isNaN(price) && !isNaN(percent)) {
-                                trade.fixations.push({ price, percent });
+                attachEventListeners() {
+                    $('#create-statistic-btn').addEventListener('click', () => this.openModal('create-statistic-modal'));
+                    $('#add-trade-btn').addEventListener('click', () => this.handleAddTradeClick());
+                    $('#back-to-stats-btn').addEventListener('click', () => this.showStatisticsOverview());
+                    $('#create-statistic-form').addEventListener('submit', (e) => this.handleStatisticFormSubmit(e));
+                    $('#add-trade-form').addEventListener('submit', (e) => this.handleTradeFormSubmit(e));
+                    $('#confirm-yes-btn').addEventListener('click', () => this.handleConfirmYes());
+                    $('#confirm-no-btn').addEventListener('click', () => this.closeModal('confirmation-modal'));
+                    $('#copy-current-statistic-btn').addEventListener('click', () => this.copyCurrentStatistic());
+                    $('#show-results-btn').addEventListener('click', () => this.showResults(currentStatisticId));
+                    $('#settings-btn').addEventListener('click', () => $('#settings-panel').classList.add('active'));
+                    $('#close-settings-btn').addEventListener('click', () => $('#settings-panel').classList.remove('active'));
+                    $('#theme-toggle').addEventListener('change', (e) => this.updateSetting('theme', e.target.checked ? 'dark' : 'light'));
+                    $('#animations-toggle').addEventListener('change', (e) => this.updateSetting('animationsDisabled', e.target.checked));
+                    $('#sort-trades-by').addEventListener('change', (e) => this.updateSetting('sortTradesBy', e.target.value));
+                    $('#default-margin').addEventListener('input', (e) => this.updateSetting('defaultMargin', e.target.value));
+                    $('#export-data-btn').addEventListener('click', () => this.exportData());
+                    $('#import-data-btn').addEventListener('click', () => $('#import-file-input').click());
+                    $('#import-file-input').addEventListener('change', (e) => this.importData(e));
+                    $('#delete-all-stats-btn').addEventListener('click', () => this.confirmAction('Вы уверены, что хотите удалить ВСЕ статистики?', () => this.deleteAllStatistics()));
+                    $('#clear-memory-btn').addEventListener('click', () => this.confirmAction('Это действие удалит ВСЕ данные приложения. Продолжить?', () => this.clearMemory()));
+                    
+                    document.body.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('modal-overlay')) {
+                            this.closeAllModals();
+                        }
+                        const settingsPanel = $('#settings-panel');
+                        if (settingsPanel.classList.contains('active') && !settingsPanel.contains(e.target) && !e.target.closest('#settings-btn')) {
+                            settingsPanel.classList.remove('active');
+                        }
+                        if (e.target.classList.contains('close-button')) {
+                            this.closeModal(e.target.dataset.modalId);
+                        }
+                        if (e.target.closest('.statistic-card')) {
+                            const card = e.target.closest('.statistic-card');
+                            const id = card.dataset.id;
+                            if (e.target.closest('.edit-statistic-name-btn')) {
+                                this.editStatisticName(id);
+                            } else if (e.target.closest('.delete-statistic-btn')) {
+                                this.confirmAction('Удалить эту статистику и все ее сделки?', () => this.deleteStatistic(id));
+                            } else {
+                                currentStatisticId = id;
+                                this.renderTradeDetail(id);
                             }
                         }
-                        if (trade.fixations.length === 0 && fixationsString.includes('100%') && !isNaN(trade.entry)) {
-                             trade.fixations.push({ price: trade.entry, percent: 100 });
+                        if (e.target.closest('.add-fixation-btn')) {
+                            this.addFixationField();
                         }
-                        hasFixationsInText = true;
-                    } else if (line.startsWith('Дата:')) {
-                        const dateString = line.replace('Дата:', '').trim();
-                        if (dateString) {
-                            const parts = dateString.split('.');
-                            if (parts.length === 3) {
-                                const day = parts[0];
-                                const month = parts[1];
-                                const year = `20${parts[2]}`;
-                                trade.date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)).toISOString();
-                            }
+                        if (e.target.closest('.remove-fixation-btn')) {
+                            this.removeFixationField(e.target.closest('.remove-fixation-btn'));
                         }
-                    } else if (line.match(/^(\d{2})\.(\d{2})\.(\d{2})$/)) {
-                        const dateMatch = line.match(/^(\d{2})\.(\d{2})\.(\d{2})$/);
-                        if (dateMatch) {
-                            const day = dateMatch[1];
-                            const month = dateMatch[2];
-                            const year = `20${dateMatch[3]}`;
-                            trade.date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)).toISOString();
+                        if (e.target.closest('.copy-trade-single-btn')) {
+                            const tradeId = e.target.closest('.copy-trade-single-btn').dataset.tradeId;
+                            this.copySingleTrade(tradeId);
                         }
-                    }
-                    if (line === '📅') {
-                        // Просто пропускаем
-                    }
-                });
-
-                trade.id = `trade-${crypto.randomUUID()}`;
+                        if (e.target.closest('.edit-trade-btn')) {
+                            const tradeId = e.target.closest('.edit-trade-btn').dataset.tradeId;
+                            this.editTrade(currentStatisticId, tradeId);
+                        }
+                        if (e.target.closest('.delete-trade-btn')) {
+                            const tradeId = e.target.closest('.delete-trade-btn').dataset.tradeId;
+                            this.confirmAction('Удалить эту сделку?', () => this.deleteTrade(currentStatisticId, tradeId));
+                        }
+                         if (e.target.matches('.direction-btn')) {
+                            this.handleDirectionSelection(e.target);
+                        }
+                    });
+                     document.body.addEventListener('change', (e) => {
+                        if (e.target.classList.contains('trade-date-input')) {
+                            const tradeId = e.target.closest('.trade-card').dataset.tradeId;
+                            this.updateTradeDate(currentStatisticId, tradeId, e.target.value);
+                        }
+                    });
+                },
                 
-                // If netMovement was not explicitly provided in the text, calculate it based on fixations
-                if (!hasNetMovementInText) {
-                    const metrics = calculateTradeMetrics(trade);
-                    trade.netMovement = metrics.netMovement;
-                    trade.isProfitable = metrics.isProfitable;
-                } else {
-                    // If netMovement was provided, just set isProfitable based on it
-                    trade.isProfitable = trade.netMovement > 0;
-                }
+                loadSettings() {
+                    const savedSettings = localStorage.getItem('tradeStatisticsSettings');
+                    const defaultSettings = {
+                        theme: 'light',
+                        animationsDisabled: false,
+                        sortTradesBy: 'date_desc',
+                        defaultMargin: 1,
+                    };
+                    settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+                },
+
+                saveSettings() {
+                    localStorage.setItem('tradeStatisticsSettings', JSON.stringify(settings));
+                },
                 
-                trade.timestamp = generateTimestampId(); // Add timestamp when parsing
-                trades.push(trade);
-            });
-            return trades;
-        }
+                updateSetting(key, value) {
+                    settings[key] = value;
+                    this.saveSettings();
+                    this.applySettings();
+                    if (key === 'sortTradesBy' && currentStatisticId) {
+                        this.renderTradeDetail(currentStatisticId);
+                    }
+                },
 
-        function initializeVlasovStatistic() {
-            const vlasovId = `stat-${crypto.randomUUID()}`;
-            statistics[vlasovId] = {
-                name: VLADOV_STATISTIC_NAME,
-                trades: parseAllTradesFromProvidedText(ALL_USER_PROVIDED_TRADES_TEXT)
-            };
-            // Set this as the current statistic if it's the only one
-            currentStatisticId = vlasovId;
-            saveData(); // Save it immediately
-        }
+                applySettings() {
+                    document.documentElement.setAttribute('data-theme', settings.theme);
+                    $('#theme-toggle').checked = settings.theme === 'dark';
+                    
+                    document.body.classList.toggle('animations-disabled', settings.animationsDisabled);
+                    $('#animations-toggle').checked = settings.animationsDisabled;
 
+                    $('#sort-trades-by').value = settings.sortTradesBy;
+                    $('#default-margin').value = settings.defaultMargin;
+                },
 
-        // --- UI Rendering Functions ---
+                loadData() {
+                    const storedData = localStorage.getItem('tradeStatistics');
+                    if (storedData) {
+                        statistics = JSON.parse(storedData);
+                    } else {
+                        this.initializeVlasovStatistic();
+                    }
+                },
 
-        // Renders the list of statistics
-        function renderStatisticsList() {
-            const listContainer = document.getElementById('statistics-list');
-            listContainer.innerHTML = ''; // Clear previous content
+                saveData() {
+                    localStorage.setItem('tradeStatistics', JSON.stringify(statistics));
+                },
+                
+                initializeVlasovStatistic() {
+                    const vlasovId = `stat-${crypto.randomUUID()}`;
+                    statistics[vlasovId] = {
+                        name: VLADOV_STATISTIC_NAME,
+                        trades: this.parseAllTradesFromProvidedText(ALL_USER_PROVIDED_TRADES_TEXT)
+                    };
+                    currentStatisticId = vlasovId;
+                    this.saveData();
+                },
+                
+                renderStatisticsList() {
+                    const listContainer = $('#statistics-list');
+                    listContainer.innerHTML = '';
+                    const statisticIds = Object.keys(statistics);
 
-            const statisticIds = Object.keys(statistics);
+                    $('#add-trade-btn').style.display = statisticIds.length > 0 ? 'inline-flex' : 'none';
+                    $('#no-statistics-message').classList.toggle('hidden', statisticIds.length > 0);
+                    listContainer.classList.toggle('hidden', statisticIds.length === 0);
 
-            const addTradeBtn = document.getElementById('add-trade-btn');
-            
-            if (statisticIds.length === 0) {
-                document.getElementById('no-statistics-message').classList.remove('hidden');
-                listContainer.classList.add('hidden');
-                addTradeBtn.classList.add('hidden'); // Hide the button if no statistics
-            } else {
-                document.getElementById('no-statistics-message').classList.add('hidden');
-                listContainer.classList.remove('hidden');
-                addTradeBtn.classList.remove('hidden'); // Always show add trade button if stats exist
-            }
+                    statisticIds.forEach((id, index) => {
+                        const stat = statistics[id];
+                        const metrics = this.calculateStatisticMetrics(id);
+                        const winRateColor = metrics.winRate > 50 ? 'color-green' : metrics.winRate < 50 ? 'color-red' : 'color-gray';
+                        const netMoveColor = metrics.totalNetMovement > 0 ? 'color-green' : metrics.totalNetMovement < 0 ? 'color-red' : 'color-gray';
 
-            statisticIds.forEach(id => {
-                const stat = statistics[id];
-                const metrics = calculateStatisticMetrics(id); // Recalculate and update trade metrics
-
-                let winRateColorClass = 'color-gray';
-                if (metrics.winRate > 50) {
-                    winRateColorClass = 'color-green';
-                } else if (metrics.winRate < 50) {
-                    winRateColorClass = 'color-red';
-                }
-
-                let netMovementColorClass = 'color-gray';
-                if (metrics.totalNetMovement > 0) {
-                    netMovementColorClass = 'color-green';
-                } else if (metrics.totalNetMovement < 0) {
-                    netMovementColorClass = 'color-red';
-                }
-
-                const cardHtml = `
-                    <div class="statistic-card bg-white p-6 rounded-xl shadow-md flex flex-col justify-between" data-id="${id}">
-                        <div>
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center justify-between">
-                                <span>${stat.name}</span>
-                                <button class="edit-statistic-name-btn p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100" data-id="${id}" title="Редактировать название статистики">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-7.293 7.293A1 1 0 018 14H5a1 1 0 01-1-1v-3a1 1 0 01.293-.707l7.293-7.293zM6 10v2h2l6-6-2-2-6 6zM15.5 1.5a.5.5 0 01.5.5v.5a.5.5 0 01-1 0V2a.5.5 0 01.5-.5z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                                    </svg>
-                                </button>
-                            </h3>
-                            <p class="text-sm text-gray-600 mb-4">Всего сделок: ${metrics.totalTrades}</p>
-                        </div>
-                        <div class="flex justify-between items-end text-sm mb-4">
-                            <div class="text-center">
-                                <p class="text-gray-500">Винрейт</p>
-                                <p class="font-bold ${winRateColorClass}">${metrics.winRate.toFixed(2)}%</p>
+                        const card = document.createElement('div');
+                        card.className = 'statistic-card';
+                        card.dataset.id = id;
+                        card.style.animationDelay = `${index * 70}ms`;
+                        card.innerHTML = `
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-xl font-bold pr-2">${stat.name}</h3>
+                                <div class="flex-shrink-0 flex gap-1">
+                                    <button class="edit-statistic-name-btn p-1.5 rounded-md hover:bg-[var(--gray-bg)]" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path></svg></button>
+                                    <button class="delete-statistic-btn p-1.5 rounded-md hover:bg-[var(--gray-bg)] text-red-500" title="Удалить"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+                                </div>
                             </div>
-                            <div class="text-center">
-                                <p class="text-gray-500">Чистое движение</p>
-                                <p class="font-bold ${netMovementColorClass}">${metrics.totalNetMovement.toFixed(2)}%</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center text-sm mt-auto">
-                            <button class="open-statistic-btn btn-primary bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md" data-id="${id}">
-                                Открыть статистику
-                            </button>
-                            <button class="delete-statistic-btn text-red-500 hover:text-red-700 transition duration-200 ease-in-out p-1 rounded-full hover:bg-red-50" data-id="${id}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm6 3a1 1 0 100 2v1a1 1 0 102 0v-1a1 1 0 00-2 0z" clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                listContainer.insertAdjacentHTML('beforeend', cardHtml);
-            });
+                            <div class="text-sm text-[var(--text-secondary)] mb-4">Всего сделок: ${metrics.totalTrades}</div>
+                            <div class="flex justify-between items-end text-sm">
+                                <div>
+                                    <div class="text-[var(--text-secondary)]">Винрейт</div>
+                                    <div class="font-bold text-lg ${winRateColor}">${metrics.winRate.toFixed(2)}%</div>
+                                </div>
+                                <div>
+                                    <div class="text-[var(--text-secondary)]">Чистое движение</div>
+                                    <div class="font-bold text-lg ${netMoveColor}">${metrics.totalNetMovement.toFixed(2)}%</div>
+                                </div>
+                            </div>`;
+                        listContainer.appendChild(card);
+                        card.classList.add('animate-fade-in-up');
+                    });
+                },
+                
+                renderTradeDetail(statisticId) {
+                    $('#statistics-overview').classList.add('hidden');
+                    $('#trade-detail-view').classList.remove('hidden');
 
-            // Add event listeners to newly rendered cards
-            document.querySelectorAll('.statistic-card').forEach(card => {
-                card.addEventListener('click', (e) => {
-                    // Prevent click on card from triggering detail view if action button clicked
-                    if (e.target.closest('.edit-statistic-name-btn') || e.target.closest('.delete-statistic-btn') || e.target.closest('.open-statistic-btn')) {
+                    const stat = statistics[statisticId];
+                    $('#detail-statistic-name').textContent = stat.name;
+                    const tradeListContainer = $('#trade-list');
+                    tradeListContainer.innerHTML = '';
+                    
+                    if (!stat.trades || stat.trades.length === 0) {
+                        $('#no-trades-message').classList.remove('hidden');
                         return;
                     }
-                    const id = e.currentTarget.dataset.id;
-                    currentStatisticId = id; // Set the current statistic ID for detail view
-                    renderTradeDetail(id);
-                });
-            });
+                    
+                    $('#no-trades-message').classList.add('hidden');
 
-            document.querySelectorAll('.edit-statistic-name-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = e.currentTarget.dataset.id; // Use currentTarget for buttons with SVG children
-                    editStatisticName(id);
-                });
-            });
+                    const sortedTrades = this.sortTrades([...stat.trades]);
 
-            document.querySelectorAll('.delete-statistic-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = e.currentTarget.dataset.id; // Use currentTarget for buttons with SVG children
-                    confirmAction('Вы уверены, что хотите удалить эту статистику и все ее сделки?', () => deleteStatistic(id));
-                });
-            });
+                    sortedTrades.forEach((trade, index) => {
+                        const metrics = this.calculateTradeMetrics(trade);
+                        trade.netMovement = metrics.netMovement;
+                        
+                        const profitLossClass = trade.netMovement > 0 ? 'profit-loss-green' : trade.netMovement < 0 ? 'profit-loss-red' : 'profit-loss-gray';
+                        const fixationsString = trade.fixations.map(f => `${f.price} (${f.percent}%)`).join(' ');
+                        const directionText = trade.direction === 'long' ? '<span class="color-green">long</span>' : '<span class="color-red">short</span>';
+                        const dateValue = trade.date ? new Date(trade.date).toISOString().split('T')[0] : '';
 
-            document.querySelectorAll('.open-statistic-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = e.currentTarget.dataset.id; // Use currentTarget for buttons with SVG children
-                    currentStatisticId = id;
-                    renderTradeDetail(id);
-                });
-            });
-        }
-
-        // Renders the trade detail view for a specific statistic
-        function renderTradeDetail(statisticId) {
-            document.getElementById('statistics-overview').classList.add('hidden');
-            document.getElementById('trade-detail-view').classList.remove('hidden');
-
-            const stat = statistics[statisticId];
-            document.getElementById('detail-statistic-name').textContent = `Сделки: ${stat.name}`;
-
-            // Attach event listener for the "Копировать статистику" button
-            document.getElementById('copy-current-statistic-btn').onclick = () => {
-                const textToCopy = generateSingleStatisticExportText(statisticId);
-                copyToClipboard(textToCopy);
-            };
-
-            // Attach event listener for the "Результат" button
-            document.getElementById('show-results-btn').onclick = () => {
-                showResults(statisticId);
-            };
-
-            const tradeListContainer = document.getElementById('trade-list');
-            tradeListContainer.innerHTML = ''; // Clear previous content
-            
-            // Ensure trades have updated metrics before rendering
-            stat.trades.forEach(trade => {
-                const metrics = calculateTradeMetrics(trade);
-                trade.netMovement = metrics.netMovement;
-                trade.isProfitable = metrics.isProfitable;
-            });
-            saveData(); // Save updated trade metrics to localStorage
-
-            if (!stat.trades || stat.trades.length === 0) {
-                document.getElementById('no-trades-message').classList.remove('hidden');
-                tradeListContainer.classList.add('hidden');
-                return;
-            } else {
-                document.getElementById('no-trades-message').classList.add('hidden');
-                tradeListContainer.classList.remove('hidden');
-            }
-
-            // Render trades in the order they appear in the `stat.trades` array
-            // No custom sorting here, as the user wants the order from the source text
-            stat.trades.forEach(trade => {
-                let profitLossClass = '';
-                if (trade.netMovement > 0) {
-                    profitLossClass = 'profit-loss-green';
-                } else if (trade.netMovement < 0) {
-                    profitLossClass = 'profit-loss-red';
-                } else {
-                    profitLossClass = 'profit-loss-gray';
-                }
-
-                // Ensure price and percent are numbers for display
-                const fixationsString = trade.fixations.map(fix => {
-                    const price = parseFloat(fix.price);
-                    const percent = parseFloat(fix.percent);
-                    return `${isNaN(price) ? 'N/A' : price} (${isNaN(percent) ? 'N/A' : percent}%)`;
-                }).join(' ');
-
-                // Format date for display (DD.MM.YY)
-                let displayDate = 'Не добавлена';
-                if (trade.date) {
-                    const tradeDate = new Date(trade.date);
-                    if (!isNaN(tradeDate.getTime())) {
-                        displayDate = tradeDate.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit' });
-                    }
-                }
-
-                // Changed direction text to English
-                const directionText = trade.direction === 'long' ? '<span class="color-green">long</span>' : '<span class="color-red">short</span>';
-
-                const actionButtonsHtml = `
-                    <div class="flex justify-end space-x-2 text-sm mt-4">
-                        <button class="copy-trade-single-btn" data-trade-id="${trade.id}" title="Копировать сделку">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.347 9.347 0 0 0-1.077 1.077L2.92 10.746A1.897 1.897 0 0 0 2.25 12.164V17.25a2.25 2.25 0 0 0 2.25 2.25h10.5M12.75 3.75h-.525A3.75 3.75 0 0 0 9 7.5v.525m3.75-4.5H18A2.25 2.25 0 0 1 20.25 6v10.5a2.25 2.25 0 0 1-2.25 2.25h-2.525m-6.75-16.5h-1.05M2.25 12.75v5.176c0 1.14.717 2.158 1.77 2.515 1.134.382 2.457.062 3.42-1.077L15.75 9.75M12.75 3.75S15 7.5 15 7.5M6.75 12.75s2.25 3.75 2.25 3.75" />
-                            </svg>
-                        </button>
-                        <button class="delete-trade-btn text-red-500 hover:text-red-700 transition duration-200 ease-in-out p-1 rounded-full hover:bg-red-50" data-trade-id="${trade.id}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm6 3a1 1 0 100 2v1a1 1 0 102 0v-1a1 1 0 00-2 0z" clip-rule="evenodd"></path>
-                                    </svg>
-                            </button>
-                        </div>
-                    `;
-
-                const tradeCardHtml = `
-                    <div class="trade-card bg-white p-6 rounded-xl shadow-md cursor-pointer" data-trade-id="${trade.id}">
-                        <div class="flex justify-between items-center mb-2">
-                            <h4 class="text-lg font-semibold text-gray-800">${trade.coin} (${directionText})</h4>
-                            <span class="px-3 py-1 rounded-full text-sm font-bold ${profitLossClass}">
-                                Чистое движение: ${isNaN(trade.netMovement) ? 'N/A' : trade.netMovement.toFixed(2)}%
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-600 mb-2">ENTRY: ${isNaN(trade.entry) ? 'N/A' : trade.entry}</p>
-                        <p class="text-sm text-gray-600 mb-2">Маржа: X${isNaN(trade.margin) ? 'N/A' : trade.margin}</p>
-                        <p class="text-sm text-gray-600 mb-2">Фиксации: ${fixationsString}</p>
-                        <div class="trade-date-display-wrapper">
-                            <div class="date-wrapper" data-trade-id="${trade.id}">
-                                <span class="trade-date-display-text">${displayDate}</span>
-                                <input type="date" class="trade-date-input" onkeydown="return false;">
-                                <span class="calendar-icon">📅</span>
+                        const newCard = document.createElement('div');
+                        newCard.className = 'trade-card';
+                        newCard.dataset.tradeId = trade.id;
+                        newCard.style.animationDelay = `${index * 50}ms`;
+                        newCard.innerHTML = `
+                            <div class="flex justify-between items-start gap-4">
+                                <div>
+                                    <h4 class="text-lg font-semibold">${trade.coin} (${directionText})</h4>
+                                    <div class="text-sm text-[var(--text-secondary)] mt-1">
+                                        ENTRY: ${trade.entry} &bull; Маржа: X${trade.margin}
+                                    </div>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-sm font-bold ${profitLossClass} flex-shrink-0">
+                                    ${trade.netMovement.toFixed(2)}%
+                                </span>
                             </div>
-                        </div>
-                        ${actionButtonsHtml}
-                    </div>
-                `;
-                tradeListContainer.insertAdjacentHTML('beforeend', tradeCardHtml);
-            });
+                            <div class="text-sm text-[var(--text-secondary)] mt-3">Фиксации: ${fixationsString}</div>
+                            <div class="flex justify-between items-center mt-4">
+                                 <input type="date" value="${dateValue}" class="trade-date-input bg-transparent border-none p-0 text-[var(--text-secondary)]" title="Изменить дату">
+                                 <div class="flex gap-1">
+                                    <button class="copy-trade-single-btn p-1.5 rounded-md hover:bg-[var(--gray-bg)]" data-trade-id="${trade.id}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button>
+                                    <button class="delete-trade-btn p-1.5 rounded-md hover:bg-[var(--gray-bg)] text-red-500" data-trade-id="${trade.id}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+                                 </div>
+                            </div>`;
+                        
+                        newCard.addEventListener('click', (e) => {
+                            if (e.target.closest('button') || e.target.closest('input')) {
+                                return;
+                            }
+                            this.copySingleTrade(trade.id);
+                        });
 
-            // Add event listeners for trade actions
-            document.querySelectorAll('.delete-trade-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const tradeId = e.currentTarget.dataset.tradeId;
-                    confirmAction('Вы уверены, что хотите удалить эту сделку?', () => deleteTrade(currentStatisticId, tradeId));
-                });
-            });
+                        tradeListContainer.appendChild(newCard);
+                        newCard.classList.add('animate-fade-in-up');
+                    });
+                },
+                
+                sortTrades(trades) {
+                    const sortOrder = settings.sortTradesBy;
+                    return trades.sort((a, b) => {
+                        const aTimestamp = a.timestamp || 0;
+                        const bTimestamp = b.timestamp || 0;
+                        const aNetMovement = a.netMovement || 0;
+                        const bNetMovement = b.netMovement || 0;
 
-            // Add event listener for the new "Copy Trade" button
-            document.querySelectorAll('.copy-trade-single-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const tradeId = e.currentTarget.dataset.tradeId;
-                    const tradeToCopy = statistics[currentStatisticId].trades.find(trade => trade.id === tradeId);
-                    if (tradeToCopy) {
-                        const textToCopy = generateSingleTradeExportText(tradeToCopy);
-                        copyToClipboard(textToCopy);
+                        switch (sortOrder) {
+                            case 'date_asc': return aTimestamp - bTimestamp;
+                            case 'profit_desc': return bNetMovement - aNetMovement;
+                            case 'profit_asc': return aNetMovement - bNetMovement;
+                            case 'date_desc':
+                            default:
+                                return bTimestamp - aTimestamp;
+                        }
+                    });
+                },
+
+                calculateTradeMetrics(trade) {
+                    let totalContribution = 0;
+                    if (trade.fixations && trade.fixations.length > 0) {
+                        trade.fixations.forEach(fix => {
+                            const price = parseFloat(fix.price);
+                            const percent = parseFloat(fix.percent);
+                            if (isNaN(price) || isNaN(percent) || percent === 0) return;
+                            const entry = parseFloat(trade.entry);
+                            let movementDecimal = trade.direction === 'long' ? (price - entry) / entry : (entry - price) / entry;
+                            totalContribution += movementDecimal * (percent / 100);
+                        });
                     }
-                });
-            });
+                    const netMovementPercentage = totalContribution * 100 * parseFloat(trade.margin || 1);
+                    return { netMovement: netMovementPercentage };
+                },
 
-            // Add click listener for the trade card to open edit modal
-            document.querySelectorAll(`#trade-list .trade-card`).forEach(card => {
-                card.addEventListener('click', (e) => {
-                    // Only proceed if not clicking the delete button or date wrapper (which have their own handlers) or copy button
-                    if (!e.target.closest('.delete-trade-btn') && !e.target.closest('.date-wrapper') && !e.target.closest('.copy-trade-single-btn')) {
-                        const tradeId = e.currentTarget.dataset.tradeId;
-                        editTrade(currentStatisticId, tradeId);
+                calculateStatisticMetrics(statisticId) {
+                    const stat = statistics[statisticId];
+                    if (!stat || !stat.trades || stat.trades.length === 0) {
+                        return { totalTrades: 0, profitableTrades: 0, rejectedTrades: 0, breakevenTrades: 0, winRate: 0, totalNetMovement: 0 };
                     }
-                });
-            });
+                    let profitableTrades = 0, rejectedTrades = 0, breakevenTrades = 0, totalNetMovement = 0;
+                    stat.trades.forEach(trade => {
+                        const metrics = this.calculateTradeMetrics(trade);
+                        trade.netMovement = metrics.netMovement;
+                        if (trade.netMovement > 0) profitableTrades++;
+                        else if (trade.netMovement < 0) rejectedTrades++;
+                        else breakevenTrades++;
+                        totalNetMovement += trade.netMovement;
+                    });
+                    
+                    const winRate = (stat.trades.length > 0) ? (profitableTrades / stat.trades.length) * 100 : 0;
+                    return { totalTrades: stat.trades.length, profitableTrades, rejectedTrades, breakevenTrades, winRate, totalNetMovement };
+                },
 
-            // Event listener for the date-wrapper in trade cards
-            document.querySelectorAll('.trade-card .date-wrapper').forEach(wrapper => {
-                wrapper.addEventListener('click', (e) => {
-                    const tradeId = e.currentTarget.dataset.tradeId;
-                    const tradeCard = e.currentTarget.closest('.trade-card');
-                    const dateTextSpan = tradeCard.querySelector('.trade-date-display-text');
-                    const dateInput = tradeCard.querySelector('.trade-date-input');
+                parseAllTradesFromProvidedText(text) {
+                    const trades = [];
+                    const blocks = text.split('\n\n').filter(block => block.trim().length > 0);
 
-                    // Hide text, show input, set value, and focus
-                    dateTextSpan.classList.add('hidden');
-                    dateInput.classList.add('active'); // Use active for visibility and z-index
-                    dateInput.focus(); // Open the native date picker
+                    blocks.forEach((block, index) => {
+                        const lines = block.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                        if (lines.length === 0) return;
 
-                    // Pre-fill input if a date exists
-                    const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
-                    if (trade && trade.date) {
-                        const d = new Date(trade.date);
-                        const year = d.getFullYear();
-                        const month = (d.getMonth() + 1).toString().padStart(2, '0');
-                        const day = d.getDate().toString().padStart(2, '0');
-                        dateInput.value = `${year}-${month}-${day}`;
+                        let trade = { fixations: [] };
+                        const firstLine = lines[0];
+                        const coinDirectionMatch = firstLine.match(/^(.+?)\s*\((Лонг|Шорт|short|long|скальп)\)/i);
+
+                        if (coinDirectionMatch) {
+                            trade.coin = coinDirectionMatch[1].trim().toUpperCase();
+                            let direction = coinDirectionMatch[2].trim().toLowerCase();
+                            trade.direction = (direction === 'лонг' || direction === 'long' || direction === 'скальп') ? 'long' : 'short';
+                        } else {
+                            return; 
+                        }
+
+                        lines.slice(1).forEach(line => {
+                            if (line.startsWith('ENTRY:')) {
+                                trade.entry = parseFloat(line.replace('ENTRY:', '').trim());
+                            } else if (line.startsWith('Маржа:')) {
+                                trade.margin = parseFloat(line.replace('Маржа:', '').replace('X', '').trim());
+                            } else if (line.startsWith('Фиксации:')) {
+                                const fixationsString = line.replace('Фиксации:', '').trim();
+                                const fixationMatches = fixationsString.matchAll(/(\d+\.?\d*)\s*\((\d+\.?\d*)\%\)/g);
+                                for (const match of fixationMatches) {
+                                    trade.fixations.push({ price: parseFloat(match[1]), percent: parseFloat(match[2]) });
+                                }
+                            } else if (line.match(/^\d{2}\.\d{2}\.\d{2}$/) || line.startsWith('Дата:')) {
+                                const dateString = line.replace('Дата:', '').trim();
+                                const parts = dateString.split('.');
+                                if (parts.length === 3) {
+                                    trade.date = new Date(`20${parts[2]}`, parts[1] - 1, parts[0]).toISOString();
+                                }
+                            }
+                        });
+                        
+                        trade.id = `trade-${crypto.randomUUID()}`;
+                        const metrics = this.calculateTradeMetrics(trade);
+                        trade.netMovement = metrics.netMovement;
+                        trade.timestamp = new Date(trade.date || Date.now() - index * 1000).getTime();
+                        trades.push(trade);
+                    });
+                    return trades;
+                },
+                
+                openModal(modalId) {
+                    const modal = $(`#${modalId}`);
+                    if (modal) {
+                        modal.classList.add('active');
+                        if (modalId === 'add-trade-modal') {
+                            this.resetAddTradeForm();
+                        }
+                    }
+                },
+                
+                closeModal(modalId) {
+                    const modal = $(`#${modalId}`);
+                    if (modal) modal.classList.remove('active');
+                },
+
+                closeAllModals() {
+                    $$('.modal-overlay').forEach(modal => modal.classList.remove('active'));
+                },
+                
+                showToast(message) {
+                    const toast = $('#toast');
+                    toast.textContent = message;
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 3000);
+                },
+
+                confirmAction(message, callback) {
+                    $('#confirmation-message').textContent = message;
+                    confirmationCallback = callback;
+                    this.openModal('confirmation-modal');
+                },
+                
+                handleConfirmYes() {
+                    if (confirmationCallback) confirmationCallback();
+                    this.closeModal('confirmation-modal');
+                },
+
+                handleStatisticFormSubmit(e) {
+                    e.preventDefault();
+                    const statisticName = $('#statistic-name').value.trim();
+                    if (!statisticName) return;
+                    let newStatisticId = null;
+                    if (currentEditingStatisticIdForName) {
+                        statistics[currentEditingStatisticIdForName].name = statisticName;
+                        currentEditingStatisticIdForName = null;
                     } else {
-                        dateInput.value = '';
+                        newStatisticId = `stat-${crypto.randomUUID()}`;
+                        statistics[newStatisticId] = { name: statisticName, trades: [] };
                     }
-                });
-
-                // Handle change event for the native date input
-                wrapper.querySelector('.trade-date-input').addEventListener('change', (e) => {
-                    const tradeId = e.currentTarget.closest('.date-wrapper').dataset.tradeId;
-                    const selectedDate = e.target.value; //YYYY-MM-DD format
-                    updateTradeDate(currentStatisticId, tradeId, selectedDate);
-                    // Re-render is handled by updateTradeDate, which will hide the input
-                });
-
-                 // Handle blur event to hide input and update if necessary
-                wrapper.querySelector('.trade-date-input').addEventListener('blur', (e) => {
-                    const tradeId = e.currentTarget.closest('.date-wrapper').dataset.tradeId;
-                    const dateInput = e.currentTarget;
-                    const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
-
-                    let currentStoredDateFormatted = '';
-                    if (trade && trade.date) {
-                        const d = new Date(trade.date);
-                        currentStoredDateFormatted = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
+                    this.saveData();
+                    this.renderStatisticsList();
+                    this.closeModal('create-statistic-modal');
+                    if (addTradeInitiatedCreateStatistic && newStatisticId) {
+                        this.populateStatisticSelect(newStatisticId);
+                        this.openModal('add-trade-modal');
+                        addTradeInitiatedCreateStatistic = false;
                     }
+                },
+                
+                handleTradeFormSubmit(e) {
+                    e.preventDefault();
+                    const selectedStatisticId = $('#select-statistic').value;
+                    const coinName = $('#coin-name').value.trim().toUpperCase();
+                    const direction = $('#direction-hidden-input').value;
+                    const entryPrice = parseFloat($('#entry-price').value);
+                    const margin = parseFloat($('#margin').value);
 
-                    // Only call update if the value in the input is different from what's stored,
-                    // or if the input is now empty but a date was previously stored.
-                    if (dateInput.value !== currentStoredDateFormatted) {
-                        updateTradeDate(currentStatisticId, tradeId, dateInput.value);
+                    let fixations = [], totalFixationPercent = 0;
+                    $$('#fixations-container .flex').forEach(row => {
+                        const price = parseFloat(row.querySelector('.fixation-price').value);
+                        const percent = parseFloat(row.querySelector('.fixation-percent').value);
+                        if (!isNaN(price) && !isNaN(percent)) {
+                            fixations.push({ price, percent });
+                            totalFixationPercent += percent;
+                        }
+                    });
+
+                    if (totalFixationPercent > 100.001) {
+                        $('#fixation-total-warning').classList.remove('hidden');
+                        return;
+                    }
+                    $('#fixation-total-warning').classList.add('hidden');
+
+                    const targetStatisticId = currentEditingTrade ? currentStatisticId : selectedStatisticId;
+                    if (!targetStatisticId || !coinName || isNaN(entryPrice) || isNaN(margin) || !direction) return;
+
+                    if (currentEditingTrade) {
+                        const tradeIndex = statistics[currentStatisticId].trades.findIndex(t => t.id === currentEditingTrade.id);
+                        if (tradeIndex !== -1) {
+                            const tradeToUpdate = statistics[currentStatisticId].trades[tradeIndex];
+                            Object.assign(tradeToUpdate, { coin: coinName, direction, entry: entryPrice, fixations, margin, timestamp: tradeToUpdate.timestamp });
+                        }
                     } else {
-                        // If no change, just hide the input and show the text.
-                        // The text should already be correct based on the stored date.
-                        dateInput.classList.remove('active');
-                        dateInput.closest('.date-wrapper').querySelector('.trade-date-display-text').classList.remove('hidden');
+                        const newTrade = { id: `trade-${crypto.randomUUID()}`, coin: coinName, direction, entry: entryPrice, fixations, margin, date: new Date().toISOString(), timestamp: Date.now() };
+                        statistics[targetStatisticId].trades.push(newTrade);
                     }
-                });
-            });
-        }
+                    
+                    this.saveData();
+                    this.renderStatisticsList();
+                    this.closeModal('add-trade-modal');
+                    if (currentStatisticId === targetStatisticId) {
+                        this.renderTradeDetail(currentStatisticId);
+                    }
+                },
+                
+                handleAddTradeClick() {
+                    const statIds = Object.keys(statistics);
+                    if (statIds.length === 0) {
+                        addTradeInitiatedCreateStatistic = true;
+                        this.openModal('create-statistic-modal');
+                        return;
+                    }
+                    this.populateStatisticSelect();
+                    if (statIds.length === 1) {
+                        $('#select-statistic').value = statIds[0];
+                    }
+                    this.openModal('add-trade-modal');
+                },
+                
+                showStatisticsOverview() {
+                    $('#trade-detail-view').classList.add('hidden');
+                    $('#statistics-overview').classList.remove('hidden');
+                    this.renderStatisticsList();
+                },
 
+                editStatisticName(id) {
+                    currentEditingStatisticIdForName = id;
+                    const stat = statistics[id];
+                    $('#create-statistic-modal-title').textContent = 'Редактировать Статистику';
+                    $('#create-statistic-submit-btn').textContent = 'Обновить';
+                    $('#statistic-name').value = stat.name;
+                    this.openModal('create-statistic-modal');
+                },
 
-        // --- Modal Control Functions ---
+                deleteStatistic(id) {
+                    delete statistics[id];
+                    this.saveData();
+                    this.renderStatisticsList();
+                    if (currentStatisticId === id) {
+                        this.showStatisticsOverview();
+                        currentStatisticId = null;
+                    }
+                },
+                
+                editTrade(statisticId, tradeId) {
+                    currentEditingTrade = statistics[statisticId].trades.find(t => t.id === tradeId);
+                    if (!currentEditingTrade) return;
 
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-        }
+                    $('#add-trade-modal-title').textContent = 'Редактировать Сделку';
+                    $('#add-trade-submit-btn').textContent = 'Обновить';
+                    $('#select-statistic-container').classList.add('hidden');
+                    
+                    $('#coin-name').value = currentEditingTrade.coin;
+                    this.setDirectionSelector(currentEditingTrade.direction);
+                    $('#entry-price').value = currentEditingTrade.entry;
+                    $('#margin').value = currentEditingTrade.margin;
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-            // Reset forms on close
-            if (modalId === 'create-statistic-modal') {
-                document.getElementById('create-statistic-form').reset();
-                document.getElementById('create-statistic-modal-title').textContent = 'Создать Новую Статистику';
-                document.getElementById('create-statistic-submit-btn').textContent = 'Создать';
-                currentEditingStatisticIdForName = null;
-                addTradeInitiatedCreateStatistic = false; // Reset the flag
-            } else if (modalId === 'add-trade-modal') {
-                document.getElementById('add-trade-form').reset();
-                // Reset fixations to one field
-                const fixationsContainer = document.getElementById('fixations-container');
-                fixationsContainer.innerHTML = `
-                    <div class="flex items-center space-x-3 mb-3">
-                        <input type="number" step="any" class="fixation-price w-1/2" placeholder="Цена фиксации">
-                        <input type="number" step="any" min="0" max="100" class="fixation-percent w-1/2" placeholder="Процент (%)">
-                        <button type="button" class="add-fixation-btn bg-blue-500 text-white font-bold rounded-full">+</button>
-                    </div>
-                `;
-                addFixationListeners(); // Re-add listeners for the new plus button
-                document.getElementById('fixation-total-warning').classList.add('hidden');
-                document.getElementById('fixation-total-warning').classList.remove('active'); // Remove animation class
+                    const fixationsContainer = $('#fixations-container');
+                    fixationsContainer.innerHTML = '';
+                    currentEditingTrade.fixations.forEach(fix => this.addFixationField(fix.price, fix.percent));
+                    if (currentEditingTrade.fixations.length === 0) this.addFixationField();
+                    
+                    this.openModal('add-trade-modal');
+                },
+                
+                deleteTrade(statisticId, tradeId) {
+                    const stat = statistics[statisticId];
+                    if (stat) {
+                        stat.trades = stat.trades.filter(t => t.id !== tradeId);
+                        this.saveData();
+                        this.renderTradeDetail(statisticId);
+                        this.renderStatisticsList();
+                    }
+                },
+                
+                updateTradeDate(statisticId, tradeId, newDateString) {
+                    const trade = statistics[statisticId]?.trades.find(t => t.id === tradeId);
+                    if (trade) {
+                        trade.date = newDateString ? new Date(newDateString).toISOString() : null;
+                        trade.timestamp = newDateString ? new Date(newDateString).getTime() : Date.now();
+                        this.saveData();
+                        this.renderTradeDetail(statisticId);
+                    }
+                },
+                
+                resetAddTradeForm() {
+                    $('#add-trade-form').reset();
+                    $('#add-trade-modal-title').textContent = 'Добавить Сделку';
+                    $('#add-trade-submit-btn').textContent = 'Добавить';
+                    $('#select-statistic-container').classList.remove('hidden');
+                    $('#fixations-container').innerHTML = '';
+                    this.addFixationField();
+                    $('#margin').value = settings.defaultMargin;
+                    this.setDirectionSelector('long');
+                    currentEditingTrade = null;
+                },
 
-                document.getElementById('add-trade-modal-title').textContent = 'Добавить Новую Сделку';
-                document.getElementById('add-trade-submit-btn').textContent = 'Добавить Сделку';
-                document.getElementById('select-statistic-container').classList.remove('hidden'); // Show select for new trade
-                currentEditingTrade = null; // Clear editing flag
-
-            } else if (modalId === 'confirmation-modal') {
-                confirmationCallback = null;
-            } else if (modalId === 'results-modal') {
-                document.getElementById('results-additional-info').classList.add('hidden');
-                document.getElementById('results-details-btn').classList.remove('hidden'); // Show button on close
-            }
-        }
-
-        function confirmAction(message, callback) {
-            document.getElementById('confirmation-message').textContent = message;
-            confirmationCallback = callback;
-            openModal('confirmation-modal');
-        }
-
-        function showResults(statisticId) {
-            const metrics = calculateStatisticMetrics(statisticId);
-            document.getElementById('results-net-movement').textContent = `${isNaN(metrics.totalNetMovement) ? 'N/A' : metrics.totalNetMovement.toFixed(2)}%`;
-            document.getElementById('results-net-movement').className = `font-bold ${metrics.totalNetMovement > 0 ? 'color-green' : (metrics.totalNetMovement < 0 ? 'color-red' : 'color-gray')}`;
-
-            document.getElementById('results-total-trades').textContent = metrics.totalTrades;
-            document.getElementById('results-winrate').textContent = `${isNaN(metrics.winRate) ? 'N/A' : metrics.winRate.toFixed(2)}%`;
-            document.getElementById('results-winrate').className = `font-bold ${metrics.winRate > 50 ? 'color-green' : (metrics.winRate < 50 ? 'color-red' : 'color-gray')}`;
-
-            document.getElementById('results-successful-trades').textContent = metrics.profitableTrades;
-            document.getElementById('results-rejected-trades').textContent = metrics.rejectedTrades;
-            document.getElementById('results-breakeven-trades').textContent = metrics.breakevenTrades;
-
-            openModal('results-modal');
-        }
-
-        // --- CRUD Operations ---
-
-        // Statistic Actions
-        function editStatisticName(statisticId) {
-            currentEditingStatisticIdForName = statisticId;
-            const stat = statistics[statisticId];
-            if (stat) {
-                document.getElementById('create-statistic-modal-title').textContent = 'Редактировать Название Статистики';
-                document.getElementById('create-statistic-submit-btn').textContent = 'Обновить Название';
-                document.getElementById('statistic-name').value = stat.name;
-                openModal('create-statistic-modal');
-            }
-        }
-
-        function deleteStatistic(statisticId) {
-            delete statistics[statisticId];
-            saveData();
-            loadData(); // Ensure the global statistics object is updated from localStorage
-            renderStatisticsList();
-            closeModal('confirmation-modal');
-            // If the deleted statistic was the one currently in detail view, go back to list view
-            if (currentStatisticId === statisticId) {
-                document.getElementById('trade-detail-view').classList.add('hidden');
-                document.getElementById('statistics-overview').classList.remove('hidden');
-                currentStatisticId = null;
-            }
-        }
-
-        // Trade Actions
-        function editTrade(statisticId, tradeId) {
-            const stat = statistics[statisticId];
-            if (!stat) {
-                console.error('Статистика для редактирования сделки не найдена.');
-                return;
-            }
-            
-            // Ensure we get the latest trade object reference from the statistics array
-            currentEditingTrade = stat.trades.find(trade => trade.id === tradeId);
-            if (!currentEditingTrade) {
-                console.error('Сделка для редактирования не найдена.');
-                return;
-            }
-
-            document.getElementById('add-trade-modal-title').textContent = 'Редактировать Сделку';
-            document.getElementById('add-trade-submit-btn').textContent = 'Обновить Сделку';
-            document.getElementById('select-statistic-container').classList.add('hidden'); // Hide select when editing existing trade
-
-            // Populate form fields
-            document.getElementById('coin-name').value = currentEditingTrade.coin;
-            document.querySelector(`input[name="direction"]:checked`).checked = false; // Deselect existing radio
-            document.querySelector(`input[name="direction"][value="${currentEditingTrade.direction}"]`).checked = true;
-            document.getElementById('entry-price').value = currentEditingTrade.entry;
-            document.getElementById('margin').value = currentEditingTrade.margin;
-
-            // Populate fixations
-            const fixationsContainer = document.getElementById('fixations-container');
-            fixationsContainer.innerHTML = ''; // Clear existing
-            if (currentEditingTrade.fixations && currentEditingTrade.fixations.length > 0) {
-                currentEditingTrade.fixations.forEach((fix, index) => {
-                    const newFixationDiv = document.createElement('div');
-                    newFixationDiv.className = 'flex items-center space-x-3 mb-3';
-                    newFixationDiv.innerHTML = `
-                        <input type="number" step="any" class="fixation-price w-1/2" placeholder="Цена фиксации" value="${fix.price}" required>
-                        <input type="number" step="any" min="0" max="100" class="fixation-percent w-1/2" placeholder="Процент (%)" value="${fix.percent}" required>
-                        ${index === 0 ? `<button type="button" class="add-fixation-btn bg-blue-500 text-white font-bold rounded-full">+</button>` : `<button type="button" class="remove-fixation-btn bg-red-500 text-white font-bold rounded-full">-</button>`}
+                addFixationField(price = '', percent = '') {
+                    const container = $('#fixations-container');
+                    const isFirst = container.children.length === 0;
+                    const newField = document.createElement('div');
+                    newField.className = 'flex items-center gap-2';
+                    newField.innerHTML = `
+                        <input type="number" step="any" class="fixation-price form-input" placeholder="Цена" value="${price}">
+                        <input type="number" step="any" min="0" max="100" class="fixation-percent form-input" placeholder="%" value="${percent}">
+                        <button type="button" class="${isFirst ? 'add-fixation-btn text-green-500' : 'remove-fixation-btn text-red-500'} p-2 rounded-md hover:bg-[var(--gray-bg)]">
+                            ${isFirst ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>'}
+                        </button>
                     `;
-                    fixationsContainer.appendChild(newFixationDiv);
-                });
-            } else { // If no fixations, add a default empty one
-                 fixationsContainer.innerHTML = `
-                    <div class="flex items-center space-x-3 mb-3">
-                        <input type="number" step="any" class="fixation-price w-1/2" placeholder="Цена фиксации">
-                        <input type="number" step="any" min="0" max="100" class="fixation-percent w-1/2" placeholder="Процент (%)">
-                        <button type="button" class="add-fixation-btn bg-blue-500 text-white font-bold rounded-full">+</button>
-                    </div>
-                `;
-            }
-            addFixationListeners(); // Re-attach listeners for dynamically added/removed fields
+                    container.appendChild(newField);
+                },
 
-            openModal('add-trade-modal');
-        }
+                removeFixationField(button) {
+                    button.closest('.flex').remove();
+                },
 
-        function deleteTrade(statisticId, tradeId) {
-            const stat = statistics[statisticId];
-            if (!stat) {
-                console.error('Статистика для удаления сделки не найдена.');
-                return;
-            }
-            const statObj = statistics[statisticId];
-            if (statObj) {
-                statObj.trades = statObj.trades.filter(trade => trade.id !== tradeId);
-                saveData();
-                loadData(); // Re-load data after deletion to ensure UI consistency
-                renderTradeDetail(statisticId); // Re-render the detail view
-                renderStatisticsList(); // Update overall statistics display
-            }
-            closeModal('confirmation-modal');
-        }
+                handleDirectionSelection(clickedButton) {
+                    const value = clickedButton.dataset.value;
+                    this.setDirectionSelector(value);
+                },
 
-        function updateTradeDate(statisticId, tradeId, newDateString) {
-            const stat = statistics[statisticId];
-            if (stat) {
-                const trade = stat.trades.find(t => t.id === tradeId);
-                if (trade) {
-                    if (newDateString) {
-                        trade.date = new Date(newDateString).toISOString(); // Store as ISO string
-                    } else {
-                        trade.date = null; // Set to null for "Не добавлена"
+                setDirectionSelector(value) {
+                    $('#direction-hidden-input').value = value;
+                    $$('.direction-btn').forEach(btn => {
+                        btn.classList.remove('selected-long', 'selected-short');
+                    });
+                    const targetButton = $(`.direction-btn[data-value="${value}"]`);
+                    if (targetButton) {
+                        targetButton.classList.add(value === 'long' ? 'selected-long' : 'selected-short');
                     }
-                    trade.timestamp = generateTimestampId(); // Update timestamp on date change
-                    saveData();
-                    loadData(); // Re-load data after date update
-                    renderTradeDetail(statisticId); // Re-render the detail view to update date display
-                }
-            }
-        }
+                },
 
-        // Generates formatted text for a single statistic
-        function generateSingleStatisticExportText(statisticId) {
-            let exportContent = '';
-            const stat = statistics[statisticId];
-
-            if (!stat || stat.trades.length === 0) {
-                return `Статистика "${stat ? stat.name : 'Неизвестная статистика'}" не содержит сделок для экспорта.`;
-            }
-
-            exportContent += `--- Статистика: ${stat.name} ---\n\n`;
-            // Iterate through trades in their current order (which is the order from the source text)
-            stat.trades.forEach(trade => {
-                // Change direction text to English for export
-                const directionText = trade.direction === 'long' ? 'long' : 'short';
-                const fixationsString = trade.fixations.map(f => `${parseFloat(f.price)} (${parseFloat(f.percent)}%)`).join(' ');
-
-                let tradeDateString = 'Не добавлена';
-                if (trade.date) {
-                    const tradeDate = new Date(trade.date);
-                    if (!isNaN(tradeDate.getTime())) { // Ensure date is valid
-                        tradeDateString = tradeDate.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit' });
+                populateStatisticSelect(preSelectId = null) {
+                    const select = $('#select-statistic');
+                    select.innerHTML = '<option value="">-- Выберите статистику --</option>';
+                    Object.keys(statistics).forEach(id => {
+                        const option = document.createElement('option');
+                        option.value = id;
+                        option.textContent = statistics[id].name;
+                        select.appendChild(option);
+                    });
+                    if (preSelectId) select.value = preSelectId;
+                },
+                
+                copyToClipboard(text) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.left = '-9999px';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        this.showToast('Скопировано в буфер обмена!');
+                    } catch (err) {
+                        this.showToast('Ошибка при копировании');
+                    } finally {
+                        document.body.removeChild(textarea);
                     }
+                },
+
+                generateSingleTradeExportText(trade) {
+                    const directionText = trade.direction === 'long' ? 'long' : 'short';
+                    const fixationsString = trade.fixations.map(f => `${f.price} (${f.percent}%)`).join(' ');
+                    const tradeDateString = trade.date ? new Date(trade.date).toLocaleDateString('ru-RU') : 'Нет даты';
+                    const metrics = this.calculateTradeMetrics(trade);
+                    return `${trade.coin} (${directionText})\nЧистое движение: ${metrics.netMovement.toFixed(2)}%\nENTRY: ${trade.entry}\nМаржа: X${trade.margin}\nФиксации: ${fixationsString}\nДата: ${tradeDateString}`;
+                },
+                
+                copySingleTrade(tradeId) {
+                    const trade = statistics[currentStatisticId].trades.find(t => t.id === tradeId);
+                    if(trade) this.copyToClipboard(this.generateSingleTradeExportText(trade));
+                },
+
+                copyCurrentStatistic() {
+                    let exportContent = `--- Статистика: ${statistics[currentStatisticId].name} ---\n\n`;
+                    const sortedTrades = this.sortTrades([...statistics[currentStatisticId].trades]);
+                    sortedTrades.forEach(trade => {
+                        exportContent += this.generateSingleTradeExportText(trade) + '\n\n';
+                    });
+                    this.copyToClipboard(exportContent.trim());
+                },
+                
+                showResults(statisticId) {
+                    const metrics = this.calculateStatisticMetrics(statisticId);
+                    const contentEl = $('#results-content');
+                    contentEl.innerHTML = `
+                        <p>Чистое движение: <span class="font-bold ${metrics.totalNetMovement > 0 ? 'color-green' : metrics.totalNetMovement < 0 ? 'color-red' : 'color-gray'}">${metrics.totalNetMovement.toFixed(2)}%</span></p>
+                        <p>Винрейт: <span class="font-bold ${metrics.winRate > 50 ? 'color-green' : metrics.winRate < 50 ? 'color-red' : 'color-gray'}">${metrics.winRate.toFixed(2)}%</span></p>
+                        <p>Всего сделок: <span class="font-bold">${metrics.totalTrades}</span></p>
+                        <p>Успешных: <span class="font-bold color-green">${metrics.profitableTrades}</span></p>
+                        <p>Убыточных: <span class="font-bold color-red">${metrics.rejectedTrades}</span></p>
+                        <p>В безубыток: <span class="font-bold color-gray">${metrics.breakevenTrades}</span></p>
+                    `;
+                    this.openModal('results-modal');
+                },
+                
+                deleteAllStatistics() {
+                    statistics = {};
+                    this.saveData();
+                    this.renderStatisticsList();
+                    this.showStatisticsOverview();
+                },
+                
+                clearMemory() {
+                    localStorage.clear();
+                    window.location.reload();
+                },
+                
+                exportData() {
+                    const dataStr = JSON.stringify({ statistics, settings }, null, 2);
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    const exportFileDefaultName = 'trade_stats_backup.json';
+                    const linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+                },
+
+                importData(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            if (data.statistics && data.settings) {
+                                statistics = data.statistics;
+                                settings = data.settings;
+                                this.saveData();
+                                this.saveSettings();
+                                this.applySettings();
+                                this.renderStatisticsList();
+                                this.showStatisticsOverview();
+                                this.showToast('Данные успешно импортированы!');
+                            } else {
+                                this.showToast('Ошибка: неверный формат файла.');
+                            }
+                        } catch (error) {
+                            this.showToast('Ошибка при чтении файла.');
+                        }
+                    };
+                    reader.readAsText(file);
+                    event.target.value = '';
                 }
+            };
 
-                exportContent += `${trade.coin} (${directionText})\n`;
-                exportContent += `Чистое движение: ${isNaN(trade.netMovement) ? 'N/A' : trade.netMovement.toFixed(2)}%\n`;
-                exportContent += `ENTRY: ${isNaN(trade.entry) ? 'N/A' : trade.entry}\n`;
-                exportContent += `Маржа: X${isNaN(trade.margin) ? 'N/A' : trade.margin}\n`;
-                exportContent += `Фиксации: ${fixationsString}\n`;
-                exportContent += `Дата: ${tradeDateString}\n\n`;
-            });
-            return exportContent.trim(); // Remove leading/trailing newlines
-        }
-
-        // New function to generate formatted text for a single trade
-        function generateSingleTradeExportText(trade) {
-            const directionText = trade.direction === 'long' ? 'long' : 'short';
-            const fixationsString = trade.fixations.map(f => `${parseFloat(f.price)} (${parseFloat(f.percent)}%)`).join(' ');
-
-            let tradeDateString = 'Не добавлена';
-            if (trade.date) {
-                const tradeDate = new Date(trade.date);
-                if (!isNaN(tradeDate.getTime())) {
-                    tradeDateString = tradeDate.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit' });
-                }
-            }
-
-            let exportContent = '';
-            exportContent += `${trade.coin} (${directionText})\n`;
-            exportContent += `Чистое движение: ${isNaN(trade.netMovement) ? 'N/A' : trade.netMovement.toFixed(2)}%\n`;
-            exportContent += `ENTRY: ${isNaN(trade.entry) ? 'N/A' : trade.entry}\n`;
-            exportContent += `Маржа: X${isNaN(trade.margin) ? 'N/A' : trade.margin}\n`;
-            exportContent += `Фиксации: ${fixationsString}\n`;
-            exportContent += `Дата: ${tradeDateString}`;
-            
-            return exportContent.trim();
-        }
-
-
-        // Function to copy text to clipboard
-        function copyToClipboard(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                console.log('Текст скопирован в буфер обмена!');
-            } catch (err) {
-                console.error('Не удалось скопировать текст:', err);
-            }
-            document.body.removeChild(textarea);
-        }
-
-        // --- Event Listeners and Form Submissions ---
-
-        // Global listeners for main action buttons
-        document.getElementById('create-statistic-btn').addEventListener('click', () => {
-            closeModal('add-trade-modal'); // Close other modal if open
-            openModal('create-statistic-modal');
-        });
-
-        document.getElementById('add-trade-btn').addEventListener('click', () => {
-            closeModal('create-statistic-modal'); // Close other modal if open
-
-            const statIds = Object.keys(statistics);
-            
-            if (statIds.length === 0) {
-                console.warn('Пожалуйста, сначала создайте статистику.');
-                openModal('create-statistic-modal');
-                addTradeInitiatedCreateStatistic = true; // Set flag
-                return;
-            }
-
-            populateStatisticSelect();
-
-            // Auto-select statistic if only one statistic exists
-            if (statIds.length === 1) {
-                document.getElementById('select-statistic').value = statIds[0];
-            } else {
-                 document.getElementById('select-statistic').value = ""; // Deselect
-            }
-
-            openModal('add-trade-modal');
-        });
-
-        // Back button in trade detail view
-        document.getElementById('back-to-stats-btn').addEventListener('click', () => {
-            document.getElementById('trade-detail-view').classList.add('hidden');
-            document.getElementById('statistics-overview').classList.remove('hidden');
-            renderStatisticsList(); // Re-render to update metrics if trades were added/removed
-        });
-
-        // Confirmation Modal Buttons
-        document.getElementById('confirm-yes-btn').addEventListener('click', () => {
-            if (confirmationCallback) {
-                confirmationCallback();
-            }
-            closeModal('confirmation-modal'); // Close after action
-        });
-        document.getElementById('confirm-no-btn').addEventListener('click', () => {
-            closeModal('confirmation-modal');
-        });
-        document.getElementById('close-confirmation-modal-btn').addEventListener('click', () => closeModal('confirmation-modal'));
-
-
-        // Results Modal "Подробнее..." button
-        document.getElementById('results-details-btn').addEventListener('click', () => {
-            const additionalInfo = document.getElementById('results-additional-info');
-            const detailsBtn = document.getElementById('results-details-btn');
-            if (additionalInfo.classList.contains('hidden')) {
-                additionalInfo.classList.remove('hidden');
-                detailsBtn.classList.add('hidden'); // Hide the button
-            } else {
-                // This branch should ideally not be hit if the button hides itself on first click
-                additionalInfo.classList.add('hidden');
-                detailsBtn.classList.remove('hidden');
-            }
-        });
-
-        // Hotkey for adding trade (Ctrl+B / Ctrl+И)
-        document.addEventListener('keydown', (event) => {
-             if ((event.ctrlKey || event.metaKey) && (event.key === 'b' || event.key === 'и')) { // Ctrl+B or Ctrl+И
-                event.preventDefault();
-                 document.getElementById('add-trade-btn').click(); // Simulate click on Add Trade button
-            }
-        });
-
-
-        // Create/Edit Statistic Form Submission
-        document.getElementById('create-statistic-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const statisticName = document.getElementById('statistic-name').value.trim();
-
-            if (!statisticName) {
-                console.error('Название статистики не может быть пустым.');
-                return;
-            }
-
-            let newStatisticId = null;
-            if (currentEditingStatisticIdForName) {
-                // Editing existing statistic name
-                statistics[currentEditingStatisticIdForName].name = statisticName;
-            } else {
-                // Creating new statistic
-                newStatisticId = `stat-${crypto.randomUUID()}`;
-                statistics[newStatisticId] = {
-                    name: statisticName,
-                    trades: []
-                };
-            }
-
-            saveData();
-            loadData(); // Ensure the global statistics object is updated from localStorage
-            renderStatisticsList();
-            closeModal('create-statistic-modal');
-
-            // If "Add Trade" initiated this, open the Add Trade modal afterwards
-            if (addTradeInitiatedCreateStatistic && newStatisticId) {
-                // Pre-select the newly created statistic
-                populateStatisticSelect(newStatisticId);
-                openModal('add-trade-modal');
-                addTradeInitiatedCreateStatistic = false; // Reset flag
-            }
-        });
-
-        // Add/Edit Trade Form Submission
-        document.getElementById('add-trade-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const selectedStatisticId = document.getElementById('select-statistic').value;
-            const coinName = document.getElementById('coin-name').value.trim().toUpperCase(); // Auto-capitalize
-            const direction = document.querySelector('input[name="direction"]:checked').value;
-            const entryPrice = parseFloat(document.getElementById('entry-price').value);
-            const margin = parseFloat(document.getElementById('margin').value);
-            // Date is now always null on creation from this modal
-            const tradeDate = null;
-
-
-            const fixationPriceInputs = document.querySelectorAll('.fixation-price');
-            const fixationPercentInputs = document.querySelectorAll('.fixation-percent');
-
-            let fixations = [];
-            let totalFixationPercent = 0;
-
-            const warningElement = document.getElementById('fixation-total-warning'); // Define here for wider scope
-
-            // Collect valid fixations
-            for (let i = 0; i < fixationPriceInputs.length; i++) {
-                const priceValue = fixationPriceInputs[i].value.trim();
-                const percentValue = fixationPercentInputs[i].value.trim();
-
-                // If both are empty, skip this row (it's an empty placeholder or deleted row)
-                if (priceValue === "" && percentValue === "") {
-                    continue;
-                }
-
-                const price = parseFloat(priceValue);
-                const percent = parseFloat(percentValue);
-
-                // If either is NaN, log an error and skip this specific fixation, but allow form to continue
-                // User might have entered a partial row. We won't add this partial row.
-                if (isNaN(price) || isNaN(percent)) {
-                    console.error(`Ошибка: Некорректное или неполное значение фиксации в строке ${i + 1}. Цена: '${priceValue}', Процент: '${percentValue}'. Пропускаем эту фиксацию.`);
-                    continue;
-                }
-
-                if (percent < 0 || percent > 100) {
-                    console.error(`Ошибка: Процент фиксации (${percent}%) должен быть от 0 до 100 в строке ${i + 1}. Пропускаем эту фиксацию.`);
-                    continue;
-                }
-                fixations.push({ price, percent });
-                totalFixationPercent += percent;
-            }
-
-            // Critical validation: total fixation percent
-            if (fixations.length === 0) { // If after parsing, no valid fixations were found
-                // If the user didn't provide any fixations, default to 100% at entry price
-                if (!isNaN(entryPrice)) {
-                    fixations = [{ price: entryPrice, percent: 100 }];
-                    totalFixationPercent = 100;
-                } else {
-                    console.error('Невозможно установить фиксацию 100% по цене входа, так как цена входа не указана.');
-                    // This is a critical error if no fixations and no entry price.
-                    return; // Stop form submission
-                }
-            } else if (totalFixationPercent > 100.000001) { // Allow for tiny floating point errors
-                warningElement.classList.remove('hidden');
-                warningElement.classList.add('active'); // Add animation class
-                setTimeout(() => {
-                    warningElement.classList.remove('active');
-                }, 1500); // Remove after animation
-                console.error('Общий процент фиксаций не может превышать 100%.');
-                return; // Stop form submission
-            } else {
-                warningElement.classList.add('hidden');
-                warningElement.classList.remove('active'); // Ensure it's removed
-            }
-
-
-            // Determine the target statistic ID
-            const targetStatisticId = currentEditingTrade ? currentStatisticId : selectedStatisticId;
-
-            if (!targetStatisticId || !coinName || isNaN(entryPrice) || isNaN(margin)) {
-                console.error('Пожалуйста, заполните все обязательные поля.');
-                return;
-            }
-
-            if (currentEditingTrade) {
-                // Update existing trade: Find the actual trade object in the array and modify it
-                const stat = statistics[currentStatisticId];
-                if (stat) {
-                    const tradeIndex = stat.trades.findIndex(trade => trade.id === currentEditingTrade.id);
-                    if (tradeIndex !== -1) {
-                        stat.trades[tradeIndex].coin = coinName;
-                        stat.trades[tradeIndex].direction = direction;
-                        stat.trades[tradeIndex].entry = entryPrice;
-                        stat.trades[tradeIndex].fixations = fixations;
-                        stat.trades[tradeIndex].margin = margin;
-                        // Date remains unchanged as it's not in the modal.
-                        // Recalculate metrics for the updated trade
-                        const metrics = calculateTradeMetrics(stat.trades[tradeIndex]);
-                        stat.trades[tradeIndex].netMovement = metrics.netMovement;
-                        stat.trades[tradeIndex].isProfitable = metrics.isProfitable;
-                        stat.trades[tradeIndex].timestamp = generateTimestampId(); // Update timestamp on edit
-                    }
-                }
-            } else {
-                // Create new trade
-                const tradeToSave = {
-                    id: `trade-${crypto.randomUUID()}`,
-                    coin: coinName,
-                    direction: direction,
-                    entry: entryPrice,
-                    fixations: fixations,
-                    margin: margin,
-                    date: null, // Date is explicitly null on creation via modal
-                    timestamp: generateTimestampId() // Assign timestamp on creation
-                };
-                 // Add new trade to the correct statistic
-                if (statistics[targetStatisticId]) {
-                    statistics[targetStatisticId].trades.push(tradeToSave);
-                } else {
-                    console.error('Выбранная статистика не найдена.');
-                    return;
-                }
-            }
-
-
-            saveData();
-            // Explicitly load data immediately after saving to ensure we are rendering from the persisted state
-            loadData();
-            renderStatisticsList(); // Update overall statistics display
-            closeModal('add-trade-modal');
-            console.log("Модальное окно закрыто, и данные успешно сохранены."); // Debugging message
-
-            // If we are currently in a detail view, refresh it
-            if (currentStatisticId === targetStatisticId) {
-                renderTradeDetail(currentStatisticId);
-            }
-        });
-
-        // Dynamically add/remove fixation fields
-        function addFixationField() {
-            const container = document.getElementById('fixations-container');
-            const newFixationDiv = document.createElement('div');
-            newFixationDiv.className = 'flex items-center space-x-3 mb-3';
-            newFixationDiv.innerHTML = `
-                <input type="number" step="any" class="fixation-price w-1/2" placeholder="Цена фиксации">
-                <input type="number" step="any" min="0" max="100" class="fixation-percent w-1/2" placeholder="Процент (%)">
-                <button type="button" class="remove-fixation-btn bg-red-500 text-white font-bold rounded-full">-</button>
-            `;
-            container.appendChild(newFixationDiv);
-            addFixationListeners(); // Re-add listeners to all plus/minus buttons
-        }
-
-        function removeFixationField(button) {
-            const container = document.getElementById('fixations-container');
-            if (container.children.length > 1) { // Ensure at least one field remains
-                button.closest('.flex').remove();
-            } else {
-                // If only one field is left, clear its values instead of removing it
-                const priceInput = container.querySelector('.fixation-price');
-                const percentInput = container.querySelector('.fixation-percent');
-                if (priceInput) priceInput.value = '';
-                if (percentInput) percentInput.value = '';
-            }
-            updateFixationTotalWarning(); // Check total percentage after removal
-        }
-
-        function addFixationListeners() {
-            // Remove all existing listeners to prevent duplicates
-            // Get all current fixation elements within the container
-            const currentAddBtns = document.querySelectorAll('#fixations-container .add-fixation-btn');
-            const currentRemoveBtns = document.querySelectorAll('#fixations-container .remove-fixation-btn');
-            const currentPercentInputs = document.querySelectorAll('#fixations-container .fixation-percent');
-
-            currentAddBtns.forEach(btn => {
-                btn.removeEventListener('click', addFixationField);
-            });
-            currentRemoveBtns.forEach(btn => {
-                btn.removeEventListener('click', (e) => removeFixationField(e.target));
-            });
-            currentPercentInputs.forEach(input => {
-                input.removeEventListener('input', updateFixationTotalWarning);
-            });
-
-            // Add new listeners
-            currentAddBtns.forEach(btn => {
-                btn.addEventListener('click', addFixationField);
-            });
-            currentRemoveBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => removeFixationField(e.target));
-            });
-            currentPercentInputs.forEach(input => {
-                input.addEventListener('input', updateFixationTotalWarning);
-            });
-        }
-
-        // Checks and updates the warning message for total fixation percentage
-        function updateFixationTotalWarning() {
-            const fixationPercentInputs = document.querySelectorAll('.fixation-percent');
-            let total = 0;
-            fixationPercentInputs.forEach(input => {
-                const val = parseFloat(input.value);
-                if (!isNaN(val)) {
-                    total += val;
-                }
-            });
-
-            const warningElement = document.getElementById('fixation-total-warning');
-            if (total > 100.000001) { // Allow for tiny floating point errors
-                warningElement.classList.remove('hidden');
-                warningElement.classList.add('active'); // Add animation class
-            } else {
-                warningElement.classList.add('hidden');
-                warningElement.classList.remove('active'); // Ensure it's removed
-            }
-        }
-
-        // Populates the select dropdown in the Add Trade modal
-        function populateStatisticSelect(preSelectId = null) {
-            const select = document.getElementById('select-statistic');
-            select.innerHTML = '<option value="">-- Выберите статистику --</option>'; // Clear and add default option
-
-            Object.keys(statistics).forEach(id => {
-                const stat = statistics[id];
-                const option = document.createElement('option');
-                option.value = id;
-                option.textContent = stat.name;
-                select.appendChild(option);
-            });
-
-            if (preSelectId && statistics[preSelectId]) {
-                select.value = preSelectId;
-            }
-        }
-
-        // --- Initialize App ---
-        document.addEventListener('DOMContentLoaded', () => {
-            loadData();
-            renderStatisticsList();
-            addFixationListeners(); // Add listeners for the initial fixation field
-
-            // Attach event listeners for modal close buttons
-            document.getElementById('close-create-statistic-modal-btn').addEventListener('click', () => closeModal('create-statistic-modal'));
-            document.getElementById('close-add-trade-modal-btn').addEventListener('click', () => closeModal('add-trade-modal'));
-            document.getElementById('close-results-modal-btn').addEventListener('click', () => closeModal('results-modal'));
-
-            // If a default statistic was loaded, set it as current and render its details
-            if (currentStatisticId && Object.keys(statistics).length === 1) {
-                renderTradeDetail(currentStatisticId);
-            }
+            app.init();
         });
     </script>
 </body>
