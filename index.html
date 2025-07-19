@@ -1302,22 +1302,37 @@
                     this.copyToClipboard(exportContent.trim());
                 },
                 
-                animateCountUp(el, end, duration = 1000, isPercent = false) {
-                    let start = 0;
-                    const range = end - start;
-                    let current = start;
-                    const increment = end > start ? 1 : -1;
-                    const stepTime = Math.abs(Math.floor(duration / range));
-                    
-                    const timer = setInterval(() => {
-                        current += increment;
-                        const value = isPercent ? `${current.toFixed(2)}%` : Math.round(current);
-                        el.textContent = value;
-                        if (current == end) {
-                            clearInterval(timer);
-                            el.textContent = isPercent ? `${end.toFixed(2)}%` : end;
+                animateCountUp(el, end, duration = 800, isPercent = false) {
+                    if (!el) return;
+                    let startTimestamp = null;
+                    const startValue = 0;
+                    const endValue = parseFloat(end);
+
+                    if (isNaN(endValue)) return;
+
+                    const step = (timestamp) => {
+                        if (!startTimestamp) startTimestamp = timestamp;
+                        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                        const currentValue = progress * (endValue - startValue) + startValue;
+                        
+                        if (isPercent) {
+                            el.textContent = `${currentValue.toFixed(2)}%`;
+                        } else {
+                            el.textContent = Math.floor(currentValue);
                         }
-                    }, stepTime);
+
+                        if (progress < 1) {
+                            window.requestAnimationFrame(step);
+                        } else {
+                            if (isPercent) {
+                                el.textContent = `${endValue.toFixed(2)}%`;
+                            } else {
+                                el.textContent = Math.round(endValue);
+                            }
+                        }
+                    };
+
+                    window.requestAnimationFrame(step);
                 },
 
                 showResults(statisticId) {
@@ -1396,4 +1411,3 @@
     </script>
 </body>
 </html>
-
