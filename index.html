@@ -401,6 +401,12 @@
             to { opacity: 1; transform: translateX(0); }
         }
         .animate-slide-in-right { animation: slideInRight 0.5s ease-out forwards; }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .animate-slide-in-left { animation: slideInLeft 0.5s ease-out forwards; }
         
         @keyframes text-focus-in {
             0% { filter: blur(12px); opacity: 0; }
@@ -409,10 +415,15 @@
         
         @keyframes pulsate {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
-            70% { transform: scale(1.05); box-shadow: 0 0 10px 10px rgba(79, 70, 229, 0); }
+            70% { transform: scale(1.02); box-shadow: 0 0 10px 10px rgba(79, 70, 229, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
         }
         .pulsate-animation { animation: pulsate 2s infinite; }
+
+        .preview-item:hover {
+            transform: scale(1.03);
+            background-color: var(--bg-secondary);
+        }
     </style>
 </head>
 <body>
@@ -427,7 +438,7 @@
         </header>
 
         <div id="header-actions" class="flex flex-col sm:flex-row justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-8 animate-fade-in-up" style="animation-delay: 100ms;">
-            <button id="create-statistic-btn" class="btn btn-primary pulsate-animation">
+            <button id="create-statistic-btn" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                 Создать Статистику
             </button>
@@ -439,7 +450,7 @@
         <div id="statistics-overview">
             <div id="statistics-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             <div id="no-statistics-message" class="text-center text-gray-500 text-xl mt-16 hidden">
-                <p>Пока нет созданных статистик. Начните с создания новой!</p>
+                <p class="animate-fade-in-up">Пока нет созданных статистик. Начните с создания новой!</p>
             </div>
         </div>
 
@@ -613,10 +624,14 @@
                     this.loadSettings();
                     this.applySettings();
                     this.loadData();
-                    this.renderStatisticsList();
                     this.attachEventListeners();
-                    if (currentStatisticId) {
+                    this.renderStatisticsList();
+                    
+                    if (currentStatisticId && statistics[currentStatisticId]) {
                         this.renderTradeDetail(currentStatisticId);
+                    } else {
+                        $('#trade-detail-view').classList.add('hidden');
+                        $('#statistics-overview').classList.remove('hidden');
                     }
                 },
 
@@ -762,8 +777,14 @@
                     const statisticIds = Object.keys(statistics);
 
                     $('#add-trade-btn').style.display = statisticIds.length > 0 ? 'inline-flex' : 'none';
-                    $('#no-statistics-message').classList.toggle('hidden', statisticIds.length === 0);
+                    $('#no-statistics-message').classList.toggle('hidden', statisticIds.length > 0);
                     listContainer.classList.toggle('hidden', statisticIds.length === 0);
+                    
+                    if(statisticIds.length === 0) {
+                        $('#create-statistic-btn').classList.add('pulsate-animation');
+                    } else {
+                        $('#create-statistic-btn').classList.remove('pulsate-animation');
+                    }
 
                     statisticIds.forEach((id, index) => {
                         const stat = statistics[id];
@@ -827,9 +848,9 @@
                         const dateValue = trade.date ? new Date(trade.date).toISOString().split('T')[0] : '';
 
                         const newCard = document.createElement('div');
-                        newCard.className = 'trade-card';
+                        newCard.className = 'trade-card animate-slide-in-left';
                         newCard.dataset.tradeId = trade.id;
-                        newCard.style.animationDelay = `${index * 50}ms`;
+                        newCard.style.animationDelay = `${index * 60}ms`;
                         newCard.innerHTML = `
                             <div class="flex justify-between items-start gap-4">
                                 <div>
@@ -859,7 +880,6 @@
                         });
 
                         tradeListContainer.appendChild(newCard);
-                        newCard.classList.add('animate-fade-in-up');
                     });
                 },
                 
@@ -921,7 +941,6 @@
                     const modal = $(`#${modalId}`);
                     if (modal) {
                         modal.classList.add('active');
-                        modal.querySelector('.modal-content')?.classList.add('animate-fade-in-up');
                         if (modalId === 'add-trade-modal') {
                             this.resetAddTradeForm();
                             this.updateTradePreview();
@@ -1062,12 +1081,11 @@
 
                 deleteStatistic(id) {
                     delete statistics[id];
-                    this.saveData();
                     if (currentStatisticId === id) {
-                        this.showStatisticsOverview();
-                    } else {
-                        this.renderStatisticsList();
+                        currentStatisticId = null;
                     }
+                    this.saveData();
+                    this.showStatisticsOverview();
                 },
                 
                 editTrade(statisticId, tradeId) {
@@ -1128,7 +1146,8 @@
                     const container = $('#fixations-container');
                     const isFirst = container.children.length === 0;
                     const newField = document.createElement('div');
-                    newField.className = 'flex items-center gap-2';
+                    newField.className = 'flex items-center gap-2 animate-fade-in-up';
+                    newField.style.animationDuration = '0.3s';
                     newField.innerHTML = `
                         <input type="number" step="any" class="fixation-price form-input" placeholder="Цена" value="${price}">
                         <input type="number" step="any" min="0" max="100" class="fixation-percent form-input" placeholder="%" value="${percent}">
@@ -1141,10 +1160,12 @@
 
                 removeFixationField(button) {
                     const field = button.closest('.flex');
-                    field.style.transition = 'opacity 0.3s ease, transform 0.3s ease, height 0.3s ease';
+                    field.style.transition = 'opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease, margin 0.3s ease, padding 0.3s ease';
                     field.style.opacity = '0';
                     field.style.transform = 'translateX(-20px)';
-                    field.style.height = '0px';
+                    field.style.maxHeight = '0px';
+                    field.style.margin = '0';
+                    field.style.padding = '0';
                     setTimeout(() => field.remove(), 300);
                 },
 
@@ -1207,23 +1228,23 @@
                     const directionText = direction === 'long' ? `<span class="color-green font-semibold">LONG</span>` : `<span class="color-red font-semibold">SHORT</span>`;
 
                     previewContent.innerHTML = `
-                        <div class="p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
+                        <div class="preview-item p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
                             <div class="text-sm text-[var(--text-secondary)]">Монета</div>
                             <div class="text-xl font-bold">${coinName || '...'}</div>
                         </div>
-                        <div class="p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
+                        <div class="preview-item p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
                             <div class="text-sm text-[var(--text-secondary)]">Направление</div>
                             <div class="text-xl">${directionText}</div>
                         </div>
-                        <div class="p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
+                        <div class="preview-item p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
                             <div class="text-sm text-[var(--text-secondary)]">Чистое движение</div>
                             <div class="text-2xl font-bold ${netMoveColor}">${isNaN(netMovement) ? '0.00' : netMovement.toFixed(2)}%</div>
                         </div>
-                        <div class="p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
+                        <div class="preview-item p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
                             <div class="text-sm text-[var(--text-secondary)]">Маржа</div>
                             <div class="text-xl font-bold">X${isNaN(margin) ? settings.defaultMargin : margin}</div>
                         </div>
-                        <div class="p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
+                        <div class="preview-item p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
                             <div class="text-sm text-[var(--text-secondary)]">Статистика</div>
                             <div class="text-lg font-semibold truncate" title="${statisticName}">${statisticName}</div>
                         </div>
@@ -1281,18 +1302,43 @@
                     this.copyToClipboard(exportContent.trim());
                 },
                 
+                animateCountUp(el, end, duration = 1000, isPercent = false) {
+                    let start = 0;
+                    const range = end - start;
+                    let current = start;
+                    const increment = end > start ? 1 : -1;
+                    const stepTime = Math.abs(Math.floor(duration / range));
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        const value = isPercent ? `${current.toFixed(2)}%` : Math.round(current);
+                        el.textContent = value;
+                        if (current == end) {
+                            clearInterval(timer);
+                            el.textContent = isPercent ? `${end.toFixed(2)}%` : end;
+                        }
+                    }, stepTime);
+                },
+
                 showResults(statisticId) {
                     const metrics = this.calculateStatisticMetrics(statisticId);
                     const contentEl = $('#results-content');
                     contentEl.innerHTML = `
-                        <p>Чистое движение: <span class="font-bold ${metrics.totalNetMovement > 0 ? 'color-green' : metrics.totalNetMovement < 0 ? 'color-red' : 'color-gray'}">${metrics.totalNetMovement.toFixed(2)}%</span></p>
-                        <p>Винрейт: <span class="font-bold ${metrics.winRate > 50 ? 'color-green' : metrics.winRate < 50 ? 'color-red' : 'color-gray'}">${metrics.winRate.toFixed(2)}%</span></p>
-                        <p>Всего сделок: <span class="font-bold">${metrics.totalTrades}</span></p>
-                        <p>Успешных: <span class="font-bold color-green">${metrics.profitableTrades}</span></p>
-                        <p>Убыточных: <span class="font-bold color-red">${metrics.rejectedTrades}</span></p>
-                        <p>В безубыток: <span class="font-bold color-gray">${metrics.breakevenTrades}</span></p>
+                        <p>Чистое движение: <span id="res-net" class="font-bold ${metrics.totalNetMovement > 0 ? 'color-green' : metrics.totalNetMovement < 0 ? 'color-red' : 'color-gray'}">0.00%</span></p>
+                        <p>Винрейт: <span id="res-winrate" class="font-bold ${metrics.winRate > 50 ? 'color-green' : metrics.winRate < 50 ? 'color-red' : 'color-gray'}">0.00%</span></p>
+                        <p>Всего сделок: <span id="res-total" class="font-bold">0</span></p>
+                        <p>Успешных: <span id="res-profit" class="font-bold color-green">0</span></p>
+                        <p>Убыточных: <span id="res-loss" class="font-bold color-red">0</span></p>
+                        <p>В безубыток: <span id="res-be" class="font-bold color-gray">0</span></p>
                     `;
                     this.openModal('results-modal');
+                    
+                    this.animateCountUp($('#res-net'), metrics.totalNetMovement, 800, true);
+                    this.animateCountUp($('#res-winrate'), metrics.winRate, 800, true);
+                    this.animateCountUp($('#res-total'), metrics.totalTrades);
+                    this.animateCountUp($('#res-profit'), metrics.profitableTrades);
+                    this.animateCountUp($('#res-loss'), metrics.rejectedTrades);
+                    this.animateCountUp($('#res-be'), metrics.breakevenTrades);
                 },
                 
                 deleteAllStatistics() {
@@ -1350,3 +1396,4 @@
     </script>
 </body>
 </html>
+
