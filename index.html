@@ -119,12 +119,16 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary {
-            background-image: var(--accent-gradient);
+            background-image: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 50%, var(--accent-primary) 100%);
+            background-size: 200% 200%;
             color: white;
             box-shadow: 0 4px 15px -5px rgba(79, 70, 229, 0.6);
+            animation: gradient-animation 4s ease infinite;
         }
         .btn-primary:hover {
             transform: translateY(-2px) scale(1.02);
@@ -420,9 +424,27 @@
         }
         .pulsate-animation { animation: pulsate 2s infinite; }
 
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .preview-item:hover {
             transform: scale(1.03);
             background-color: var(--bg-secondary);
+        }
+        
+        .animate-delete {
+            transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease 0.1s, padding 0.3s ease 0.1s, margin 0.3s ease 0.1s;
+            opacity: 0;
+            transform: scale(0.9);
+            max-height: 0px !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -676,7 +698,7 @@
                             if (e.target.closest('.edit-statistic-name-btn')) {
                                 this.editStatisticName(id);
                             } else if (e.target.closest('.delete-statistic-btn')) {
-                                this.confirmAction('Удалить эту статистику и все ее сделки?', () => this.deleteStatistic(id));
+                                this.confirmAction('Удалить эту статистику и все ее сделки?', () => this.deleteStatistic(id, card));
                             } else {
                                 currentStatisticId = id;
                                 this.renderTradeDetail(id);
@@ -698,7 +720,8 @@
                         }
                         if (e.target.closest('.delete-trade-btn')) {
                             const tradeId = e.target.closest('.delete-trade-btn').dataset.tradeId;
-                            this.confirmAction('Удалить эту сделку?', () => this.deleteTrade(currentStatisticId, tradeId));
+                            const tradeCard = e.target.closest('.trade-card');
+                            this.confirmAction('Удалить эту сделку?', () => this.deleteTrade(currentStatisticId, tradeId, tradeCard));
                         }
                          if (e.target.matches('.direction-btn')) {
                             this.handleDirectionSelection(e.target);
@@ -933,7 +956,8 @@
                         totalNetMovement += trade.netMovement;
                     });
                     
-                    const winRate = (stat.trades.length > 0) ? (profitableTrades / stat.trades.length) * 100 : 0;
+                    const tradesForWinRate = stat.trades.length - breakevenTrades;
+                    const winRate = (tradesForWinRate > 0) ? (profitableTrades / tradesForWinRate) * 100 : 0;
                     return { totalTrades: stat.trades.length, profitableTrades, rejectedTrades, breakevenTrades, winRate, totalNetMovement };
                 },
                 
@@ -1079,13 +1103,17 @@
                     this.openModal('create-statistic-modal');
                 },
 
-                deleteStatistic(id) {
-                    delete statistics[id];
-                    if (currentStatisticId === id) {
-                        currentStatisticId = null;
-                    }
-                    this.saveData();
-                    this.showStatisticsOverview();
+                deleteStatistic(id, cardElement) {
+                    cardElement.classList.add('animate-delete');
+                    
+                    setTimeout(() => {
+                        delete statistics[id];
+                        if (currentStatisticId === id) {
+                            currentStatisticId = null;
+                        }
+                        this.saveData();
+                        this.showStatisticsOverview();
+                    }, 400);
                 },
                 
                 editTrade(statisticId, tradeId) {
@@ -1109,14 +1137,18 @@
                     this.openModal('add-trade-modal');
                 },
                 
-                deleteTrade(statisticId, tradeId) {
-                    const stat = statistics[statisticId];
-                    if (stat) {
-                        stat.trades = stat.trades.filter(t => t.id !== tradeId);
-                        this.saveData();
-                        this.renderTradeDetail(statisticId);
-                        this.renderStatisticsList();
-                    }
+                deleteTrade(statisticId, tradeId, cardElement) {
+                    cardElement.classList.add('animate-delete');
+                    
+                    setTimeout(() => {
+                        const stat = statistics[statisticId];
+                        if (stat) {
+                            stat.trades = stat.trades.filter(t => t.id !== tradeId);
+                            this.saveData();
+                            this.renderTradeDetail(statisticId);
+                            this.renderStatisticsList();
+                        }
+                    }, 400);
                 },
                 
                 updateTradeDate(statisticId, tradeId, newDateString) {
@@ -1160,13 +1192,8 @@
 
                 removeFixationField(button) {
                     const field = button.closest('.flex');
-                    field.style.transition = 'opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease, margin 0.3s ease, padding 0.3s ease';
-                    field.style.opacity = '0';
-                    field.style.transform = 'translateX(-20px)';
-                    field.style.maxHeight = '0px';
-                    field.style.margin = '0';
-                    field.style.padding = '0';
-                    setTimeout(() => field.remove(), 300);
+                    field.classList.add('animate-delete');
+                    setTimeout(() => field.remove(), 400);
                 },
 
                 handleDirectionSelection(clickedButton) {
