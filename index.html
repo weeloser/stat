@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="light">
+<html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,6 +105,7 @@
             font-size: 2.25rem;
             font-weight: 800;
             color: var(--text-primary);
+            animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
         }
         
         .btn {
@@ -126,7 +127,7 @@
             box-shadow: 0 4px 15px -5px rgba(79, 70, 229, 0.6);
         }
         .btn-primary:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.02);
             box-shadow: 0 8px 20px -5px rgba(79, 70, 229, 0.5);
         }
 
@@ -137,6 +138,7 @@
         }
         .btn-secondary:hover {
              background-color: var(--gray-bg);
+             transform: translateY(-2px);
         }
         
         .btn-icon {
@@ -145,10 +147,12 @@
             color: var(--text-secondary);
             padding: 0.6rem;
             border-radius: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .btn-icon:hover {
             background: var(--gray-bg);
             color: var(--accent-primary);
+            transform: rotate(15deg) scale(1.1);
         }
 
         .modal-overlay {
@@ -181,7 +185,7 @@
             overflow-y: auto;
             transform: scale(0.95) translateY(10px);
             opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
             position: relative;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
@@ -208,9 +212,11 @@
             padding: 0.5rem;
             border-radius: 99px;
             line-height: 1;
+            transition: transform 0.2s ease, background-color 0.2s ease;
         }
         .close-button:hover {
             background-color: var(--gray-bg);
+            transform: scale(1.1);
         }
         
         .form-group {
@@ -242,13 +248,13 @@
             border-radius: 1.5rem;
             padding: 1.5rem;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
             border: 1px solid var(--border-color);
             cursor: pointer;
             opacity: 0;
         }
         .statistic-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -4px rgba(0,0,0,0.07);
         }
         
@@ -257,13 +263,13 @@
             border-radius: 1rem;
             padding: 1.5rem;
             border: 1px solid var(--border-color);
-            transition: background-color 0.2s ease, transform 0.2s ease;
+            transition: background-color 0.2s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             opacity: 0;
         }
         .trade-card:hover {
             background-color: var(--bg-primary);
-            transform: translateY(-3px);
+            transform: translateY(-5px);
         }
 
         .profit-loss-green { background-color: var(--success-bg); color: var(--success-color); }
@@ -385,18 +391,28 @@
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-in-up {
-            animation: fadeInUp 0.5s ease-out forwards;
+        .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
+        .animate-slide-in-right { animation: slideInRight 0.5s ease-out forwards; }
+        
+        @keyframes text-focus-in {
+            0% { filter: blur(12px); opacity: 0; }
+            100% { filter: blur(0px); opacity: 1; }
+        }
+        
+        @keyframes pulsate {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 10px 10px rgba(79, 70, 229, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+        }
+        .pulsate-animation { animation: pulsate 2s infinite; }
     </style>
 </head>
 <body>
@@ -411,7 +427,7 @@
         </header>
 
         <div id="header-actions" class="flex flex-col sm:flex-row justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-8 animate-fade-in-up" style="animation-delay: 100ms;">
-            <button id="create-statistic-btn" class="btn btn-primary">
+            <button id="create-statistic-btn" class="btn btn-primary pulsate-animation">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                 Создать Статистику
             </button>
@@ -459,43 +475,54 @@
     </div>
 
     <div id="add-trade-modal" class="modal-overlay">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 850px;">
             <button class="close-button" data-modal-id="add-trade-modal">&times;</button>
             <h2 id="add-trade-modal-title" class="modal-title">Добавить Сделку</h2>
-            <form id="add-trade-form" class="space-y-4">
-                <div class="form-group" id="select-statistic-container">
-                    <label for="select-statistic" class="form-label">Статистика</label>
-                    <select id="select-statistic" class="form-select" required></select>
-                </div>
-                <div class="form-group">
-                    <label for="coin-name" class="form-label">Монета</label>
-                    <input type="text" id="coin-name" class="form-input" placeholder="Например: BTC/USDT" required>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="form-group">
-                        <label for="entry-price" class="form-label">Точка входа</label>
-                        <input type="number" step="any" id="entry-price" class="form-input" required>
+            <div class="grid md:grid-cols-2 gap-x-8">
+                <form id="add-trade-form" class="space-y-4">
+                    <div class="form-group" id="select-statistic-container">
+                        <label for="select-statistic" class="form-label">Статистика</label>
+                        <select id="select-statistic" class="form-select" required></select>
                     </div>
                     <div class="form-group">
-                        <label for="margin" class="form-label">Маржа (X)</label>
-                        <input type="number" step="any" id="margin" class="form-input" required>
+                        <label for="coin-name" class="form-label">Монета</label>
+                        <input type="text" id="coin-name" class="form-input" placeholder="Например: BTC/USDT" required>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label for="entry-price" class="form-label">Точка входа</label>
+                            <input type="number" step="any" id="entry-price" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="margin" class="form-label">Маржа (X)</label>
+                            <input type="number" step="any" id="margin" class="form-input" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Направление</label>
+                        <div id="direction-selector" class="flex rounded-lg border border-[var(--border-color)] p-1 space-x-1">
+                            <button type="button" data-value="long" class="direction-btn">LONG</button>
+                            <button type="button" data-value="short" class="direction-btn">SHORT</button>
+                        </div>
+                        <input type="hidden" id="direction-hidden-input" name="direction">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Фиксации</label>
+                        <div id="fixations-container" class="space-y-2"></div>
+                        <p id="fixation-total-warning" class="text-red-500 text-sm mt-2 hidden">Общий процент фиксаций не может превышать 100%.</p>
+                    </div>
+                    <button type="submit" id="add-trade-submit-btn" class="btn btn-primary w-full mt-4">Добавить</button>
+                </form>
+                <div id="trade-preview-pane" class="bg-[var(--bg-primary)] p-6 rounded-2xl border border-[var(--border-color)] flex flex-col">
+                    <h3 class="text-lg font-bold mb-4 text-[var(--text-primary)] flex-shrink-0">Предпросмотр</h3>
+                    <div id="preview-content" class="space-y-3 flex-grow">
+                    </div>
+                    <div id="preview-placeholder" class="text-center text-[var(--text-secondary)] m-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 opacity-50"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <p>Введите данные в форму, чтобы увидеть результат.</p>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Направление</label>
-                    <div id="direction-selector" class="flex rounded-lg border border-[var(--border-color)] p-1 space-x-1">
-                        <button type="button" data-value="long" class="direction-btn">LONG</button>
-                        <button type="button" data-value="short" class="direction-btn">SHORT</button>
-                    </div>
-                    <input type="hidden" id="direction-hidden-input" name="direction">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Фиксации</label>
-                    <div id="fixations-container" class="space-y-2"></div>
-                    <p id="fixation-total-warning" class="text-red-500 text-sm mt-2 hidden">Общий процент фиксаций не может превышать 100%.</p>
-                </div>
-                <button type="submit" id="add-trade-submit-btn" class="btn btn-primary w-full mt-4">Добавить</button>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -581,332 +608,6 @@
             const $ = (selector) => document.querySelector(selector);
             const $$ = (selector) => document.querySelectorAll(selector);
 
-            const VLADOV_STATISTIC_NAME = "Илья Власов - Грабитель ММ";
-            const ALL_USER_PROVIDED_TRADES_TEXT = `INJ (long)
-Чистое движение: 0.21%
-ENTRY: 11.345
-Маржа: X1
-Фиксации: 11.425 (30%) 11.345 (70%)
-18.06.25
-📅
-
-LINK (short)
-Чистое движение: 1.18%
-ENTRY: 12.925
-Маржа: X1
-Фиксации: 12.772 (100%)
-18.06.25
-📅
-
-AVAX (short)
-Чистое движение: 0.00%
-ENTRY: 268.25
-Маржа: X1
-Фиксации: 268.25 (100%)
-17.06.25
-📅
-
-ZKJ (Лонг)
-Чистое движение: -2.24%
-ENTRY: 0.4394
-Маржа: X0.25
-Фиксации: 0.4 (100%)
-Дата: 17.06.25
-
-PNUT (Лонг)
-Чистое движение: 0.00%
-ENTRY: 0.24207
-Маржа: X1
-Фиксации: 0.24207 (100%)
-Дата: 16.06.25
-
-JTO (Шорт)
-Чистое движение: -3.35%
-ENTRY: 2.164
-Маржа: X1
-Фиксации: 2.2366 (100%)
-Дата: 15.06.25
-
-AAVE (Лонг)
-Чистое движение: -2.49%
-ENTRY: 276.61
-Маржа: X1
-Фиксации: 269.72 (100%)
-Дата: 15.06.25
-
-LINK (Лонг)
-Чистое движение: -4.45%
-ENTRY: 13.544
-Маржа: X1
-Фиксации: 12.941 (100%)
-Дата: 13.06.25
-
-UNI (Шорт)
-Чистое движение: 7.25%
-ENTRY: 7.926
-Маржа: X1
-Фиксации: 7.638 (30%) 7.229 (70%)
-Дата: 12.06.25
-
-AVAAI (Лонг)
-Чистое движение: 1.16%
-ENTRY: 0.03954
-Маржа: X1
-Фиксации: 0.04107 (30%)
-Дата: 08.06.25
-
-LINK (Лонг)
-Чистое движение: 6.43%
-ENTRY: 13.819
-Маржа: X1
-Фиксации: 14.446 (30%) 14.819 (70%)
-Дата: 08.06.25
-
-WIF (Лонг)
-Чистое движение: -3.36%
-ENTRY: 0.8963
-Маржа: X1
-Фиксации: 0.8662 (100%)
-Дата: 07.06.25
-
-FARTCOIN (Лонг)
-Чистое движение: 1.68%
-ENTRY: 0.9951
-Маржа: X1
-Фиксации: 1.0509 (30%)
-Дата: 07.06.25
-
-POPCAT (Лонг)
-Чистое движение: 1.31%
-ENTRY: 0.3463
-Маржа: X1
-Фиксации: 0.3614 (30%)
-Дата: 07.06.25
-
-FARTCOIN (Лонг)
-Чистое движение: -2.38%
-ENTRY: 1.0507
-Маржа: X0.5
-Фиксации: 1.0007 (100%)
-Дата: 06.06.25
-
-LQTY (Шорт)
-Чистое движение: 6.44%
-ENTRY: 0.09687
-Маржа: X1
-Фиксации: 0.09063 (100%)
-Дата: 05.06.25
-
-APE (Шорт)
-Чистое движение: 6.77%
-ENTRY: 0.7417
-Маржа: X1
-Фиксации: 0.7015 (50%) 0.6815 (50%)
-Дата: 04.06.25
-
-ARC перезаход (Шорт)
-Чистое движение: 7.15%
-ENTRY: 0.04487
-Маржа: X1
-Фиксации: 0.04166 (100%)
-Дата: 04.06.25
-
-ARC (Шорт)
-Чистое движение: 0.00%
-ENTRY: 0.04482
-Маржа: X1
-Фиксации: 0.04482 (100%)
-Дата: 04.06.25
-
-FARTCOIN (Шорт)
-Чистое движение: -1.62%
-ENTRY: 1.085
-Маржа: X0.5
-Фиксации: 1.1201 (100%)
-Дата: 02.06.25
-
-AVAX (Лонг)
-Чистое движение: 0.00%
-ENTRY: 20.498
-Маржа: X1
-Фиксации: 20.498 (100%)
-Дата: 31.05.25
-
-AAVE (Лонг)
-Чистое движение: -3.35%
-ENTRY: 252.19
-Маржа: X1
-Фиксации: 243.74 (100%)
-Дата: 30.05.25
-
-INJ (скальп) (Шорт)
-Чистое движение: 0.00%
-ENTRY: 13.112
-Маржа: X1
-Фиксации: 13.112 (100%)
-Дата: 30.05.25
-
-Ondo (Шорт)
-Чистое движение: 5.35%
-ENTRY: 0.9014
-Маржа: X1
-Фиксации: 0.8731 (50%) 0.8332 (50%)
-Дата: 30.05.25
-
-INJ (Шорт)
-Чистое движение: 0.69%
-ENTRY: 14.124
-Маржа: X1
-Фиксации: 13.8 (30%)
-Дата: 30.05.25
-
-WIF (Шорт)
-Чистое движение: 6.44%
-ENTRY: 1.0681
-Маржа: X1
-Фиксации: 0.9993 (100%)
-Дата: 29.05.25
-
-FARTCOIN (Шорт)
-Чистое движение: 3.53%
-ENTRY: 1.2424
-Маржа: X0.5
-Фиксации: 1.1547 (100%)
-Дата: 29.05.25
-
-PEPE (Шорт)
-Чистое движение: 5.65%
-ENTRY: 0.0000140714
-Маржа: X1
-Фиксации: 0.0000136603 (30%) 0.0000131119 (70%)
-Дата: 29.05.25
-
-AAVE (Шорт)
-Чистое движение: -2.85%
-ENTRY: 261.31
-Маржа: X1
-Фиксации: 268.77 (100%)
-Дата: 28.05.25
-
-SUI (Шорт)
-Чистое движение: -3.28%
-ENTRY: 3.5275
-Маржа: X1
-Фиксации: 3.6432 (100%)
-Дата: 28.05.25
-
-TURBO (Лонг)
-Чистое движение: 0.00%
-ENTRY: 0.005209
-Маржа: X1
-Фиксации: 0.005209 (100%)
-Дата: 28.05.25
-
-LDO (Лонг)
-Чистое движение: 2.23%
-ENTRY: 0.9091
-Маржа: X1
-Фиксации: 0.9496 (50%)
-Дата: 27.05.25
-
-ai16Z (Лонг)
-Чистое движение: 5.61%
-ENTRY: 0.3014
-Маржа: X1
-Фиксации: 0.3183 (100%)
-Дата: 27.05.25
-
-RUNE (Лонг)
-Чистое движение: -1.97%
-ENTRY: 1.98
-Маржа: X1
-Фиксации: 1.941 (100%)
-Дата: 26.05.25
-
-FARTCOIN (Лонг)
-Чистое движение: -1.82%
-ENTRY: 1.514
-Маржа: X0.5
-Фиксации: 1.4588 (100%)
-Дата: 23.05.25
-
-Ethfi (Лонг)
-Чистое движение: -4.04%
-ENTRY: 1.2933
-Маржа: X1
-Фиксации: 1.2411 (100%)
-Дата: 23.05.25
-
-Fartcoin (Лонг)
-Чистое движение: 1.55%
-ENTRY: 1.5518
-Маржа: X1
-Фиксации: 1.6319 (30%)
-Дата: 23.05.25
-
-Aixbt (Лонг)
-Чистое движение: 4.63%
-ENTRY: 0.18543
-Маржа: X1
-Фиксации: 0.1917 (30%) 0.195 (70%)
-Дата: 21.05.25
-
-WCT (Лонг)
-Чистое движение: -2.58%
-ENTRY: 0.6911
-Маржа: X0.5
-Фиксации: 0.6554 (100%)
-Дата: 21.05.25
-
-Griffain (Лонг)
-Чистое движение: 4.47%
-ENTRY: 0.10263
-Маржа: X0.5
-Фиксации: 0.1118 (100%)
-Дата: 20.05.25
-
-AAVE (Лонг)
-Чистое движение: 7.10%
-ENTRY: 224.67
-Маржа: X1
-Фиксации: 233.17 (30%) 243.8 (70%)
-Дата: 19.05.25
-
-LINK (Лонг)
-Чистое движение: 5.86%
-ENTRY: 15.287
-Маржа: X1
-Фиксации: 15.722 (30%) 16.38 (70%)
-Дата: 19.05.25
-
-GRIFFAIN (Шорт)
-Чистое движение: 1.34%
-ENTRY: 0.10511
-Маржа: X1
-Фиксации: 0.1004 (30%)
-Дата: 18.05.25
-
-UNI (Лонг)
-Чистое движение: 1.79%
-ENTRY: 5.763
-Маржа: X0.5
-Фиксации: 5.969 (100%)
-Дата: 17.05.25
-
-PEPE (Шорт)
-Чистое движение: -2.29%
-ENTRY: 0.0000123186
-Маржа: X0.5
-Фиксации: 0.0000128829 (100%)
-Дата: 17.05.25
-
-AVAX (Шорт)
-Чистое движение: 0.00%
-ENTRY: 22.566
-Маржа: X1
-Фиксации: 22.566 (100%)
-Дата: 17.05.25`;
-
             const app = {
                 init() {
                     this.loadSettings();
@@ -914,7 +615,7 @@ ENTRY: 22.566
                     this.loadData();
                     this.renderStatisticsList();
                     this.attachEventListeners();
-                    if (currentStatisticId && Object.keys(statistics).length === 1) {
+                    if (currentStatisticId) {
                         this.renderTradeDetail(currentStatisticId);
                     }
                 },
@@ -941,6 +642,8 @@ ENTRY: 22.566
                     $('#delete-all-stats-btn').addEventListener('click', () => this.confirmAction('Вы уверены, что хотите удалить ВСЕ статистики?', () => this.deleteAllStatistics()));
                     $('#clear-memory-btn').addEventListener('click', () => this.confirmAction('Это действие удалит ВСЕ данные приложения. Продолжить?', () => this.clearMemory()));
                     
+                    $('#add-trade-form').addEventListener('input', () => this.updateTradePreview());
+
                     document.body.addEventListener('click', (e) => {
                         if (e.target.classList.contains('modal-overlay')) {
                             this.closeAllModals();
@@ -984,6 +687,7 @@ ENTRY: 22.566
                         }
                          if (e.target.matches('.direction-btn')) {
                             this.handleDirectionSelection(e.target);
+                            this.updateTradePreview();
                         }
                     });
                      document.body.addEventListener('change', (e) => {
@@ -991,13 +695,16 @@ ENTRY: 22.566
                             const tradeId = e.target.closest('.trade-card').dataset.tradeId;
                             this.updateTradeDate(currentStatisticId, tradeId, e.target.value);
                         }
+                         if (e.target.id === 'select-statistic') {
+                            this.updateTradePreview();
+                        }
                     });
                 },
                 
                 loadSettings() {
                     const savedSettings = localStorage.getItem('tradeStatisticsSettings');
                     const defaultSettings = {
-                        theme: 'light',
+                        theme: 'dark',
                         animationsDisabled: false,
                         sortTradesBy: 'date_desc',
                         defaultMargin: 1,
@@ -1033,23 +740,20 @@ ENTRY: 22.566
                     const storedData = localStorage.getItem('tradeStatistics');
                     if (storedData) {
                         statistics = JSON.parse(storedData);
-                    } else {
-                        this.initializeVlasovStatistic();
+                    }
+                    const storedCurrentStat = localStorage.getItem('currentStatisticId');
+                    if (storedCurrentStat && statistics[storedCurrentStat]) {
+                        currentStatisticId = storedCurrentStat;
                     }
                 },
 
                 saveData() {
                     localStorage.setItem('tradeStatistics', JSON.stringify(statistics));
-                },
-                
-                initializeVlasovStatistic() {
-                    const vlasovId = `stat-${crypto.randomUUID()}`;
-                    statistics[vlasovId] = {
-                        name: VLADOV_STATISTIC_NAME,
-                        trades: this.parseAllTradesFromProvidedText(ALL_USER_PROVIDED_TRADES_TEXT)
-                    };
-                    currentStatisticId = vlasovId;
-                    this.saveData();
+                    if (currentStatisticId) {
+                        localStorage.setItem('currentStatisticId', currentStatisticId);
+                    } else {
+                        localStorage.removeItem('currentStatisticId');
+                    }
                 },
                 
                 renderStatisticsList() {
@@ -1058,7 +762,7 @@ ENTRY: 22.566
                     const statisticIds = Object.keys(statistics);
 
                     $('#add-trade-btn').style.display = statisticIds.length > 0 ? 'inline-flex' : 'none';
-                    $('#no-statistics-message').classList.toggle('hidden', statisticIds.length > 0);
+                    $('#no-statistics-message').classList.toggle('hidden', statisticIds.length === 0);
                     listContainer.classList.toggle('hidden', statisticIds.length === 0);
 
                     statisticIds.forEach((id, index) => {
@@ -1184,7 +888,7 @@ ENTRY: 22.566
                         trade.fixations.forEach(fix => {
                             const price = parseFloat(fix.price);
                             const percent = parseFloat(fix.percent);
-                            if (isNaN(price) || isNaN(percent) || percent === 0) return;
+                            if (isNaN(price) || isNaN(percent) || percent === 0 || !trade.entry) return;
                             const entry = parseFloat(trade.entry);
                             let movementDecimal = trade.direction === 'long' ? (price - entry) / entry : (entry - price) / entry;
                             totalContribution += movementDecimal * (percent / 100);
@@ -1212,62 +916,18 @@ ENTRY: 22.566
                     const winRate = (stat.trades.length > 0) ? (profitableTrades / stat.trades.length) * 100 : 0;
                     return { totalTrades: stat.trades.length, profitableTrades, rejectedTrades, breakevenTrades, winRate, totalNetMovement };
                 },
-
-                parseAllTradesFromProvidedText(text) {
-                    const trades = [];
-                    const blocks = text.split('\n\n').filter(block => block.trim().length > 0);
-
-                    blocks.forEach((block, index) => {
-                        const lines = block.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                        if (lines.length === 0) return;
-
-                        let trade = { fixations: [] };
-                        const firstLine = lines[0];
-                        const coinDirectionMatch = firstLine.match(/^(.+?)\s*\((Лонг|Шорт|short|long|скальп)\)/i);
-
-                        if (coinDirectionMatch) {
-                            trade.coin = coinDirectionMatch[1].trim().toUpperCase();
-                            let direction = coinDirectionMatch[2].trim().toLowerCase();
-                            trade.direction = (direction === 'лонг' || direction === 'long' || direction === 'скальп') ? 'long' : 'short';
-                        } else {
-                            return; 
-                        }
-
-                        lines.slice(1).forEach(line => {
-                            if (line.startsWith('ENTRY:')) {
-                                trade.entry = parseFloat(line.replace('ENTRY:', '').trim());
-                            } else if (line.startsWith('Маржа:')) {
-                                trade.margin = parseFloat(line.replace('Маржа:', '').replace('X', '').trim());
-                            } else if (line.startsWith('Фиксации:')) {
-                                const fixationsString = line.replace('Фиксации:', '').trim();
-                                const fixationMatches = fixationsString.matchAll(/(\d+\.?\d*)\s*\((\d+\.?\d*)\%\)/g);
-                                for (const match of fixationMatches) {
-                                    trade.fixations.push({ price: parseFloat(match[1]), percent: parseFloat(match[2]) });
-                                }
-                            } else if (line.match(/^\d{2}\.\d{2}\.\d{2}$/) || line.startsWith('Дата:')) {
-                                const dateString = line.replace('Дата:', '').trim();
-                                const parts = dateString.split('.');
-                                if (parts.length === 3) {
-                                    trade.date = new Date(`20${parts[2]}`, parts[1] - 1, parts[0]).toISOString();
-                                }
-                            }
-                        });
-                        
-                        trade.id = `trade-${crypto.randomUUID()}`;
-                        const metrics = this.calculateTradeMetrics(trade);
-                        trade.netMovement = metrics.netMovement;
-                        trade.timestamp = new Date(trade.date || Date.now() - index * 1000).getTime();
-                        trades.push(trade);
-                    });
-                    return trades;
-                },
                 
                 openModal(modalId) {
                     const modal = $(`#${modalId}`);
                     if (modal) {
                         modal.classList.add('active');
+                        modal.querySelector('.modal-content')?.classList.add('animate-fade-in-up');
                         if (modalId === 'add-trade-modal') {
                             this.resetAddTradeForm();
+                            this.updateTradePreview();
+                            const previewPane = $('#trade-preview-pane');
+                            previewPane.classList.remove('animate-slide-in-right');
+                            setTimeout(() => previewPane.classList.add('animate-slide-in-right'), 10);
                         }
                     }
                 },
@@ -1375,7 +1035,9 @@ ENTRY: 22.566
                         return;
                     }
                     this.populateStatisticSelect();
-                    if (statIds.length === 1) {
+                    if (currentStatisticId) {
+                         $('#select-statistic').value = currentStatisticId;
+                    } else if (statIds.length === 1) {
                         $('#select-statistic').value = statIds[0];
                     }
                     this.openModal('add-trade-modal');
@@ -1384,6 +1046,8 @@ ENTRY: 22.566
                 showStatisticsOverview() {
                     $('#trade-detail-view').classList.add('hidden');
                     $('#statistics-overview').classList.remove('hidden');
+                    currentStatisticId = null;
+                    this.saveData();
                     this.renderStatisticsList();
                 },
 
@@ -1399,10 +1063,10 @@ ENTRY: 22.566
                 deleteStatistic(id) {
                     delete statistics[id];
                     this.saveData();
-                    this.renderStatisticsList();
                     if (currentStatisticId === id) {
                         this.showStatisticsOverview();
-                        currentStatisticId = null;
+                    } else {
+                        this.renderStatisticsList();
                     }
                 },
                 
@@ -1457,6 +1121,7 @@ ENTRY: 22.566
                     $('#margin').value = settings.defaultMargin;
                     this.setDirectionSelector('long');
                     currentEditingTrade = null;
+                    this.updateTradePreview();
                 },
 
                 addFixationField(price = '', percent = '') {
@@ -1467,7 +1132,7 @@ ENTRY: 22.566
                     newField.innerHTML = `
                         <input type="number" step="any" class="fixation-price form-input" placeholder="Цена" value="${price}">
                         <input type="number" step="any" min="0" max="100" class="fixation-percent form-input" placeholder="%" value="${percent}">
-                        <button type="button" class="${isFirst ? 'add-fixation-btn text-green-500' : 'remove-fixation-btn text-red-500'} p-2 rounded-md hover:bg-[var(--gray-bg)]">
+                        <button type="button" class="${isFirst ? 'add-fixation-btn text-green-500' : 'remove-fixation-btn text-red-500'} p-2 rounded-md hover:bg-[var(--gray-bg)] transition-transform hover:scale-110">
                             ${isFirst ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>'}
                         </button>
                     `;
@@ -1475,7 +1140,12 @@ ENTRY: 22.566
                 },
 
                 removeFixationField(button) {
-                    button.closest('.flex').remove();
+                    const field = button.closest('.flex');
+                    field.style.transition = 'opacity 0.3s ease, transform 0.3s ease, height 0.3s ease';
+                    field.style.opacity = '0';
+                    field.style.transform = 'translateX(-20px)';
+                    field.style.height = '0px';
+                    setTimeout(() => field.remove(), 300);
                 },
 
                 handleDirectionSelection(clickedButton) {
@@ -1492,6 +1162,72 @@ ENTRY: 22.566
                     if (targetButton) {
                         targetButton.classList.add(value === 'long' ? 'selected-long' : 'selected-short');
                     }
+                },
+                
+                updateTradePreview() {
+                    const form = $('#add-trade-form');
+                    const previewContent = $('#preview-content');
+                    const placeholder = $('#preview-placeholder');
+
+                    const coinName = form.querySelector('#coin-name').value.trim().toUpperCase();
+                    const direction = form.querySelector('#direction-hidden-input').value;
+                    const entryPrice = parseFloat(form.querySelector('#entry-price').value);
+                    const margin = parseFloat(form.querySelector('#margin').value);
+                    const statisticId = form.querySelector('#select-statistic').value;
+                    const statisticName = statisticId && statistics[statisticId] ? statistics[statisticId].name : 'Не выбрана';
+
+                    let fixations = [];
+                    form.querySelectorAll('#fixations-container .flex').forEach(row => {
+                        const price = parseFloat(row.querySelector('.fixation-price').value);
+                        const percent = parseFloat(row.querySelector('.fixation-percent').value);
+                        if (!isNaN(price) && !isNaN(percent) && percent > 0) {
+                            fixations.push({ price, percent });
+                        }
+                    });
+
+                    if (!coinName && isNaN(entryPrice)) {
+                        previewContent.innerHTML = '';
+                        placeholder.classList.remove('hidden');
+                        return;
+                    }
+
+                    placeholder.classList.add('hidden');
+
+                    const tempTrade = {
+                        entry: entryPrice,
+                        margin: isNaN(margin) ? settings.defaultMargin : margin,
+                        direction: direction,
+                        fixations: fixations
+                    };
+
+                    const metrics = this.calculateTradeMetrics(tempTrade);
+                    const netMovement = metrics.netMovement;
+
+                    const netMoveColor = netMovement > 0 ? 'color-green' : netMovement < 0 ? 'color-red' : 'color-gray';
+                    const directionText = direction === 'long' ? `<span class="color-green font-semibold">LONG</span>` : `<span class="color-red font-semibold">SHORT</span>`;
+
+                    previewContent.innerHTML = `
+                        <div class="p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
+                            <div class="text-sm text-[var(--text-secondary)]">Монета</div>
+                            <div class="text-xl font-bold">${coinName || '...'}</div>
+                        </div>
+                        <div class="p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
+                            <div class="text-sm text-[var(--text-secondary)]">Направление</div>
+                            <div class="text-xl">${directionText}</div>
+                        </div>
+                        <div class="p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
+                            <div class="text-sm text-[var(--text-secondary)]">Чистое движение</div>
+                            <div class="text-2xl font-bold ${netMoveColor}">${isNaN(netMovement) ? '0.00' : netMovement.toFixed(2)}%</div>
+                        </div>
+                        <div class="p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
+                            <div class="text-sm text-[var(--text-secondary)]">Маржа</div>
+                            <div class="text-xl font-bold">X${isNaN(margin) ? settings.defaultMargin : margin}</div>
+                        </div>
+                        <div class="p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">
+                            <div class="text-sm text-[var(--text-secondary)]">Статистика</div>
+                            <div class="text-lg font-semibold truncate" title="${statisticName}">${statisticName}</div>
+                        </div>
+                    `;
                 },
 
                 populateStatisticSelect(preSelectId = null) {
