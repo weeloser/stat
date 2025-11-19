@@ -17,7 +17,7 @@
             --accent: #6366f1;
             --accent-glow: rgba(99, 102, 241, 0.3);
             --success: #10b981;
-            --danger: #f43f5e;
+            --danger: #ff0000;
             --neutral: #64748b;
             --glass: rgba(15, 23, 42, 0.95);
             --border: rgba(255, 255, 255, 0.08);
@@ -35,10 +35,13 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-main);
             color: var(--text-main);
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s ease, color 0.3s ease;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
             padding-bottom: 90px; 
+        }
+        @media screen and (max-width: 768px) {
+            input, select, textarea { font-size: 16px !important; }
         }
         .glass-panel {
             background: var(--glass);
@@ -46,6 +49,7 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .btn-primary {
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -58,10 +62,13 @@
         }
         .btn-primary:active { transform: translateY(0) scale(0.98); }
         
-        .animate-enter { animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
-        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+        .animate-pop { animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; opacity: 0; transform: scale(0.8); }
         
-        .chart-draw { stroke-dasharray: 5000; stroke-dashoffset: 5000; animation: drawLine 1.5s ease-out forwards; }
+        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { to { opacity: 1; transform: scale(1); } }
+        
+        .chart-draw { stroke-dasharray: 5000; stroke-dashoffset: 5000; animation: drawLine 2.5s ease-out forwards; }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
         
         .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -74,14 +81,14 @@
         .modal-backdrop.active .modal-content { transform: scale(1) translateY(0); }
 
         .trade-card {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-left-width: 4px;
         }
-        .trade-card:active { transform: scale(0.99); }
+        .trade-card:active { transform: scale(0.98); }
         
         .highlight-pulse {
             animation: highlightGlow 2s ease-out forwards !important;
-            opacity: 1 !important; /* Фикс бага с исчезновением */
+            opacity: 1 !important;
             z-index: 20;
         }
         @keyframes highlightGlow {
@@ -92,10 +99,10 @@
 
         @media (min-width: 768px) {
             .trade-card:hover {
-                transform: translateY(-3px) scale(1.005);
+                transform: translateY(-4px) scale(1.01);
                 background: var(--bg-hover);
                 z-index: 10;
-                box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);
+                box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
             }
         }
 
@@ -114,7 +121,7 @@
             border: 1px solid var(--border);
             border-radius: 1rem;
             padding: 1.25rem;
-            transition: transform 0.2s;
+            transition: all 0.3s;
             cursor: default;
             display: flex;
             flex-direction: column;
@@ -123,7 +130,7 @@
             height: 100%;
         }
         .metric-card.clickable { cursor: pointer; }
-        .metric-card.clickable:hover { transform: translateY(-2px); border-color: var(--accent); }
+        .metric-card.clickable:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2); }
         
         .chart-tooltip {
             position: absolute;
@@ -137,10 +144,10 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
             z-index: 50;
             transform: translate(-50%, -100%);
-            margin-top: -10px;
+            margin-top: -15px;
             white-space: nowrap;
             opacity: 0;
-            transition: opacity 0.1s;
+            transition: opacity 0.15s;
         }
         .chart-cursor-line {
             position: absolute;
@@ -152,6 +159,33 @@
             pointer-events: none;
             opacity: 0;
             z-index: 40;
+            transition: opacity 0.15s;
+        }
+        
+        .circular-chart {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .circle-bg {
+            fill: none;
+            stroke: var(--danger);
+            stroke-width: 8;
+            opacity: 1;
+        }
+        .circle-fg {
+            fill: none;
+            stroke: var(--success);
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+        
+        .stat-value {
+            transition: color 0.3s;
         }
     </style>
 </head>
@@ -161,11 +195,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex items-center justify-between h-full">
                 <div class="flex items-center gap-3 cursor-pointer group" onclick="app.goHome()">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-lg transition-transform duration-300 active:scale-95">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-lg transition-transform duration-300 active:scale-95 group-hover:rotate-6">
                         <img src="https://i.postimg.cc/RFZsJw9d/image.png" class="w-5 h-5 object-contain" alt="W">
                     </div>
                     <div>
-                        <h1 class="text-lg font-bold tracking-tight leading-none">weeloser</h1>
+                        <h1 class="text-lg font-bold tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-[var(--text-main)] to-[var(--text-muted)]">weeloser</h1>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -186,8 +220,8 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                 <span class="text-[10px] font-medium">Главная</span>
             </button>
-            <button onclick="app.state.currentId ? app.openTradeModal() : app.openCreateModal()" class="flex flex-col items-center justify-center gap-1 text-[var(--accent)]">
-                <div class="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 transform -translate-y-4 border-4 border-[var(--bg-main)]">
+            <button onclick="app.state.currentId ? app.openTradeModal() : app.openCreateModal()" class="flex flex-col items-center justify-center gap-1 text-[var(--accent)] group">
+                <div class="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 transform -translate-y-4 border-4 border-[var(--bg-main)] group-active:scale-90 transition-transform">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 </div>
             </button>
@@ -206,7 +240,7 @@
                     <h2 class="text-2xl md:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">Статистика</h2>
                     <p class="text-[var(--text-muted)] text-sm font-medium">Ваши торговые сессии</p>
                 </div>
-                <button onclick="app.openCreateModal()" class="hidden md:flex btn-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg items-center gap-2">
+                <button onclick="app.openCreateModal()" class="hidden md:flex btn-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg items-center gap-2 hover:shadow-xl transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Новая сессия
                 </button>
@@ -214,7 +248,7 @@
 
             <div id="stats-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"></div>
             
-            <div id="empty-state" class="hidden flex-col items-center justify-center py-24 text-center animate-enter">
+            <div id="empty-state" class="hidden flex-col items-center justify-center py-24 text-center animate-pop">
                 <div class="w-20 h-20 bg-[var(--bg-card)] rounded-2xl flex items-center justify-center mb-6 shadow-lg border border-[var(--border)]">
                     <svg class="w-8 h-8 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                 </div>
@@ -264,23 +298,26 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                <div class="lg:col-span-2 glass-panel rounded-3xl p-5 md:p-6 relative group animate-enter shadow-xl border-t border-white/5">
+                <div class="lg:col-span-2 glass-panel rounded-3xl p-5 md:p-6 relative group animate-pop shadow-xl border-t border-white/5">
                     <div class="flex justify-between items-end mb-4 relative z-10 pointer-events-none">
                         <div>
                             <p class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">Рост депозита</p>
                             <h3 id="chart-total-pnl" class="text-3xl md:text-4xl font-bold tracking-tight">0.00%</h3>
                         </div>
                     </div>
-                    <div id="main-chart-container" class="h-[250px] md:h-[280px] w-full relative z-10 touch-none"></div>
+                    <div id="main-chart-container" class="h-[250px] md:h-[280px] w-full relative z-10 touch-pan-y"></div>
                     <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-main)]/50 to-transparent pointer-events-none"></div>
                 </div>
 
-                <div class="glass-panel rounded-3xl p-6 flex flex-col items-center justify-center relative animate-enter shadow-xl border-t border-white/5" style="animation-delay: 0.1s">
+                <div class="glass-panel rounded-3xl p-6 flex flex-col items-center justify-center relative animate-pop shadow-xl border-t border-white/5" style="animation-delay: 0.1s">
                     <p class="absolute top-6 left-6 text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Winrate</p>
-                    <div class="relative w-40 h-40 my-4 group">
-                        <svg id="winrate-chart" viewBox="0 0 100 100" class="transform -rotate-90 w-full h-full drop-shadow-2xl transition-transform duration-500"></svg>
+                    <div class="relative w-40 h-40 my-4 group touch-pan-y flex items-center justify-center">
+                        <svg id="winrate-chart" viewBox="0 0 100 100" class="circular-chart drop-shadow-2xl">
+                            <circle cx="50" cy="50" r="40" class="circle-bg"/>
+                            <circle id="winrate-circle" cx="50" cy="50" r="40" class="circle-fg" stroke-dasharray="251.327" stroke-dashoffset="251.327"/>
+                        </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center">
-                            <span id="winrate-text" class="text-3xl font-bold tracking-tighter">0%</span>
+                            <span id="winrate-text" class="text-2xl font-bold tracking-tighter transition-transform duration-300">0%</span>
                         </div>
                     </div>
                     <div class="flex w-full justify-between mt-auto px-2 text-sm font-medium">
@@ -351,35 +388,35 @@
             
             <div class="overflow-y-auto custom-scrollbar flex-1 pr-1">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                     <div class="metric-card">
+                     <div class="metric-card animate-pop" style="animation-delay: 0.05s">
                         <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Сделок</p>
                         <p id="rep-total" class="text-lg md:text-2xl font-bold">0</p>
                      </div>
-                     <div class="metric-card">
+                     <div class="metric-card animate-pop" style="animation-delay: 0.1s">
                         <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Winrate</p>
                         <p id="rep-winrate" class="text-lg md:text-2xl font-bold">0%</p>
                      </div>
-                     <div class="metric-card">
+                     <div class="metric-card animate-pop" style="animation-delay: 0.15s">
                         <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Win / Loss / BE</p>
                         <div class="flex justify-center gap-1 text-sm md:text-lg font-bold">
                             <span id="rep-w-count" class="text-[var(--success)]">0</span>/<span id="rep-l-count" class="text-[var(--danger)]">0</span>/<span id="rep-b-count" class="text-[var(--neutral)]">0</span>
                         </div>
                      </div>
-                     <div class="metric-card">
+                     <div class="metric-card animate-pop" style="animation-delay: 0.2s">
                         <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Profit Factor</p>
                         <p id="rep-pf" class="text-lg md:text-2xl font-bold">0</p>
                      </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-6">
-                     <div class="metric-card clickable" onclick="app.scrollToTrade(app.bestTradeId)">
+                     <div class="metric-card clickable animate-pop" style="animation-delay: 0.25s" onclick="app.scrollToTrade(app.bestTradeId)">
                          <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Лучшая сделка</p>
                          <div class="flex justify-between items-end w-full">
                              <span id="rep-best-coin" class="text-xs font-bold text-[var(--text-muted)]">---</span>
                              <span id="rep-best-pnl" class="text-lg font-bold text-[var(--success)]">0.00%</span>
                          </div>
                      </div>
-                     <div class="metric-card clickable" onclick="app.scrollToTrade(app.worstTradeId)">
+                     <div class="metric-card clickable animate-pop" style="animation-delay: 0.3s" onclick="app.scrollToTrade(app.worstTradeId)">
                          <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Худшая сделка</p>
                          <div class="flex justify-between items-end w-full">
                              <span id="rep-worst-coin" class="text-xs font-bold text-[var(--text-muted)]">---</span>
@@ -505,13 +542,20 @@
 
     <script>
         const app = {
-            data: JSON.parse(localStorage.getItem('weeloser_data')) || {},
-            config: JSON.parse(localStorage.getItem('weeloser_config')) || { theme: 'dark', sort: 'newest' },
+            data: {},
+            config: { theme: 'dark', sort: 'newest' },
             state: { currentId: null, editTradeId: null, direction: 'long' },
             bestTradeId: null,
             worstTradeId: null,
 
             init() {
+                try {
+                    const d = localStorage.getItem('weeloser_data');
+                    const c = localStorage.getItem('weeloser_config');
+                    if (d) this.data = JSON.parse(d);
+                    if (c) this.config = JSON.parse(c);
+                } catch(e) { console.error(e); }
+
                 this.applyTheme();
                 this.data.currentStatId && this.data[this.data.currentStatId] ? this.openStat(this.data.currentStatId) : this.renderDashboard();
                 document.getElementById('search-trade').addEventListener('input', (e) => this.renderTrades(e.target.value));
@@ -519,8 +563,10 @@
             },
 
             save() {
-                localStorage.setItem('weeloser_data', JSON.stringify(this.data));
-                localStorage.setItem('weeloser_config', JSON.stringify(this.config));
+                try {
+                    localStorage.setItem('weeloser_data', JSON.stringify(this.data));
+                    localStorage.setItem('weeloser_config', JSON.stringify(this.config));
+                } catch(e) { console.error("Storage error", e); }
             },
 
             applyTheme() { document.documentElement.setAttribute('data-theme', this.config.theme); },
@@ -563,7 +609,7 @@
 
                     const el = document.createElement('div');
                     el.style.animationDelay = `${index * 0.05}s`;
-                    el.className = 'glass-panel p-6 rounded-3xl cursor-pointer animate-enter relative group hover:border-[var(--accent)] transition-colors shadow-lg active:scale-[0.98]';
+                    el.className = 'glass-panel p-6 rounded-3xl cursor-pointer animate-pop relative group hover:border-[var(--accent)] transition-colors shadow-lg active:scale-[0.98]';
                     el.onclick = (e) => { if(!e.target.closest('.action-btn')) this.openStat(id); };
                     
                     el.innerHTML = `
@@ -634,7 +680,7 @@
                 list.innerHTML = '';
                 if (!stat.trades) stat.trades = [];
                 
-                let trades = stat.trades.map((t, i) => this.normalizeTrade(t, i)).filter(t => t.coin && t.coin.includes(query.toUpperCase()));
+                let trades = stat.trades.map((t, i) => this.normalizeTrade(t, i)).filter(t => t.coin && t.coin.toUpperCase().includes(query.toUpperCase()));
                 
                 if (this.config.sort === 'newest') trades.sort((a,b) => (b.ts - a.ts) || (b.originalIndex - a.originalIndex));
                 else if (this.config.sort === 'oldest') trades.sort((a,b) => (a.ts - b.ts) || (a.originalIndex - b.originalIndex));
@@ -643,7 +689,7 @@
                 this.updateCharts(trades);
 
                 if (trades.length === 0) {
-                    list.innerHTML = '<div class="text-center py-12 text-[var(--text-muted)] opacity-50 font-medium">Сделок не найдено</div>';
+                    list.innerHTML = '<div class="text-center py-12 text-[var(--text-muted)] opacity-50 font-medium animate-pop">Сделок не найдено</div>';
                     return;
                 }
 
@@ -665,7 +711,7 @@
                     el.className = `trade-card glass-panel p-4 md:p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center gap-5 border-l-4 transition-all animate-enter`;
                     el.style.borderColor = cardBorderColor;
                     el.style.borderLeftStyle = 'solid';
-                    el.style.animationDelay = `${Math.min(i * 0.03, 0.5)}s`;
+                    el.style.animationDelay = `${Math.min(i * 0.03, 0.3)}s`;
                     el.dataset.tradeId = t.id;
 
                     let totalFixPct = 0;
@@ -747,6 +793,24 @@
                 });
             },
 
+            animateNumbers(obj, start, end, duration = 1000, isPct = true) {
+                if (!obj) return;
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 4); 
+                    const current = start + (end - start) * ease;
+                    obj.innerText = (current > 0 && isPct ? '+' : '') + current.toFixed(2) + (isPct ? '%' : '');
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    } else {
+                        obj.innerText = (end > 0 && isPct ? '+' : '') + end.toFixed(2) + (isPct ? '%' : '');
+                    }
+                };
+                window.requestAnimationFrame(step);
+            },
+
             updateCharts(trades) {
                 const sorted = [...trades].sort((a,b) => (a.ts - b.ts) || (a.originalIndex - b.originalIndex));
                 
@@ -757,10 +821,12 @@
                 });
 
                 const container = document.getElementById('main-chart-container');
+                const totalEl = document.getElementById('chart-total-pnl');
+                
                 if(points.length < 1) {
                     container.innerHTML = '<div class="absolute inset-0 flex items-center justify-center text-[var(--text-muted)] opacity-50 text-sm">Мало данных для графика</div>';
-                    document.getElementById('chart-total-pnl').innerText = '0.00%';
-                    document.getElementById('chart-total-pnl').className = 'text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-muted)]';
+                    totalEl.innerText = '0.00%';
+                    totalEl.className = 'text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-muted)]';
                 } else {
                     const max = Math.max(0, ...points.map(p => p.y));
                     const min = Math.min(0, ...points.map(p => p.y));
@@ -845,9 +911,8 @@
                     });
                     
                     const total = points[points.length-1].y;
-                    const el = document.getElementById('chart-total-pnl');
-                    el.innerText = (total > 0 ? '+' : '') + total.toFixed(2) + '%';
-                    el.className = `text-3xl md:text-4xl font-bold tracking-tight ${total >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`;
+                    this.animateNumbers(totalEl, 0, total);
+                    totalEl.className = `text-3xl md:text-4xl font-bold tracking-tight ${total >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`;
                 }
 
                 let wins = 0, losses = 0, be = 0;
@@ -862,17 +927,15 @@
                 const m = this.calcMetrics(trades);
                 const winrate = m.winrate;
 
-                const c = 2 * Math.PI * 40; 
-                const winLen = (winrate / 100) * c;
-
-                const winDash = `${winLen} ${c}`;
+                const circumference = 2 * Math.PI * 40;
+                const offset = circumference - ((winrate / 100) * circumference);
                 
-                document.getElementById('winrate-chart').innerHTML = `
-                    <circle cx="50" cy="50" r="40" fill="none" stroke="var(--danger)" stroke-width="8"/>
-                    <circle cx="50" cy="50" r="40" fill="none" stroke="var(--success)" stroke-width="8" 
-                            stroke-dasharray="${winDash}" stroke-dashoffset="0" stroke-linecap="butt" class="transition-all duration-1000"/>
-                `;
-                document.getElementById('winrate-text').innerText = winrate + '%';
+                const circle = document.getElementById('winrate-circle');
+                if(circle) {
+                    circle.style.strokeDashoffset = offset;
+                }
+                
+                this.animateNumbers(document.getElementById('winrate-text'), 0, winrate, 1000, true);
                 document.getElementById('wins-count').innerText = wins;
                 document.getElementById('losses-count').innerText = losses;
                 document.getElementById('be-count').innerText = be;
@@ -938,7 +1001,6 @@
                 if (!id) return;
                 this.closeModal('modal-report');
                 
-                // Сброс поиска если элемент скрыт
                 const searchInput = document.getElementById('search-trade');
                 if (searchInput.value) {
                     searchInput.value = '';
@@ -970,23 +1032,25 @@
             },
 
             calcPnl(t) {
-                const fixes = t.fixes || t.fixations || [];
-                const dir = t.dir || t.direction || 'long';
-                
-                if(!fixes.length) {
-                    return 0;
-                }
-                
-                let total = 0;
-                fixes.forEach(f => {
-                    const p = parseFloat(f.price || f.p);
-                    const pct = parseFloat(f.percent || f.pct);
-                    if(p && pct) {
-                        const diff = (p - t.entry) / t.entry * 100;
-                        total += diff * (dir === 'long' ? 1 : -1) * t.margin * (pct / 100);
+                try {
+                    const fixes = t.fixes || t.fixations || [];
+                    const dir = t.dir || t.direction || 'long';
+                    
+                    if(!fixes.length) {
+                        return 0;
                     }
-                });
-                return total;
+                    
+                    let total = 0;
+                    fixes.forEach(f => {
+                        const p = parseFloat(f.price || f.p);
+                        const pct = parseFloat(f.percent || f.pct);
+                        if(!isNaN(p) && !isNaN(pct)) {
+                            const diff = (p - t.entry) / t.entry * 100;
+                            total += diff * (dir === 'long' ? 1 : -1) * t.margin * (pct / 100);
+                        }
+                    });
+                    return isNaN(total) ? 0 : total;
+                } catch(e) { return 0; }
             },
 
             calcMetrics(trades) {
@@ -1008,8 +1072,9 @@
             saveStat(e) {
                 e.preventDefault();
                 const name = document.getElementById('stat-name').value;
+                if (!name || !name.trim()) return; 
                 const id = 's-' + Date.now();
-                this.data[id] = { name, balance: 0, trades: [] };
+                this.data[id] = { name: name.trim(), balance: 0, trades: [] };
                 this.save();
                 this.closeModal('modal-create');
                 this.renderDashboard();
@@ -1064,7 +1129,7 @@
                 document.querySelectorAll('#fix-container > div').forEach(row => {
                     const p = parseFloat(row.querySelector('.fix-p').value);
                     const pct = parseFloat(row.querySelector('.fix-pct').value);
-                    if(p && pct) {
+                    if(!isNaN(p) && !isNaN(pct)) {
                         const raw = (p - entry) / entry * 100;
                         total += raw * (this.state.direction === 'long' ? 1 : -1) * margin * (pct / 100);
                     }
@@ -1075,43 +1140,48 @@
             },
             saveTrade(e) {
                 e.preventDefault();
-                const fixes = [];
-                let totalPct = 0;
-                document.querySelectorAll('#fix-container > div').forEach(row => {
-                    const p = parseFloat(row.querySelector('.fix-p').value);
-                    let pct = parseFloat(row.querySelector('.fix-pct').value);
-                    if (!isNaN(p) && !isNaN(pct)) {
-                         pct = parseFloat(pct.toFixed(2)); 
-                         totalPct += pct;
-                         fixes.push({ p, pct });
+                try {
+                    const fixes = [];
+                    let totalPct = 0;
+                    document.querySelectorAll('#fix-container > div').forEach(row => {
+                        const p = parseFloat(row.querySelector('.fix-p').value);
+                        let pct = parseFloat(row.querySelector('.fix-pct').value);
+                        if (!isNaN(p) && !isNaN(pct)) {
+                             pct = parseFloat(pct.toFixed(2)); 
+                             totalPct += pct;
+                             fixes.push({ p, pct });
+                        }
+                    });
+                    
+                    if(totalPct > 100.01) {
+                        this.showToast("Ошибка: Сумма фиксаций > 100%");
+                        return;
                     }
-                });
-                
-                if(totalPct > 100.01) {
-                    this.showToast("Ошибка: Сумма фиксаций > 100%");
-                    return;
-                }
-                
-                const dateVal = document.getElementById('trade-date').value;
-                const ts = dateVal ? new Date(dateVal).getTime() : Date.now();
-                const trade = {
-                    id: this.state.editTradeId || 't-' + Date.now(),
-                    ts: ts,
-                    coin: document.getElementById('trade-coin').value,
-                    entry: parseFloat(document.getElementById('trade-entry').value),
-                    margin: parseFloat(document.getElementById('trade-margin').value),
-                    dir: this.state.direction,
-                    fixes: fixes
-                };
-                const stat = this.data[this.state.currentId];
-                if(this.state.editTradeId) {
-                    const idx = stat.trades.findIndex(t => t.id === this.state.editTradeId);
-                    stat.trades[idx] = { ...stat.trades[idx], ...trade };
-                } else { stat.trades.push(trade); }
-                this.save();
-                this.closeModal('modal-trade');
-                this.renderTrades();
-                this.showToast('Сделка сохранена');
+                    
+                    const dateVal = document.getElementById('trade-date').value;
+                    const ts = dateVal ? new Date(dateVal).getTime() : Date.now();
+                    const trade = {
+                        id: this.state.editTradeId || 't-' + Date.now(),
+                        ts: ts,
+                        coin: document.getElementById('trade-coin').value.trim().toUpperCase(),
+                        entry: parseFloat(document.getElementById('trade-entry').value),
+                        margin: parseFloat(document.getElementById('trade-margin').value),
+                        dir: this.state.direction,
+                        fixes: fixes
+                    };
+                    
+                    if (!trade.coin || isNaN(trade.entry) || isNaN(trade.margin)) return;
+
+                    const stat = this.data[this.state.currentId];
+                    if(this.state.editTradeId) {
+                        const idx = stat.trades.findIndex(t => t.id === this.state.editTradeId);
+                        if (idx !== -1) stat.trades[idx] = { ...stat.trades[idx], ...trade };
+                    } else { stat.trades.push(trade); }
+                    this.save();
+                    this.closeModal('modal-trade');
+                    this.renderTrades();
+                    this.showToast('Сделка сохранена');
+                } catch (err) { console.error(err); this.showToast('Ошибка сохранения'); }
             },
             editTrade(id) {
                 const stat = this.data[this.state.currentId];
@@ -1143,11 +1213,13 @@
             closeSettings() { document.getElementById('settings-panel').classList.add('translate-x-full'); },
             changeSort(v) { this.config.sort = v; this.save(); if(this.state.currentId) this.renderTrades(); },
             exportData() {
-                const b = new Blob([JSON.stringify(this.data)], {type: 'application/json'});
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(b);
-                a.download = `weeloser_backup.json`;
-                a.click();
+                try {
+                    const b = new Blob([JSON.stringify(this.data)], {type: 'application/json'});
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(b);
+                    a.download = `weeloser_backup.json`;
+                    a.click();
+                } catch(e) { this.showToast('Ошибка экспорта'); }
             },
             importData(input) {
                 const f = input.files[0];
