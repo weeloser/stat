@@ -1,3 +1,1272 @@
-<!DOCTYPE html><html lang="ru" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Счетчик Статистики Pro</title><script src="https://cdn.tailwindcss.com"></script><link rel="icon" href="https://i.ibb.co/2Yg0Wn4/favicon.png" type="image/png"><style>:root{--bg-primary-light:#f4f7fe;--bg-secondary-light:#fff;--text-primary-light:#111827;--text-secondary-light:#4b5563;--border-light:#e5e7eb;--accent-primary:#4f46e5;--accent-secondary:#7c3aed;--accent-gradient:linear-gradient(135deg,var(--accent-primary) 0,var(--accent-secondary) 100%);--success-light:#10b981;--danger-light:#ef4444;--success-bg-light:#f0fdf4;--danger-bg-light:#fef2f2;--success-border-light:#a7f3d0;--danger-border-light:#fecaca;--gray-bg-light:#f3f4f6;--bg-primary-dark:#111827;--bg-secondary-dark:#1f2937;--text-primary-dark:#f9fafb;--text-secondary-dark:#9ca3af;--border-dark:#374151;--success-dark:#34d399;--danger-dark:#f87171;--success-bg-dark:#052e16;--danger-bg-dark:#450a0a;--success-border-dark:#15803d;--danger-border-dark:#b91c1c;--gray-bg-dark:#374151}[data-theme=light]{--bg-primary:var(--bg-primary-light);--bg-secondary:var(--bg-secondary-light);--text-primary:var(--text-primary-light);--text-secondary:var(--text-secondary-light);--border-color:var(--border-light);--success-color:var(--success-light);--danger-color:var(--danger-light);--success-bg:var(--success-bg-light);--danger-bg:var(--danger-bg-light);--success-border:var(--success-border-light);--danger-border:var(--danger-border-light);--gray-bg:var(--gray-bg-light)}[data-theme=dark]{--bg-primary:var(--bg-primary-dark);--bg-secondary:var(--bg-secondary-dark);--text-primary:var(--text-primary-dark);--text-secondary:var(--text-secondary-dark);--border-color:var(--border-dark);--success-color:var(--success-dark);--danger-color:var(--danger-dark);--success-bg:var(--success-bg-dark);--danger-bg:var(--danger-bg-dark);--success-border:var(--success-border-dark);--danger-border:var(--danger-border-dark);--gray-bg:var(--gray-bg-dark)}body{font-family:Inter,sans-serif;background-color:var(--bg-primary);color:var(--text-primary);transition:background-color .3s ease,color .3s ease;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}body.animations-disabled *,body.animations-disabled :after,body.animations-disabled :before{animation:none!important;transition:none!important}.container{width:100%;max-width:1000px;margin:2rem auto;padding:1rem}.main-header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;margin-bottom:2rem}.main-title{font-size:2.25rem;font-weight:800;color:var(--text-primary);animation:text-focus-in 1s cubic-bezier(.55,.085,.68,.53) both}.btn{padding:.75rem 1.5rem;border-radius:.75rem;font-weight:600;border:none;cursor:pointer;transition:all .2s ease-in-out;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;position:relative;overflow:hidden}.btn-primary{background-image:linear-gradient(135deg,var(--accent-primary) 0,var(--accent-secondary) 50%,var(--accent-primary) 100%);background-size:200% 200%;color:#fff;box-shadow:0 4px 15px -5px rgba(79,70,229,.6);animation:gradient-animation 4s ease infinite}.btn-primary:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 20px -5px rgba(79,70,229,.5)}.btn-secondary{background-color:var(--bg-secondary);color:var(--text-primary);border:1px solid var(--border-color)}.btn-secondary:hover{background-color:var(--gray-bg);transform:translateY(-2px)}.btn-icon{background:0 0;border:1px solid var(--border-color);color:var(--text-secondary);padding:.6rem;border-radius:.75rem;transition:all .3s cubic-bezier(.175,.885,.32,1.275)}.btn-icon:hover{background:var(--gray-bg);color:var(--accent-primary);transform:rotate(15deg) scale(1.1)}.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:1000;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}.modal-overlay.active{opacity:1;visibility:visible}.modal-content{background-color:var(--bg-secondary);border-radius:1.5rem;padding:2.5rem;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;transform:scale(.95) translateY(10px);opacity:0;transition:transform .4s cubic-bezier(.175,.885,.32,1.275),opacity .3s ease;position:relative;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}.modal-overlay.active .modal-content{transform:scale(1) translateY(0);opacity:1}.modal-title{font-size:1.875rem;font-weight:700;color:var(--text-primary);margin-bottom:2rem;text-align:center}.close-button{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-secondary);padding:.5rem;border-radius:99px;line-height:1;transition:transform .2s ease,background-color .2s ease}.close-button:hover{background-color:var(--gray-bg);transform:scale(1.1)}.form-group{margin-bottom:1.5rem}.form-label{display:block;font-weight:500;margin-bottom:.5rem;color:var(--text-secondary)}.form-input,.form-select{width:100%;padding:.75rem 1rem;border-radius:.75rem;border:1px solid var(--border-color);background-color:var(--bg-primary);color:var(--text-primary);transition:border-color .2s,box-shadow .2s}.form-input:focus,.form-select:focus{outline:none;border-color:var(--accent-primary);box-shadow:0 0 0 3px rgba(79,70,229,.2)}.statistic-card{background-color:var(--bg-secondary);border-radius:1.5rem;padding:1.5rem;box-shadow:0 4px 6px -1px rgba(0,0,0,.05),0 2px 4px -2px rgba(0,0,0,.05);transition:transform .3s cubic-bezier(.175,.885,.32,1.275),box-shadow .3s ease;border:1px solid var(--border-color);cursor:pointer;opacity:0}.statistic-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 10px 15px -3px rgba(0,0,0,.07),0 4px 6px -4px rgba(0,0,0,.07)}.trade-card{background-color:var(--bg-secondary);border-radius:1rem;padding:1.5rem;border:1px solid var(--border-color);transition:background-color .2s ease,transform .3s cubic-bezier(.175,.885,.32,1.275);cursor:pointer;opacity:0}.trade-card:hover{background-color:var(--bg-primary);transform:translateY(-5px)}.profit-loss-green{background-color:var(--success-bg);color:var(--success-color)}.profit-loss-red{background-color:var(--danger-bg);color:var(--danger-color)}.profit-loss-gray{background-color:var(--gray-bg);color:var(--text-secondary)}.color-green{color:var(--success-color)}.color-red{color:var(--danger-color)}.color-gray{color:var(--text-secondary)}#toast{position:fixed;bottom:-100px;left:50%;transform:translateX(-50%);background-color:#2c3e50;color:#fff;padding:1rem 2rem;border-radius:.5rem;box-shadow:0 5px 15px rgba(0,0,0,.2);z-index:2000;transition:all .5s cubic-bezier(.68,-.55,.27,1.55);font-weight:500}#toast.show{bottom:30px;transform:translateX(-50%) scale(1)}.settings-panel{position:fixed;top:0;right:-400px;width:100%;max-width:350px;height:100%;background-color:var(--bg-secondary);box-shadow:-10px 0 30px rgba(0,0,0,.1);z-index:1100;transition:right .4s cubic-bezier(.25,.46,.45,.94);padding:1.5rem;overflow-y:auto;border-left:1px solid var(--border-color)}.settings-panel.active{right:0}.settings-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}.settings-title{font-size:1.5rem;font-weight:700}.toggle-switch{position:relative;display:inline-block;width:50px;height:28px}.toggle-switch input{opacity:0;width:0;height:0}.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:28px}.slider:before{position:absolute;content:"";height:20px;width:20px;left:4px;bottom:4px;background-color:#fff;transition:.4s;border-radius:50%}input:checked+.slider{background-color:var(--accent-primary)}input:checked+.slider:before{transform:translateX(22px)}.direction-btn{transition:all .2s ease-in-out;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:2px solid transparent;flex:1;padding:.75rem;border-radius:.5rem}.direction-btn.selected-long{background-color:var(--success-bg);color:var(--success-color);border-color:var(--success-border);box-shadow:0 0 15px -5px var(--success-bg)}.direction-btn.selected-short{background-color:var(--danger-bg);color:var(--danger-color);border-color:var(--danger-border);box-shadow:0 0 15px -5px var(--danger-bg)}@keyframes fadeInUp{0%{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.animate-fade-in-up{animation:fadeInUp .5s ease-out forwards}@keyframes slideInRight{0%{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateY(0)}}.animate-slide-in-right{animation:slideInRight .5s ease-out forwards}@keyframes slideInLeft{0%{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateY(0)}}.animate-slide-in-left{animation:slideInLeft .5s ease-out forwards}@keyframes text-focus-in{0%{filter:blur(12px);opacity:0}to{filter:blur(0);opacity:1}}@keyframes pulsate{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(79,70,229,.4)}70%{transform:scale(1.02);box-shadow:0 0 10px 10px transparent}to{transform:scale(1);box-shadow:0 0 0 0 transparent}}@keyframes gradient-animation{0%{background-position:0 50%}50%{background-position:100% 50%}to{background-position:0 50%}}.pulsate-animation{animation:pulsate 2s infinite}.preview-item:hover{transform:scale(1.03);background-color:var(--bg-secondary)}.animate-delete{transition:opacity .3s ease,transform .3s ease,max-height .3s ease .1s,padding .3s ease .1s,margin .3s ease .1s;opacity:0;transform:scale(.9);max-height:0!important;padding-top:0!important;padding-bottom:0!important;margin-top:0!important;margin-bottom:0!important;overflow:hidden}</style></head><body><div id="app" class="container"><header class="main-header animate-fade-in-up"><h1 class="main-title">Статистика Сделок</h1><div class="flex items-center gap-4"><button id="settings-btn" class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></header><div id="header-actions" class="flex flex-col sm:flex-row justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-8 animate-fade-in-up" style="animation-delay:100ms"><button id="create-statistic-btn" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg> Создать Статистику</button><button id="add-trade-btn" class="btn btn-secondary">Добавить Сделку</button></div><div id="statistics-overview"><div id="statistics-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div><div id="no-statistics-message" class="text-center text-gray-500 text-xl mt-16 hidden"><p class="animate-fade-in-up">Пока нет созданных статистик. Начните с создания новой!</p></div></div><div id="trade-detail-view" class="hidden"><button id="back-to-stats-btn" class="btn btn-secondary mb-6"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg> Назад</button><h2 id="detail-statistic-name" class="text-3xl font-bold mb-6"></h2><div class="flex flex-wrap gap-4 mb-6"><button id="copy-current-statistic-btn" class="btn btn-secondary">Копировать</button><button id="show-results-btn" class="btn btn-secondary">Результаты</button></div><div id="trade-list" class="space-y-4"></div><div id="no-trades-message" class="text-center text-gray-500 text-xl mt-16 hidden"><p>В этой статистике пока нет сделок.</p></div></div></div><div id="create-statistic-modal" class="modal-overlay"><div class="modal-content"><button class="close-button" data-modal-id="create-statistic-modal">&times;</button><h2 id="create-statistic-modal-title" class="modal-title">Создать Статистику</h2><form id="create-statistic-form"><div class="form-group"><label for="statistic-name" class="form-label">Название Статистики</label><input type="text" id="statistic-name" class="form-input" placeholder="Например: Мои Сделки" required></div><button type="submit" id="create-statistic-submit-btn" class="btn btn-primary w-full">Создать</button></form></div></div><div id="add-trade-modal" class="modal-overlay"><div class="modal-content" style="max-width:850px"><button class="close-button" data-modal-id="add-trade-modal">&times;</button><h2 id="add-trade-modal-title" class="modal-title">Добавить Сделку</h2><div class="grid md:grid-cols-2 gap-x-8"><form id="add-trade-form" class="space-y-4"><div class="form-group" id="select-statistic-container"><label for="select-statistic" class="form-label">Статистика</label><select id="select-statistic" class="form-select" required></select></div><div class="form-group"><label for="coin-name" class="form-label">Монета</label><input type="text" id="coin-name" class="form-input" placeholder="Например: BTC/USDT" required></div><div class="grid grid-cols-2 gap-4"><div class="form-group"><label for="entry-price" class="form-label">Точка входа</label><input type="number" step="any" id="entry-price" class="form-input" required></div><div class="form-group"><label for="margin" class="form-label">Маржа (X)</label><input type="number" step="any" id="margin" class="form-input" required></div></div><div class="form-group"><label class="form-label">Направление</label><div id="direction-selector" class="flex rounded-lg border border-[var(--border-color)] p-1 space-x-1"><button type="button" data-value="long" class="direction-btn">LONG</button><button type="button" data-value="short" class="direction-btn">SHORT</button></div><input type="hidden" id="direction-hidden-input" name="direction"></div><div class="form-group"><label class="form-label">Фиксации</label><div id="fixations-container" class="space-y-2"></div><p id="fixation-total-warning" class="text-red-500 text-sm mt-2 hidden">Общий процент фиксаций не может превышать 100%.</p></div><button type="submit" id="add-trade-submit-btn" class="btn btn-primary w-full mt-4">Добавить</button></form><div id="trade-preview-pane" class="bg-[var(--bg-primary)] p-6 rounded-2xl border border-[var(--border-color)] flex flex-col"><h3 class="text-lg font-bold mb-4 text-[var(--text-primary)] flex-shrink-0">Предпросмотр</h3><div id="preview-content" class="space-y-3 flex-grow"></div><div id="preview-placeholder" class="text-center text-[var(--text-secondary)] m-auto"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 opacity-50"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg><p>Введите данные в форму, чтобы увидеть результат.</p></div></div></div></div></div><div id="confirmation-modal" class="modal-overlay"><div class="modal-content text-center"><h3 id="confirmation-message" class="text-xl font-semibold mb-6">Вы уверены?</h3><div class="flex justify-center gap-4"><button id="confirm-yes-btn" class="btn bg-red-600 text-white hover:bg-red-700">Да</button><button id="confirm-no-btn" class="btn btn-secondary">Отмена</button></div></div></div><div id="results-modal" class="modal-overlay"><div class="modal-content"><button class="close-button" data-modal-id="results-modal">&times;</button><h2 class="modal-title">Результаты</h2><div id="results-content" class="space-y-3 text-lg text-center"></div></div></div><div id="settings-panel" class="settings-panel"><div class="settings-header"><h3 class="settings-title">Настройки</h3><button id="close-settings-btn" class="close-button">&times;</button></div><div class="space-y-6"><div class="form-group"><label class="form-label flex justify-between items-center"><span>Темная тема</span><label class="toggle-switch"><input type="checkbox" id="theme-toggle"><span class="slider"></span></label></label></div><div class="form-group"><label class="form-label flex justify-between items-center"><span>Отключить анимации</span><label class="toggle-switch"><input type="checkbox" id="animations-toggle"><span class="slider"></span></label></label></div><div class="form-group"><label for="sort-trades-by" class="form-label">Сортировать сделки по</label><select id="sort-trades-by" class="form-select"><option value="date_desc">Сначала новые</option><option value="date_asc">Сначала старые</option><option value="profit_desc">Самые прибыльные</option><option value="profit_asc">Самые убыточные</option></select></div><div class="form-group"><label for="default-margin" class="form-label">Маржа по умолчанию</label><input type="number" id="default-margin" class="form-input" placeholder="1"></div><div class="space-y-3"><button id="export-data-btn" class="btn btn-secondary w-full">Экспорт данных</button><button id="import-data-btn" class="btn btn-secondary w-full">Импорт данных</button><input type="file" id="import-file-input" class="hidden" accept=".json"></div><div class="border-t border-dashed pt-6 mt-6 space-y-3 border-red-500/50"><button id="delete-all-stats-btn" class="btn bg-red-600/10 text-red-500 hover:bg-red-600/20 w-full">Удалить все статистики</button><button id="clear-memory-btn" class="btn bg-red-600/10 text-red-500 hover:bg-red-600/20 w-full">Очистить память</button></div></div></div><div id="toast"></div><script>document.addEventListener("DOMContentLoaded",(()=>{let e={},t=null,i=null,n=null,s=null,a=!1,o={};const d=t=>document.querySelector(t),l=t=>document.querySelectorAll(t),c={init(){this.loadSettings(),this.applySettings(),this.loadData(),this.attachEventListeners(),this.renderStatisticsList(),t&&e[t]?(this.renderTradeDetail(t),localStorage.setItem("currentStatisticId",t)):(d("#trade-detail-view").classList.add("hidden"),d("#statistics-overview").classList.remove("hidden"))},attachEventListeners(){d("#create-statistic-btn").addEventListener("click",()=>this.openModal("create-statistic-modal")),d("#add-trade-btn").addEventListener("click",()=>this.handleAddTradeClick()),d("#back-to-stats-btn").addEventListener("click",()=>this.showStatisticsOverview()),d("#create-statistic-form").addEventListener("submit",e=>this.handleStatisticFormSubmit(e)),d("#add-trade-form").addEventListener("submit",e=>this.handleTradeFormSubmit(e)),d("#confirm-yes-btn").addEventListener("click",()=>this.handleConfirmYes()),d("#confirm-no-btn").addEventListener("click",()=>this.closeModal("confirmation-modal")),d("#copy-current-statistic-btn").addEventListener("click",()=>this.copyCurrentStatistic()),d("#show-results-btn").addEventListener("click",()=>this.showResults(t)),d("#settings-btn").addEventListener("click",()=>d("#settings-panel").classList.add("active")),d("#close-settings-btn").addEventListener("click",()=>d("#settings-panel").classList.remove("active")),d("#theme-toggle").addEventListener("change",e=>this.updateSetting("theme",e.target.checked?"dark":"light")),d("#animations-toggle").addEventListener("change",e=>this.updateSetting("animationsDisabled",e.target.checked)),d("#sort-trades-by").addEventListener("change",e=>this.updateSetting("sortTradesBy",e.target.value)),d("#default-margin").addEventListener("input",e=>this.updateSetting("defaultMargin",e.target.value)),d("#export-data-btn").addEventListener("click",()=>this.exportData()),d("#import-data-btn").addEventListener("click",()=>d("#import-file-input").click()),d("#import-file-input").addEventListener("change",e=>this.importData(e)),d("#delete-all-stats-btn").addEventListener("click",()=>this.confirmAction("Вы уверены, что хотите удалить ВСЕ статистики?",()=>this.deleteAllStatistics())),d("#clear-memory-btn").addEventListener("click",()=>this.confirmAction("Это действие удалит ВСЕ данные приложения. Продолжить?",()=>this.clearMemory())),d("#add-trade-form").addEventListener("input",()=>this.updateTradePreview()),document.body.addEventListener("click",s=>{if(s.target.classList.contains("modal-overlay")&&this.closeAllModals(),d("#settings-panel").classList.contains("active")&&!d("#settings-panel").contains(s.target)&&!s.target.closest("#settings-btn")&&d("#settings-panel").classList.remove("active"),s.target.classList.contains("close-button")&&this.closeModal(s.target.dataset.modalId),s.target.closest(".statistic-card")){const a=s.target.closest(".statistic-card"),o=a.dataset.id;s.target.closest(".edit-statistic-name-btn")?this.editStatisticName(o):s.target.closest(".delete-statistic-btn")?this.confirmAction("Удалить эту статистику и все ее сделки?",()=>this.deleteStatistic(o,a)):(t=o,this.renderTradeDetail(o))}s.target.closest(".add-fixation-btn")&&this.addFixationField(),s.target.closest(".remove-fixation-btn")&&this.removeFixationField(s.target.closest(".remove-fixation-btn")),s.target.closest(".copy-trade-single-btn")&&this.copySingleTrade(s.target.closest(".copy-trade-single-btn").dataset.tradeId),s.target.closest(".edit-trade-btn")&&this.editTrade(t,s.target.closest(".edit-trade-btn").dataset.tradeId),s.target.closest(".delete-trade-btn")&&this.confirmAction("Удалить эту сделку?",()=>{const e=s.target.closest(".delete-trade-btn").dataset.tradeId,i=s.target.closest(".trade-card");this.deleteTrade(t,e,i)}),s.target.matches(".direction-btn")&&(this.handleDirectionSelection(s.target),this.updateTradePreview())}),document.body.addEventListener("change",e=>{if(e.target.classList.contains("trade-date-input")){const i=e.target.closest(".trade-card").dataset.tradeId;this.updateTradeDate(t,i,e.target.value)}"select-statistic"===e.target.id&&this.updateTradePreview()}),document.body.addEventListener("keydown",e=>{d("#add-trade-modal").classList.contains("active")&&"ArrowDown"===e.key&&(e.preventDefault(),d("#select-statistic").focus())})},loadSettings(){const e=localStorage.getItem("tradeStatisticsSettings"),t={theme:"dark",animationsDisabled:!1,sortTradesBy:"date_desc",defaultMargin:1};o=e?JSON.parse(e):t},saveSettings(){localStorage.setItem("tradeStatisticsSettings",JSON.stringify(o))},updateSetting(e,i){o[e]=i,this.saveSettings(),this.applySettings(),"sortTradesBy"===e&&t&&this.renderTradeDetail(t)},applySettings(){document.documentElement.setAttribute("data-theme",o.theme),d("#theme-toggle").checked="dark"===o.theme,document.body.classList.toggle("animations-disabled",o.animationsDisabled),d("#animations-toggle").checked=o.animationsDisabled,d("#sort-trades-by").value=o.sortTradesBy,d("#default-margin").value=o.defaultMargin},loadData(){const i=localStorage.getItem("tradeStatistics");i&&(e=JSON.parse(i));const n=localStorage.getItem("currentStatisticId");n&&e[n]&&(t=n)},saveData(){localStorage.setItem("tradeStatistics",JSON.stringify(e)),t?localStorage.setItem("currentStatisticId",t):localStorage.removeItem("currentStatisticId")},renderStatisticsList(){const t=d("#statistics-list");t.innerHTML="";const i=Object.keys(e);d("#add-trade-btn").style.display=i.length>0?"inline-flex":"none",d("#no-statistics-message").classList.toggle("hidden",i.length>0),t.classList.toggle("hidden",0===i.length),0===i.length?d("#create-statistic-btn").classList.add("pulsate-animation"):d("#create-statistic-btn").classList.remove("pulsate-animation"),i.forEach(((i,n)=>{const s=e[i],a=this.calculateStatisticMetrics(i),o=a.winRate>50?"color-green":a.winRate<50?"color-red":"color-gray",d=a.totalNetMovement>0?"color-green":a.totalNetMovement<0?"color-red":"color-gray",l=document.createElement("div");l.className="statistic-card",l.dataset.id=i,l.style.animationDelay=`${70*n}ms`,l.innerHTML=`\n                            <div class="flex justify-between items-start mb-4">\n                                <h3 class="text-xl font-bold pr-2">${s.name}</h3>\n                                <div class="flex-shrink-0 flex gap-1">\n                                    <button class="edit-statistic-name-btn p-1.5 rounded-md hover:bg-[var(--gray-bg)]" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path></svg></button>\n                                    <button class="delete-statistic-btn p-1.5 rounded-md hover:bg-[var(--gray-bg)] text-red-500" title="Удалить"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>\n                                </div>\n                            </div>\n                            <div class="text-sm text-[var(--text-secondary)] mb-4">Всего сделок: ${a.totalTrades}</div>\n                            <div class="flex justify-between items-end text-sm">\n                                <div>\n                                    <div class="text-[var(--text-secondary)]">Винрейт</div>\n                                    <div class="font-bold text-lg ${o}">${a.winRate.toFixed(2)}%</div>\n                                </div>\n                                <div>\n                                    <div class="text-[var(--text-secondary)]">Чистое движение</div>\n                                    <div class="font-bold text-lg ${d}">${a.totalNetMovement.toFixed(2)}%</div>\n                                </div>\n                            </div>`,t.appendChild(l),l.classList.add("animate-fade-in-up")}))},renderTradeDetail(i){d("#statistics-overview").classList.add("hidden"),d("#trade-detail-view").classList.remove("hidden");const n=e[i];if(d("#detail-statistic-name").textContent=n.name,t=i,this.saveData(),!n.trades||0===n.trades.length)return void d("#no-trades-message").classList.remove("hidden");d("#no-trades-message").classList.add("hidden");const s=d("#trade-list");s.innerHTML="";this.sortTrades([...n.trades]).forEach(((e,t)=>{const i=this.calculateTradeMetrics(e);e.netMovement=i.netMovement;const n=e.netMovement>0?"profit-loss-green":e.netMovement<0?"profit-loss-red":"profit-loss-gray",a=e.fixations.map(e=>`${e.price} (${e.percent}%)`).join(" "),o="long"===e.direction?'<span class="color-green">long</span>':'<span class="color-red">short</span>',d=e.date?new Date(e.date).toISOString().split("T")[0]:"",l=document.createElement("div");l.className="trade-card animate-slide-in-left",l.dataset.tradeId=e.id,l.style.animationDelay=`${60*t}ms`,l.innerHTML=`\n                            <div class="flex justify-between items-start gap-4">\n                                <div>\n                                    <h4 class="text-lg font-semibold">${e.coin} (${o})</h4>\n                                    <div class="text-sm text-[var(--text-secondary)] mt-1">\n                                        ENTRY: ${e.entry} &bull; Маржа: X${e.margin}\n                                    </div>\n                                </div>\n                                <span class="px-3 py-1 rounded-full text-sm font-bold ${n} flex-shrink-0">\n                                    ${e.netMovement.toFixed(2)}%\n                                </span>\n                            </div>\n                            <div class="text-sm text-[var(--text-secondary)] mt-3">Фиксации: ${a}</div>\n                            <div class="flex justify-between items-center mt-4">\n                                 <input type="date" value="${d}" class="trade-date-input bg-transparent border-none p-0 text-[var(--text-secondary)]" title="Изменить дату">\n                                 <div class="flex gap-1">\n                                    <button class="copy-trade-single-btn p-1.5 rounded-md hover:bg-[var(--gray-bg)]" data-trade-id="${e.id}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button>\n                                    <button class="delete-trade-btn p-1.5 rounded-md hover:bg-[var(--gray-bg)] text-red-500" data-trade-id="${e.id}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>\n                                 </div>\n                            </div>`,l.addEventListener("click",t=>{t.target.closest("button")||t.target.closest("input")||this.copySingleTrade(e.id)}),s.appendChild(l)}))},sortTrades(e){const t=o.sortTradesBy;return e.sort(((e,i)=>{const n=e.timestamp||0,s=i.timestamp||0,a=e.netMovement||0,o=i.netMovement||0;switch(t){case"date_asc":return n-s;case"profit_desc":return o-a;case"profit_asc":return a-o;case"date_desc":default:return s-n}}))},calculateTradeMetrics(e){let t=0;e.fixations&&e.fixations.length>0&&e.fixations.forEach((i=>{const n=parseFloat(i.price),s=parseFloat(i.percent);if(isNaN(n)||isNaN(s)||0===s||!e.entry)return;const a=parseFloat(e.entry);let o="long"===e.direction?(n-a)/a:(a-n)/a;t+=o*s/100}));return{netMovement:100*t*parseFloat(e.margin||1)}},calculateStatisticMetrics(t){const i=e[t];if(!i||!i.trades||0===i.trades.length)return{totalTrades:0,profitableTrades:0,rejectedTrades:0,breakevenTrades:0,winRate:0,totalNetMovement:0};let n=0,s=0,a=0,o=0;return i.trades.forEach((e=>{const t=this.calculateTradeMetrics(e);e.netMovement=t.netMovement,e.netMovement>0?n++:e.netMovement<0?s++:a++,o+=e.netMovement})),{totalTrades:i.trades.length,profitableTrades:n,rejectedTrades:s,breakevenTrades:a,winRate:i.trades.length-a>0?n/(i.trades.length-a)*100:0,totalNetMovement:o}},openModal(e){const t=d("#"+e);t&&(t.classList.add("active"),"add-trade-modal"===e&&(this.resetAddTradeForm(),this.updateTradePreview(),setTimeout((()=>d("#trade-preview-pane").classList.add("animate-slide-in-right")),10)))},closeModal(e){d("#"+e)?.classList.remove("active")},closeAllModals(){l(".modal-overlay").forEach(e=>e.classList.remove("active"))},showToast(e){const t=d("#toast");t.textContent=e,t.classList.add("show"),setTimeout((()=>t.classList.remove("show")),3e3)},confirmAction(e,t){d("#confirmation-message").textContent=e,s=t,this.openModal("confirmation-modal")},handleConfirmYes(){s&&s(),this.closeModal("confirmation-modal")},handleStatisticFormSubmit(t){t.preventDefault();const i=d("#statistic-name").value.trim();if(!i)return;let s=null;n?(e[n].name=i,n=null):s=`stat-${crypto.randomUUID()}`,e[s]={name:i,trades:[]},this.saveData(),this.renderStatisticsList(),this.closeModal("create-statistic-modal"),a&&s&&(this.populateStatisticSelect(s),this.openModal("add-trade-modal"),a=!1)},handleTradeFormSubmit(s){s.preventDefault();const a=d("#select-statistic").value,o=d("#coin-name").value.trim().toUpperCase(),c=d("#direction-hidden-input").value,r=parseFloat(d("#entry-price").value),m=parseFloat(d("#margin").value);let u=[],h=0;if(l("#fixations-container .flex").forEach((e=>{const t=parseFloat(e.querySelector(".fixation-price").value),i=parseFloat(e.querySelector(".fixation-percent").value);isNaN(t)||isNaN(i)||(u.push({price:t,percent:i}),h+=i)})),h>100.001)return void d("#fixation-total-warning").classList.remove("hidden");d("#fixation-total-warning").classList.add("hidden");const p=i?t:a;if(!p||!o||isNaN(r)||isNaN(m)||!c)return;if(i){const s=e[t].trades.findIndex(e=>e.id===i.id);-1!==s&&Object.assign(e[t].trades[s],{coin:o,direction:c,entry:r,fixations:u,margin:m,timestamp:e[t].trades[s].timestamp})}else{const i={id:`trade-${crypto.randomUUID()}`,coin:o,direction:c,entry:r,fixations:u,margin:m,date:(new Date).toISOString(),timestamp:Date.now()};e[p].trades.push(i)}this.saveData(),this.renderStatisticsList(),this.closeModal("add-trade-modal"),t===p&&this.renderTradeDetail(t)},handleAddTradeClick(){const t=Object.keys(e);if(0===t.length)return a=!0,void this.openModal("create-statistic-modal");const i=t.reduce(((t,i)=>e[t].trades.length>=e[i].trades.length?t:i));this.populateStatisticSelect(i),this.openModal("add-trade-modal")},showStatisticsOverview(){d("#trade-detail-view").classList.add("hidden"),d("#statistics-overview").classList.remove("hidden"),t=null,this.saveData(),this.renderStatisticsList()},editStatisticName(t){n=t;const i=e[t];d("#create-statistic-modal-title").textContent="Редактировать Статистику",d("#create-statistic-submit-btn").textContent="Обновить",d("#statistic-name").value=i.name,this.openModal("create-statistic-modal")},deleteStatistic(i,n){n.classList.add("animate-delete"),setTimeout((()=>{delete e[i],t===i&&(t=null),this.saveData(),this.showStatisticsOverview()}),400)},editTrade(n,s){i=e[n].trades.find(e=>e.id===s),i&&(d("#add-trade-modal-title").textContent="Редактировать Сделку",d("#add-trade-submit-btn").textContent="Обновить",d("#select-statistic-container").classList.add("hidden"),d("#coin-name").value=i.coin,this.setDirectionSelector(i.direction),d("#entry-price").value=i.entry,d("#margin").value=i.margin,d("#fixations-container").innerHTML="",i.fixations.forEach(e=>this.addFixationField(e.price,e.percent)),0===i.fixations.length&&this.addFixationField(),this.openModal("add-trade-modal"))},deleteTrade(t,i,n){n.classList.add("animate-delete"),setTimeout((()=>{const n=e[t];n&&(n.trades=n.trades.filter(e=>e.id!==i),this.saveData(),this.renderTradeDetail(t),this.renderStatisticsList())}),400)},updateTradeDate(i,n,s){const a=e[i]?.trades.find(e=>e.id===n);a&&(a.date=s?new Date(s).toISOString():null,a.timestamp=s?(new Date(s)).getTime():Date.now(),this.saveData(),this.renderTradeDetail(t))},resetAddTradeForm(){d("#add-trade-form").reset(),d("#add-trade-modal-title").textContent="Добавить Сделку",d("#add-trade-submit-btn").textContent="Добавить",d("#select-statistic-container").classList.remove("hidden"),d("#fixations-container").innerHTML="",this.addFixationField(),d("#margin").value=o.defaultMargin,this.setDirectionSelector("long"),i=null,this.updateTradePreview()},addFixationField(e="",t=""){const i=d("#fixations-container"),n=0===i.children.length,s=document.createElement("div");s.className="flex items-center gap-2 animate-fade-in-up",s.style.animationDuration="0.3s",s.innerHTML=`\n                        <input type="number" step="any" class="fixation-price form-input" placeholder="Цена" value="${e}">\n                        <input type="number" step="any" min="0" max="100" class="fixation-percent form-input" placeholder="%" value="${t}">\n                        <button type="button" class="${n?"add-fixation-btn text-green-500":"remove-fixation-btn text-red-500"} p-2 rounded-md hover:bg-[var(--gray-bg)] transition-transform hover:scale-110">\n                            ${n?'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>':'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>'}\n                        </button>\n                    `,i.appendChild(s)},removeFixationField(e){const t=e.closest(".flex");t.classList.add("animate-delete"),setTimeout((()=>t.remove()),400)},handleDirectionSelection(e){this.setDirectionSelector(e.dataset.value)},setDirectionSelector(e){d("#direction-hidden-input").value=e,l(".direction-btn").forEach(e=>{e.classList.remove("selected-long","selected-short")});const t=d(`.direction-btn[data-value="${e}"]`);t&&t.classList.add("long"===e?"selected-long":"selected-short")},updateTradePreview(){const t=d("#add-trade-form"),i=d("#preview-content"),n=d("#preview-placeholder"),s=t.querySelector("#coin-name").value.trim().toUpperCase(),a=t.querySelector("#direction-hidden-input").value,l=parseFloat(t.querySelector("#entry-price").value),c=parseFloat(t.querySelector("#margin").value),r=t.querySelector("#select-statistic").value,m=r&&e[r]?e[r].name:"Не выбрана";let u=[];if(t.querySelectorAll("#fixations-container .flex").forEach((e=>{const t=parseFloat(e.querySelector(".fixation-price").value),i=parseFloat(e.querySelector(".fixation-percent").value);isNaN(t)||isNaN(i)||i<=0||u.push({price:t,percent:i})})),!s&&isNaN(l))return i.innerHTML="",void n.classList.remove("hidden");n.classList.add("hidden");const h=this.calculateTradeMetrics({entry:l,margin:isNaN(c)?o.defaultMargin:c,direction:a,fixations:u}).netMovement,p=h>0?"color-green":h<0?"color-red":"color-gray",g="long"===a?'<span class="color-green font-semibold">LONG</span>':'<span class="color-red font-semibold">SHORT</span>';i.innerHTML=`\n                        <div class="preview-item p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">\n                            <div class="text-sm text-[var(--text-secondary)]">Монета</div>\n                            <div class="text-xl font-bold">${s||"..."}</div>\n                        </div>\n                        <div class="preview-item p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">\n                            <div class="text-sm text-[var(--text-secondary)]">Направление</div>\n                            <div class="text-xl">${g}</div>\n                        </div>\n                        <div class="preview-item p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">\n                            <div class="text-sm text-[var(--text-secondary)]">Чистое движение</div>\n                            <div class="text-2xl font-bold ${p}">${isNaN(h)?"0.00":h.toFixed(2)}%</div>\n                        </div>\n                        <div class="preview-item p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">\n                            <div class="text-sm text-[var(--text-secondary)]">Маржа</div>\n                            <div class="text-xl font-bold">X${isNaN(c)?o.defaultMargin:c}</div>\n                        </div>\n                        <div class="preview-item p-3 rounded-lg bg-[var(--bg-secondary)] transition-all duration-200">\n                            <div class="text-sm text-[var(--text-secondary)]">Статистика</div>\n                            <div class="text-lg font-semibold truncate" title="${m}">${m}</div>\n                        </div>\n                    `},populateStatisticSelect(t=null){const i=d("#select-statistic");i.innerHTML='<option value="">-- Выберите статистику --</option>',Object.keys(e).forEach((t=>{const n=document.createElement("option");n.value=t,n.textContent=e[t].name,i.appendChild(n)})),t&&(i.value=t)},copyToClipboard(e){const t=document.createElement("textarea");t.value=e,t.style.position="fixed",t.style.left="-9999px",document.body.appendChild(t),t.select();try{document.execCommand("copy"),this.showToast("Скопировано в буфер обмена!")}catch(e){this.showToast("Ошибка при копировании")}finally{document.body.removeChild(t)}},generateSingleTradeExportText(e){const t="long"===e.direction?"long":"short",i=e.fixations.map(e=>`${e.price} (${e.percent}%)`).join(" "),n=e.date?(new Date(e.date)).toLocaleDateString("ru-RU"):"Нет даты",s=this.calculateTradeMetrics(e);return`${e.coin} (${t})\nЧистое движение: ${s.netMovement.toFixed(2)}%\nENTRY: ${e.entry}\nМаржа: X${e.margin}\nФиксации: ${i}\nДата: ${n}`},copySingleTrade(i){const n=e[t].trades.find(e=>e.id===i);n&&this.copyToClipboard(this.generateSingleTradeExportText(n))},copyCurrentStatistic(){let t=`--- Статистика: ${e[currentStatisticId].name} ---\n\n`;this.sortTrades([...e[currentStatisticId].trades]).forEach((e=>{t+=this.generateSingleTradeExportText(e)+"\n\n"})),this.copyToClipboard(t.trim())},animateCountUp(e,t,i=800,n=!1){if(!e)return;let s=null;const a=0,o=parseFloat(t);if(isNaN(o))return;const d=t=>{s||(s=t);const l=Math.min((t-s)/i,1),c=l*(o-a)+a;n?e.textContent=`${c.toFixed(2)}%`:e.textContent=Math.floor(c),l<1?window.requestAnimationFrame(d):n?e.textContent=`${o.toFixed(2)}%`:e.textContent=Math.round(o)};window.requestAnimationFrame(d)},showResults(e){const t=this.calculateStatisticMetrics(e),i=d("#results-content");i.innerHTML=`\n                        <p>Чистое движение: <span id="res-net" class="font-bold ${t.totalNetMovement>0?"color-green":t.totalNetMovement<0?"color-red":"color-gray"}">0.00%</span></p>\n                        <p>Винрейт: <span id="res-winrate" class="font-bold ${t.winRate>50?"color-green":t.winRate<50?"color-red":"color-gray"}">0.00%</span></p>\n                        <p>Всего сделок: <span id="res-total" class="font-bold">0</span></p>\n                        <p>Успешных: <span id="res-profit" class="font-bold color-green">0</span></p>\n                        <p>Убыточных: <span id="res-loss" class="font-bold color-red">0</span></p>\n                        <p>В безубыток: <span id="res-be" class="font-bold color-gray">0</span></p>\n                    `,this.openModal("results-modal"),this.animateCountUp(d("#res-net"),t.totalNetMovement,800,!0),this.animateCountUp(d("#res-winrate"),t.winRate,800,!0),this.animateCountUp(d("#res-total"),t.totalTrades),this.animateCountUp(d("#res-profit"),t.profitableTrades),this.animateCountUp(d("#res-loss"),t.rejectedTrades),this.animateCountUp(d("#res-be"),t.breakevenTrades)},deleteAllStatistics(){e={},this.saveData(),this.renderStatisticsList(),this.showStatisticsOverview()},clearMemory(){localStorage.clear(),window.location.reload()},exportData(){const t=JSON.stringify({statistics:e,settings:o},null,2),i="data:application/json;charset=utf-8,"+encodeURIComponent(t),n=document.createElement("a");n.setAttribute("href",i),n.setAttribute("download","trade_stats_backup.json"),n.click()},importData(t){const i=t.target.files[0];if(!i)return;const n=new FileReader;n.onload=t=>{try{const i=JSON.parse(t.target.result);i.statistics&&i.settings?(e=i.statistics,o=i.settings,this.saveData(),this.saveSettings(),this.applySettings(),this.renderStatisticsList(),this.showStatisticsOverview(),this.showToast("Данные успешно импортированы!")):this.showToast("Ошибка: неверный формат файла.")}catch(e){this.showToast("Ошибка при чтении файла.")}},n.readAsText(i),t.target.value=""}};c.init()}));</script></body></html>
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>weeloser</title>
+    <link rel="icon" href="https://i.postimg.cc/RFZsJw9d/image.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #020617;
+            --bg-card: #0f172a;
+            --bg-hover: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --success: #10b981;
+            --danger: #f43f5e;
+            --neutral: #64748b;
+            --glass: rgba(15, 23, 42, 0.95);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+        [data-theme="light"] {
+            --bg-main: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-hover: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --glass: rgba(255, 255, 255, 0.98);
+            --border: rgba(0, 0, 0, 0.08);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: 90px; 
+        }
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            box-shadow: 0 4px 20px var(--accent-glow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+        .btn-primary:active { transform: translateY(0) scale(0.98); }
+        
+        .animate-enter { animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+        
+        .chart-draw { stroke-dasharray: 5000; stroke-dashoffset: 5000; animation: drawLine 1.5s ease-out forwards; }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: var(--bg-hover); border-radius: 20px; }
+        
+        .modal-backdrop { opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .modal-backdrop.active { opacity: 1; visibility: visible; }
+        .modal-content { transform: scale(0.95) translateY(10px); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .modal-backdrop.active .modal-content { transform: scale(1) translateY(0); }
 
+        .trade-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left-width: 4px;
+        }
+        .trade-card:active { transform: scale(0.99); }
+        
+        .highlight-pulse {
+            animation: highlightGlow 2s ease-out forwards !important;
+            opacity: 1 !important; /* Фикс бага с исчезновением */
+            z-index: 20;
+        }
+        @keyframes highlightGlow {
+            0% { box-shadow: 0 0 0 0 var(--accent); border-color: var(--accent); transform: scale(1.02); }
+            50% { box-shadow: 0 0 40px 10px var(--accent-glow); border-color: var(--accent); transform: scale(1.02); }
+            100% { box-shadow: 0 0 0 0 transparent; transform: scale(1); }
+        }
 
+        @media (min-width: 768px) {
+            .trade-card:hover {
+                transform: translateY(-3px) scale(1.005);
+                background: var(--bg-hover);
+                z-index: 10;
+                box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);
+            }
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+        [data-theme="dark"] select { color-scheme: dark; }
+        [data-theme="dark"] option { background-color: var(--bg-card); color: var(--text-main); }
+        
+        .metric-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            transition: transform 0.2s;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .metric-card.clickable { cursor: pointer; }
+        .metric-card.clickable:hover { transform: translateY(-2px); border-color: var(--accent); }
+        
+        .chart-tooltip {
+            position: absolute;
+            pointer-events: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            transform: translate(-50%, -100%);
+            margin-top: -10px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+        .chart-cursor-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--text-muted);
+            border-right: 1px dashed var(--bg-main);
+            pointer-events: none;
+            opacity: 0;
+            z-index: 40;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="fixed top-0 w-full z-40 glass-panel border-b-0 shadow-sm backdrop-blur-xl h-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex items-center justify-between h-full">
+                <div class="flex items-center gap-3 cursor-pointer group" onclick="app.goHome()">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-lg transition-transform duration-300 active:scale-95">
+                        <img src="https://i.postimg.cc/RFZsJw9d/image.png" class="w-5 h-5 object-contain" alt="W">
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold tracking-tight leading-none">weeloser</h1>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="app.toggleTheme()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)]">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <button onclick="app.openSettings()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)]">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="fixed bottom-0 left-0 w-full z-30 glass-panel border-t border-[var(--border)] md:hidden safe-area-pb">
+        <div class="grid grid-cols-3 h-16">
+            <button onclick="app.goHome()" class="flex flex-col items-center justify-center gap-1 text-[var(--text-muted)] hover:text-[var(--accent)] active:text-[var(--accent)]">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="text-[10px] font-medium">Главная</span>
+            </button>
+            <button onclick="app.state.currentId ? app.openTradeModal() : app.openCreateModal()" class="flex flex-col items-center justify-center gap-1 text-[var(--accent)]">
+                <div class="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 transform -translate-y-4 border-4 border-[var(--bg-main)]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                </div>
+            </button>
+            <button onclick="app.openSettings()" class="flex flex-col items-center justify-center gap-1 text-[var(--text-muted)] hover:text-[var(--accent)]">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <span class="text-[10px] font-medium">Меню</span>
+            </button>
+        </div>
+    </div>
+
+    <main class="flex-1 pt-20 px-4 max-w-7xl w-full mx-auto relative pb-24 md:pb-10" id="app-root">
+        
+        <div id="view-dashboard" class="animate-enter">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">Статистика</h2>
+                    <p class="text-[var(--text-muted)] text-sm font-medium">Ваши торговые сессии</p>
+                </div>
+                <button onclick="app.openCreateModal()" class="hidden md:flex btn-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Новая сессия
+                </button>
+            </div>
+
+            <div id="stats-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"></div>
+            
+            <div id="empty-state" class="hidden flex-col items-center justify-center py-24 text-center animate-enter">
+                <div class="w-20 h-20 bg-[var(--bg-card)] rounded-2xl flex items-center justify-center mb-6 shadow-lg border border-[var(--border)]">
+                    <svg class="w-8 h-8 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Нет данных</h3>
+                <p class="text-sm text-[var(--text-muted)]">Создайте новую сессию</p>
+            </div>
+        </div>
+
+        <div id="view-detail" class="hidden animate-enter">
+            <div class="flex flex-col lg:flex-row lg:items-center gap-4 mb-6 sticky top-20 z-30 glass-panel p-4 rounded-2xl shadow-xl backdrop-blur-xl">
+                <div class="flex items-center gap-3 flex-1 w-full">
+                    <button onclick="app.goHome()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors group">
+                        <svg class="w-5 h-5 text-[var(--text-muted)] group-hover:text-[var(--text-main)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <div class="overflow-hidden flex-1">
+                        <div class="flex items-center gap-2 group/title">
+                            <h2 id="detail-title" class="text-lg md:text-xl font-bold truncate"></h2>
+                            <button onclick="app.editSessionName()" class="p-1 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            </button>
+                        </div>
+                        <p class="text-xs text-[var(--text-muted)]" id="detail-subtitle"></p>
+                    </div>
+                    <div class="flex md:hidden items-center gap-1">
+                         <button onclick="app.copyReport()" class="p-2.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-muted)] active:scale-95 transition-transform">
+                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                         </button>
+                         <button onclick="app.openReportModal()" class="p-2.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] text-[var(--success)] active:scale-95 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="hidden md:flex gap-2">
+                     <button onclick="app.copyReport()" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[var(--bg-hover)] transition-all shadow-sm flex items-center gap-2 group">
+                        <svg class="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                        Копировать всё
+                    </button>
+                     <button onclick="app.openReportModal()" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[var(--bg-hover)] transition-all shadow-sm flex items-center gap-2">
+                        <svg class="w-4 h-4 text-[var(--success)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Отчет
+                    </button>
+                    <button onclick="app.openTradeModal()" class="btn-primary text-white px-5 py-2.5 rounded-xl font-bold shadow-lg flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Сделка
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <div class="lg:col-span-2 glass-panel rounded-3xl p-5 md:p-6 relative group animate-enter shadow-xl border-t border-white/5">
+                    <div class="flex justify-between items-end mb-4 relative z-10 pointer-events-none">
+                        <div>
+                            <p class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">Рост депозита</p>
+                            <h3 id="chart-total-pnl" class="text-3xl md:text-4xl font-bold tracking-tight">0.00%</h3>
+                        </div>
+                    </div>
+                    <div id="main-chart-container" class="h-[250px] md:h-[280px] w-full relative z-10 touch-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-main)]/50 to-transparent pointer-events-none"></div>
+                </div>
+
+                <div class="glass-panel rounded-3xl p-6 flex flex-col items-center justify-center relative animate-enter shadow-xl border-t border-white/5" style="animation-delay: 0.1s">
+                    <p class="absolute top-6 left-6 text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Winrate</p>
+                    <div class="relative w-40 h-40 my-4 group">
+                        <svg id="winrate-chart" viewBox="0 0 100 100" class="transform -rotate-90 w-full h-full drop-shadow-2xl transition-transform duration-500"></svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="winrate-text" class="text-3xl font-bold tracking-tighter">0%</span>
+                        </div>
+                    </div>
+                    <div class="flex w-full justify-between mt-auto px-2 text-sm font-medium">
+                         <div class="flex items-center gap-2 bg-green-500/10 px-2 py-1 rounded-lg border border-green-500/10">
+                            <div class="w-1.5 h-1.5 rounded-full bg-[var(--success)]"></div>
+                            <span id="wins-count" class="text-[var(--success)] font-bold text-xs">0</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-gray-500/10 px-2 py-1 rounded-lg border border-gray-500/10">
+                            <div class="w-1.5 h-1.5 rounded-full bg-[var(--neutral)]"></div>
+                            <span id="be-count" class="text-[var(--neutral)] font-bold text-xs">0</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-red-500/10 px-2 py-1 rounded-lg border border-red-500/10">
+                            <div class="w-1.5 h-1.5 rounded-full bg-[var(--danger)]"></div>
+                            <span id="losses-count" class="text-[var(--danger)] font-bold text-xs">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-center animate-enter" style="animation-delay: 0.2s">
+                <div class="relative w-full sm:w-72 group">
+                    <input type="text" id="search-trade" placeholder="Поиск..." class="w-full bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-main)] rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:border-[var(--accent)] transition-all shadow-sm text-sm font-medium">
+                    <svg class="w-5 h-5 text-[var(--text-muted)] absolute left-4 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <div class="flex gap-3 w-full sm:w-auto">
+                    <div class="px-5 py-2 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] flex flex-col items-center justify-center flex-1 sm:flex-none min-w-[90px]">
+                        <span class="text-[10px] text-[var(--text-muted)] uppercase font-bold mb-0.5">Ср. Win</span>
+                        <span id="avg-win" class="font-bold text-[var(--success)] text-sm">0.00%</span>
+                    </div>
+                    <div class="px-5 py-2 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] flex flex-col items-center justify-center flex-1 sm:flex-none min-w-[90px]">
+                        <span class="text-[10px] text-[var(--text-muted)] uppercase font-bold mb-0.5">Ср. Loss</span>
+                        <span id="avg-loss" class="font-bold text-[var(--danger)] text-sm">0.00%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="trades-list" class="space-y-3 pb-8 animate-enter" style="animation-delay: 0.3s"></div>
+        </div>
+    </main>
+
+    <div id="toast-container" class="fixed bottom-24 md:bottom-8 left-1/2 transform -translate-x-1/2 z-[100] pointer-events-none flex flex-col gap-2 w-full max-w-xs px-4"></div>
+
+    <div id="modal-create" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-backdrop">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="app.closeModal('modal-create')"></div>
+        <div class="modal-content bg-[var(--bg-card)] w-full max-w-md p-6 md:p-8 rounded-t-3xl md:rounded-3xl border border-[var(--border)] shadow-2xl relative">
+            <h3 class="text-2xl font-bold mb-8 text-center">Новая сессия</h3>
+            <form onsubmit="app.saveStat(event)">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase mb-2 ml-1">Название</label>
+                        <input type="text" id="stat-name" required class="w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-4 py-4 focus:outline-none focus:border-[var(--accent)] font-medium" placeholder="Марафон...">
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-4 rounded-xl btn-primary text-white font-bold shadow-lg mt-8 text-lg">Создать</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="modal-report" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-backdrop">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="app.closeModal('modal-report')"></div>
+        <div class="modal-content bg-[var(--bg-card)] w-full max-w-4xl p-6 md:p-8 rounded-t-3xl md:rounded-3xl border border-[var(--border)] shadow-2xl relative flex flex-col h-[85vh] md:h-auto md:max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl md:text-2xl font-bold">Детальный отчет</h3>
+                <button onclick="app.closeModal('modal-report')" class="p-2 hover:bg-[var(--bg-hover)] rounded-xl transition-colors">
+                    <svg class="w-6 h-6 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="overflow-y-auto custom-scrollbar flex-1 pr-1">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                     <div class="metric-card">
+                        <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Сделок</p>
+                        <p id="rep-total" class="text-lg md:text-2xl font-bold">0</p>
+                     </div>
+                     <div class="metric-card">
+                        <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Winrate</p>
+                        <p id="rep-winrate" class="text-lg md:text-2xl font-bold">0%</p>
+                     </div>
+                     <div class="metric-card">
+                        <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Win / Loss / BE</p>
+                        <div class="flex justify-center gap-1 text-sm md:text-lg font-bold">
+                            <span id="rep-w-count" class="text-[var(--success)]">0</span>/<span id="rep-l-count" class="text-[var(--danger)]">0</span>/<span id="rep-b-count" class="text-[var(--neutral)]">0</span>
+                        </div>
+                     </div>
+                     <div class="metric-card">
+                        <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Profit Factor</p>
+                        <p id="rep-pf" class="text-lg md:text-2xl font-bold">0</p>
+                     </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                     <div class="metric-card clickable" onclick="app.scrollToTrade(app.bestTradeId)">
+                         <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Лучшая сделка</p>
+                         <div class="flex justify-between items-end w-full">
+                             <span id="rep-best-coin" class="text-xs font-bold text-[var(--text-muted)]">---</span>
+                             <span id="rep-best-pnl" class="text-lg font-bold text-[var(--success)]">0.00%</span>
+                         </div>
+                     </div>
+                     <div class="metric-card clickable" onclick="app.scrollToTrade(app.worstTradeId)">
+                         <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Худшая сделка</p>
+                         <div class="flex justify-between items-end w-full">
+                             <span id="rep-worst-coin" class="text-xs font-bold text-[var(--text-muted)]">---</span>
+                             <span id="rep-worst-pnl" class="text-lg font-bold text-[var(--danger)]">0.00%</span>
+                         </div>
+                     </div>
+                </div>
+                
+                <div class="bg-[var(--bg-main)] rounded-2xl border border-[var(--border)] overflow-hidden flex flex-col shadow-inner min-h-[200px]">
+                     <div class="p-3 border-b border-[var(--border)] flex justify-between items-center bg-[var(--bg-main)]">
+                         <span class="text-[10px] font-bold uppercase text-[var(--text-muted)] tracking-wider">Текст для копирования</span>
+                         <button onclick="app.copyReportTextFromModal()" class="text-xs text-[var(--accent)] font-bold hover:underline flex items-center gap-1">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                            Копировать
+                        </button>
+                     </div>
+                     <textarea id="report-textarea" class="w-full h-40 md:h-full bg-transparent p-4 text-xs font-mono focus:outline-none resize-none text-[var(--text-main)] custom-scrollbar leading-relaxed border-none" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-trade" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-backdrop">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="app.closeModal('modal-trade')"></div>
+        <div class="modal-content bg-[var(--bg-card)] w-full max-w-2xl p-6 rounded-t-3xl md:rounded-3xl border border-[var(--border)] shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Сделка</h3>
+                <div class="flex bg-[var(--bg-main)] rounded-xl p-1 border border-[var(--border)]">
+                    <button type="button" id="btn-long" onclick="app.setDirection('long')" class="px-6 md:px-8 py-2 rounded-lg text-sm font-bold transition-all">LONG</button>
+                    <button type="button" id="btn-short" onclick="app.setDirection('short')" class="px-6 md:px-8 py-2 rounded-lg text-sm font-bold transition-all">SHORT</button>
+                </div>
+            </div>
+            
+            <form onsubmit="app.saveTrade(event)" class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase mb-2 ml-1">Тикер</label>
+                        <input type="text" id="trade-coin" required placeholder="BTC" oninput="this.value = this.value.toUpperCase()" class="w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-4 py-3 font-bold tracking-wider focus:outline-none focus:border-[var(--accent)] placeholder-[var(--text-muted)]/30">
+                    </div>
+                    <div class="md:col-span-2">
+                         <label class="block text-xs font-bold text-[var(--text-muted)] uppercase mb-2 ml-1">Дата</label>
+                         <input type="date" id="trade-date" class="w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--accent)] text-sm font-medium">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase mb-2 ml-1">Вход</label>
+                        <input type="number" step="any" id="trade-entry" required oninput="app.calcPreview()" class="w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--accent)]">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase mb-2 ml-1">Маржа (x)</label>
+                        <input type="number" step="0.25" min="0" id="trade-margin" value="1" oninput="app.calcPreview()" class="w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--accent)]">
+                    </div>
+                </div>
+
+                <div class="bg-[var(--bg-main)] rounded-2xl p-4 border border-[var(--border)]">
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Фиксации</label>
+                        <button type="button" onclick="app.addFixRow()" class="text-xs text-[var(--accent)] font-bold hover:text-white transition-colors flex items-center gap-1 py-1 px-2 rounded hover:bg-[var(--accent)]/10">
+                            + Добавить
+                        </button>
+                    </div>
+                    <div id="fix-container" class="space-y-2"></div>
+                    <p class="text-[10px] text-[var(--text-muted)] mt-2 italic opacity-60 text-center">Если сумма < 100%, остаток будет добавлен по цене входа.</p>
+                </div>
+
+                <div class="flex items-center justify-between bg-[var(--bg-main)] rounded-2xl p-5 border border-[var(--border)] border-dashed">
+                    <span class="text-sm font-medium text-[var(--text-muted)]">P&L:</span>
+                    <span id="preview-pnl" class="text-3xl font-bold tracking-tight">0.00%</span>
+                </div>
+
+                <button type="submit" class="w-full py-4 rounded-xl btn-primary text-white font-bold text-lg shadow-xl hover:scale-[1.01] transition-transform">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="settings-panel" class="fixed inset-y-0 right-0 w-80 bg-[var(--bg-card)] border-l border-[var(--border)] transform translate-x-full transition-transform duration-300 z-[60] shadow-2xl p-6 flex flex-col backdrop-blur-xl">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="text-xl font-bold">Настройки</h3>
+            <button onclick="app.closeSettings()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] text-[var(--text-muted)] transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="space-y-4 flex-1">
+            <div class="bg-[var(--bg-main)] p-4 rounded-2xl border border-[var(--border)]">
+                 <span class="text-xs font-bold text-[var(--text-muted)] uppercase block mb-2">Сортировка</span>
+                 <select id="sort-select" onchange="app.changeSort(this.value)" class="w-full bg-transparent border-b border-[var(--border)] pb-2 text-sm font-medium focus:outline-none focus:border-[var(--accent)] text-[var(--text-main)]">
+                    <option value="newest">Сначала новые</option>
+                    <option value="oldest">Сначала старые</option>
+                    <option value="profit">По профиту</option>
+                </select>
+            </div>
+
+            <div class="pt-4 border-t border-[var(--border)] space-y-3">
+                <button onclick="app.exportData()" class="w-full flex items-center gap-3 p-4 rounded-xl hover:bg-[var(--bg-hover)] transition-colors border border-[var(--border)] group text-left">
+                    <div class="w-8 h-8 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold">Бэкап</p>
+                        <p class="text-[10px] text-[var(--text-muted)]">Сохранить в файл</p>
+                    </div>
+                </button>
+                <div class="relative group">
+                    <input type="file" id="import-file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept=".json" onchange="app.importData(this)">
+                    <button class="w-full flex items-center gap-3 p-4 rounded-xl hover:bg-[var(--bg-hover)] transition-colors border border-[var(--border)] text-left">
+                        <div class="w-8 h-8 rounded-lg bg-[var(--success)]/10 flex items-center justify-center text-[var(--success)]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold">Импорт</p>
+                            <p class="text-[10px] text-[var(--text-muted)]">Загрузить JSON</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button onclick="app.resetAll()" class="w-full flex items-center justify-center gap-2 p-4 rounded-xl bg-red-500/10 text-[var(--danger)] hover:bg-red-500/20 transition-colors border border-red-500/10 mt-auto">
+            <span class="font-bold text-sm">Сброс данных</span>
+        </button>
+    </div>
+
+    <script>
+        const app = {
+            data: JSON.parse(localStorage.getItem('weeloser_data')) || {},
+            config: JSON.parse(localStorage.getItem('weeloser_config')) || { theme: 'dark', sort: 'newest' },
+            state: { currentId: null, editTradeId: null, direction: 'long' },
+            bestTradeId: null,
+            worstTradeId: null,
+
+            init() {
+                this.applyTheme();
+                this.data.currentStatId && this.data[this.data.currentStatId] ? this.openStat(this.data.currentStatId) : this.renderDashboard();
+                document.getElementById('search-trade').addEventListener('input', (e) => this.renderTrades(e.target.value));
+                document.getElementById('sort-select').value = this.config.sort;
+            },
+
+            save() {
+                localStorage.setItem('weeloser_data', JSON.stringify(this.data));
+                localStorage.setItem('weeloser_config', JSON.stringify(this.config));
+            },
+
+            applyTheme() { document.documentElement.setAttribute('data-theme', this.config.theme); },
+            toggleTheme() { this.config.theme = this.config.theme === 'dark' ? 'light' : 'dark'; this.save(); this.applyTheme(); },
+            
+            goHome() {
+                this.state.currentId = null;
+                delete this.data.currentStatId;
+                this.save();
+                document.getElementById('view-detail').classList.add('hidden');
+                document.getElementById('view-dashboard').classList.remove('hidden');
+                this.renderDashboard();
+            },
+
+            renderDashboard() {
+                const grid = document.getElementById('stats-grid');
+                grid.innerHTML = '';
+                const keys = Object.keys(this.data).filter(k => k !== 'currentStatId');
+                
+                const empty = document.getElementById('empty-state');
+                if(keys.length === 0) { empty.classList.remove('hidden'); empty.classList.add('flex'); }
+                else { empty.classList.add('hidden'); empty.classList.remove('flex'); }
+
+                keys.sort((a,b) => {
+                    const tA = parseInt(a.split('-')[1]) || 0;
+                    const tB = parseInt(b.split('-')[1]) || 0;
+                    return tB - tA;
+                }).forEach((id, index) => {
+                    const item = this.data[id];
+                    if(!item || !item.name) return;
+                    const m = this.calcMetrics(item.trades);
+                    let dateDisplay = "Нет даты";
+                    if (item.trades && item.trades.length > 0) {
+                        const sorted = [...item.trades].sort((a,b) => (a.ts || 0) - (b.ts || 0));
+                        dateDisplay = new Date(sorted[0].ts || Date.now()).toLocaleDateString();
+                    } else {
+                         const ts = parseInt(id.split('-')[1]);
+                         if (!isNaN(ts)) dateDisplay = new Date(ts).toLocaleDateString();
+                    }
+
+                    const el = document.createElement('div');
+                    el.style.animationDelay = `${index * 0.05}s`;
+                    el.className = 'glass-panel p-6 rounded-3xl cursor-pointer animate-enter relative group hover:border-[var(--accent)] transition-colors shadow-lg active:scale-[0.98]';
+                    el.onclick = (e) => { if(!e.target.closest('.action-btn')) this.openStat(id); };
+                    
+                    el.innerHTML = `
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="pr-8 overflow-hidden">
+                                <h3 class="font-bold text-lg md:text-xl text-[var(--text-main)] truncate mb-1">${item.name}</h3>
+                                <p class="text-xs text-[var(--text-muted)] font-semibold bg-[var(--bg-hover)] inline-block px-2 py-1 rounded-md border border-[var(--border)]">
+                                    ${dateDisplay} • ${item.trades ? item.trades.length : 0} сделок
+                                </p>
+                            </div>
+                            <button class="action-btn absolute top-6 right-6 text-[var(--text-muted)] hover:text-[var(--danger)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all p-2 rounded-lg hover:bg-[var(--bg-main)]" onclick="app.deleteStat('${id}')">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-[var(--bg-main)] p-4 rounded-2xl border border-[var(--border)]">
+                                <p class="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-1">P&L</p>
+                                <p class="text-2xl font-bold ${m.pnl >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]'} truncate">${m.pnl > 0 ? '+' : ''}${m.pnl.toFixed(2)}%</p>
+                            </div>
+                            <div class="bg-[var(--bg-main)] p-4 rounded-2xl border border-[var(--border)] text-right">
+                                <p class="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-1">Winrate</p>
+                                <p class="text-2xl font-bold text-[var(--text-main)]">${m.winrate}%</p>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(el);
+                });
+            },
+
+            openStat(id) {
+                this.state.currentId = id;
+                this.data.currentStatId = id;
+                this.save();
+                document.getElementById('view-dashboard').classList.add('hidden');
+                document.getElementById('view-detail').classList.remove('hidden');
+                const s = this.data[id];
+                document.getElementById('detail-title').innerText = s.name;
+                document.getElementById('detail-subtitle').innerText = `${s.trades ? s.trades.length : 0} сделок`;
+                document.getElementById('search-trade').value = '';
+                this.renderTrades();
+            },
+
+            editSessionName() {
+                const id = this.state.currentId;
+                if (!id || !this.data[id]) return;
+                const newName = prompt('Введите новое название:', this.data[id].name);
+                if (newName && newName.trim() !== '') {
+                    this.data[id].name = newName.trim();
+                    this.save();
+                    document.getElementById('detail-title').innerText = newName.trim();
+                    this.showToast('Название изменено');
+                }
+            },
+
+            normalizeTrade(t, index) {
+                return {
+                    ...t,
+                    dir: t.dir || t.direction || 'long',
+                    fixes: t.fixes || t.fixations || [],
+                    ts: t.ts || (t.date ? new Date(t.date).getTime() : Date.now()),
+                    originalIndex: index
+                };
+            },
+
+            renderTrades(query = '') {
+                const stat = this.data[this.state.currentId];
+                const list = document.getElementById('trades-list');
+                list.innerHTML = '';
+                if (!stat.trades) stat.trades = [];
+                
+                let trades = stat.trades.map((t, i) => this.normalizeTrade(t, i)).filter(t => t.coin && t.coin.includes(query.toUpperCase()));
+                
+                if (this.config.sort === 'newest') trades.sort((a,b) => (b.ts - a.ts) || (b.originalIndex - a.originalIndex));
+                else if (this.config.sort === 'oldest') trades.sort((a,b) => (a.ts - b.ts) || (a.originalIndex - b.originalIndex));
+                else if (this.config.sort === 'profit') trades.sort((a,b) => this.calcPnl(b) - this.calcPnl(a));
+
+                this.updateCharts(trades);
+
+                if (trades.length === 0) {
+                    list.innerHTML = '<div class="text-center py-12 text-[var(--text-muted)] opacity-50 font-medium">Сделок не найдено</div>';
+                    return;
+                }
+
+                trades.forEach((t, i) => {
+                    const pnl = this.calcPnl(t);
+                    const isWin = pnl > 0.05;
+                    const isLoss = pnl < -0.05;
+                    
+                    const dateStr = new Date(t.ts).toLocaleDateString();
+                    
+                    let pnlColor = isWin ? 'text-[var(--success)]' : (isLoss ? 'text-[var(--danger)]' : 'text-[var(--neutral)]');
+                    let cardBorderColor = isWin ? 'var(--success)' : (isLoss ? 'var(--danger)' : 'var(--neutral)');
+                    
+                    let badgeClass = t.dir === 'long' 
+                        ? 'bg-green-500/10 text-green-500 border-green-500/20' 
+                        : 'bg-red-500/10 text-red-500 border-red-500/20';
+
+                    const el = document.createElement('div');
+                    el.className = `trade-card glass-panel p-4 md:p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center gap-5 border-l-4 transition-all animate-enter`;
+                    el.style.borderColor = cardBorderColor;
+                    el.style.borderLeftStyle = 'solid';
+                    el.style.animationDelay = `${Math.min(i * 0.03, 0.5)}s`;
+                    el.dataset.tradeId = t.id;
+
+                    let totalFixPct = 0;
+                    let fixItemsHTML = t.fixes.map(f => {
+                        const pct = parseFloat(f.percent || f.pct) || 0;
+                        totalFixPct += pct;
+                        return `<div class="text-xs font-mono text-[var(--text-main)] bg-[var(--bg-hover)] px-2 py-1 rounded border border-[var(--border)] whitespace-nowrap">
+                            <span class="font-bold">${f.price || f.p}</span> <span class="text-[var(--text-muted)]">(${pct}%)</span>
+                         </div>`;
+                    }).join('');
+
+                    if (totalFixPct < 99.99 && t.fixes.length > 0) {
+                        const rem = parseFloat((100 - totalFixPct).toFixed(2));
+                        if (rem > 0) {
+                            fixItemsHTML += `<div class="text-xs font-mono text-[var(--text-muted)] bg-[var(--bg-hover)] px-2 py-1 rounded border border-[var(--border)] whitespace-nowrap opacity-75">
+                                <span class="font-bold">${t.entry}</span> <span class="text-[var(--text-muted)]">(${rem}%)</span>
+                             </div>`;
+                        }
+                    } else if (t.fixes.length === 0) {
+                         fixItemsHTML = `<div class="text-xs font-mono text-[var(--text-muted)] bg-[var(--bg-hover)] px-2 py-1 rounded border border-[var(--border)] whitespace-nowrap opacity-75">
+                                <span class="font-bold">${t.entry}</span> <span class="text-[var(--text-muted)]">(100%)</span>
+                             </div>`;
+                    }
+
+                    const fixHTML = `<div class="flex flex-wrap gap-2 mt-3 bg-[var(--bg-main)] p-3 rounded-xl border border-[var(--border)] items-center">
+                            <span class="text-[10px] font-bold text-[var(--text-muted)] uppercase mr-2">Фиксации</span>
+                            ${fixItemsHTML}
+                         </div>`;
+                    
+                    const pnlStr = (pnl > 0 ? '+' : '') + pnl.toFixed(2) + '%';
+                    
+                    el.innerHTML = `
+                        <div class="flex-1 w-full">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-bold text-lg md:text-xl bg-[var(--bg-hover)] border border-[var(--border)] shadow-sm text-[var(--text-main)]">
+                                        ${t.coin.substring(0,1)}
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg leading-none tracking-tight">${t.coin}</h4>
+                                        <div class="flex gap-2 mt-1">
+                                            <span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border ${badgeClass}">${(t.dir).toUpperCase()}</span>
+                                            <span class="text-[10px] font-bold bg-[var(--bg-hover)] px-2 py-0.5 rounded text-[var(--text-muted)] uppercase tracking-wider border border-[var(--border)]">x${t.margin}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wide mb-1">Дата</p>
+                                    <p class="font-mono text-xs md:text-sm font-medium bg-[var(--bg-main)] px-2 py-1 rounded border border-[var(--border)]">${dateStr}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4 bg-[var(--bg-main)] p-4 rounded-xl border border-[var(--border)] mb-2">
+                                <div>
+                                    <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Вход</p>
+                                    <p class="font-mono text-sm md:text-base font-bold text-[var(--text-main)]">${t.entry}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Результат</p>
+                                    <p class="font-bold font-mono text-lg md:text-xl ${pnlColor}">${pnlStr}</p>
+                                </div>
+                            </div>
+                            ${fixHTML}
+                        </div>
+                        
+                        <div class="flex md:flex-col gap-2 w-full md:w-auto border-t md:border-t-0 md:border-l border-[var(--border)] pt-3 md:pt-0 md:pl-4 justify-center">
+                             <button onclick="app.copyOneTrade('${t.id}')" class="p-3 rounded-xl bg-[var(--bg-main)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors flex-1 md:flex-none flex justify-center items-center group" title="Копировать">
+                                 <svg class="w-5 h-5 md:group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                            </button>
+                            <button onclick="app.editTrade('${t.id}')" class="p-3 rounded-xl bg-[var(--bg-main)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-main)] hover:border-[var(--text-main)] transition-colors flex-1 md:flex-none flex justify-center items-center group">
+                                <svg class="w-5 h-5 md:group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            </button>
+                            <button onclick="app.deleteTrade('${t.id}')" class="p-3 rounded-xl bg-[var(--bg-main)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--danger)] hover:border-[var(--danger)] transition-colors flex-1 md:flex-none flex justify-center items-center group">
+                                <svg class="w-5 h-5 md:group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                    `;
+                    list.appendChild(el);
+                });
+            },
+
+            updateCharts(trades) {
+                const sorted = [...trades].sort((a,b) => (a.ts - b.ts) || (a.originalIndex - b.originalIndex));
+                
+                let balance = 0;
+                const points = sorted.map((t, i) => {
+                    balance += this.calcPnl(t);
+                    return { x: i, y: balance, coin: t.coin, pnl: this.calcPnl(t), date: new Date(t.ts).toLocaleDateString() };
+                });
+
+                const container = document.getElementById('main-chart-container');
+                if(points.length < 1) {
+                    container.innerHTML = '<div class="absolute inset-0 flex items-center justify-center text-[var(--text-muted)] opacity-50 text-sm">Мало данных для графика</div>';
+                    document.getElementById('chart-total-pnl').innerText = '0.00%';
+                    document.getElementById('chart-total-pnl').className = 'text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-muted)]';
+                } else {
+                    const max = Math.max(0, ...points.map(p => p.y));
+                    const min = Math.min(0, ...points.map(p => p.y));
+                    const range = (max - min) || 1;
+                    const w = container.clientWidth;
+                    const h = container.clientHeight;
+                    const pad = 20;
+                    const usableH = h - pad * 2;
+
+                    const getX = (i) => (i / Math.max(1, points.length - 1)) * w;
+                    const getY = (val) => h - pad - ((val - min) / range) * usableH;
+
+                    let pathD = `M ${getX(0)} ${getY(points[0].y)}`;
+                    if (points.length > 1) {
+                        for(let i=1; i<points.length; i++) {
+                            pathD += ` L ${getX(i)} ${getY(points[i].y)}`;
+                        }
+                    } else {
+                        pathD = `M 0 ${getY(points[0].y)} L ${w} ${getY(points[0].y)}`;
+                    }
+                    const areaD = `${pathD} L ${w} ${h} L 0 ${h} Z`;
+
+                    container.innerHTML = `
+                        <svg width="100%" height="100%" style="overflow:visible">
+                            <defs>
+                                <linearGradient id="mainGrad" x1="0" x2="0" y1="0" y2="1">
+                                    <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.5"/>
+                                    <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="${areaD}" fill="url(#mainGrad)" class="transition-all duration-500"/>
+                            <path d="${pathD}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="chart-draw drop-shadow-[0_0_15px_var(--accent)]"/>
+                        </svg>
+                        <div id="chart-cursor-line" class="chart-cursor-line"></div>
+                        <div id="chart-tooltip" class="chart-tooltip"></div>
+                    `;
+                    
+                    const cursorLine = document.getElementById('chart-cursor-line');
+                    const tooltip = document.getElementById('chart-tooltip');
+                    
+                    const showTooltip = (clientX) => {
+                        const rect = container.getBoundingClientRect();
+                        const relX = Math.max(0, Math.min(clientX - rect.left, w));
+                        
+                        let closestIdx = 0;
+                        if (points.length > 1) {
+                            closestIdx = Math.round((relX / w) * (points.length - 1));
+                        }
+                        
+                        const point = points[closestIdx];
+                        const px = points.length > 1 ? getX(closestIdx) : relX;
+                        const py = getY(point.y);
+
+                        cursorLine.style.left = `${px}px`;
+                        cursorLine.style.opacity = '1';
+
+                        tooltip.style.left = `${px}px`;
+                        tooltip.style.top = `${py}px`;
+                        tooltip.style.opacity = '1';
+                        const plClass = point.pnl >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]';
+                        tooltip.innerHTML = `
+                            <div class="text-[var(--text-muted)] text-[10px]">${point.date}</div>
+                            <div class="font-bold ${plClass}">${point.coin} ${point.pnl > 0 ? '+' : ''}${point.pnl.toFixed(2)}%</div>
+                            <div class="text-[var(--text-main)] text-[10px] mt-1">Общий: ${(point.y > 0 ? '+' : '')}${point.y.toFixed(2)}%</div>
+                        `;
+                    };
+
+                    container.addEventListener('mousemove', (e) => showTooltip(e.clientX));
+                    container.addEventListener('touchmove', (e) => {
+                         if(e.touches[0]) showTooltip(e.touches[0].clientX);
+                    }, {passive: true});
+
+                    container.addEventListener('mouseleave', () => {
+                        cursorLine.style.opacity = '0';
+                        tooltip.style.opacity = '0';
+                    });
+                    container.addEventListener('touchend', () => {
+                         setTimeout(() => {
+                            cursorLine.style.opacity = '0';
+                            tooltip.style.opacity = '0';
+                         }, 1000);
+                    });
+                    
+                    const total = points[points.length-1].y;
+                    const el = document.getElementById('chart-total-pnl');
+                    el.innerText = (total > 0 ? '+' : '') + total.toFixed(2) + '%';
+                    el.className = `text-3xl md:text-4xl font-bold tracking-tight ${total >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`;
+                }
+
+                let wins = 0, losses = 0, be = 0;
+                let winSum = 0, lossSum = 0;
+                trades.forEach(t => {
+                    const p = this.calcPnl(t);
+                    if(p > 0.05) { wins++; winSum += p; }
+                    else if(p < -0.05) { losses++; lossSum += p; }
+                    else be++;
+                });
+                
+                const m = this.calcMetrics(trades);
+                const winrate = m.winrate;
+
+                const c = 2 * Math.PI * 40; 
+                const winLen = (winrate / 100) * c;
+
+                const winDash = `${winLen} ${c}`;
+                
+                document.getElementById('winrate-chart').innerHTML = `
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="var(--danger)" stroke-width="8"/>
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="var(--success)" stroke-width="8" 
+                            stroke-dasharray="${winDash}" stroke-dashoffset="0" stroke-linecap="butt" class="transition-all duration-1000"/>
+                `;
+                document.getElementById('winrate-text').innerText = winrate + '%';
+                document.getElementById('wins-count').innerText = wins;
+                document.getElementById('losses-count').innerText = losses;
+                document.getElementById('be-count').innerText = be;
+                
+                const avgWin = wins ? winSum / wins : 0;
+                const avgLoss = losses ? lossSum / losses : 0;
+
+                document.getElementById('avg-win').innerText = '+' + avgWin.toFixed(2) + '%';
+                document.getElementById('avg-loss').innerText = avgLoss.toFixed(2) + '%';
+            },
+            
+            openReportModal() {
+                const s = this.data[this.state.currentId];
+                const m = this.calcMetrics(s.trades);
+                
+                document.getElementById('rep-total').innerText = s.trades.length;
+                document.getElementById('rep-winrate').innerText = m.winrate + '%';
+                
+                let grossProfit = 0, grossLoss = 0;
+                let wins = 0, losses = 0, be = 0;
+                let bestTrade = { coin: '---', pnl: -Infinity, id: null };
+                let worstTrade = { coin: '---', pnl: Infinity, id: null };
+
+                const trades = s.trades.map((t,i) => this.normalizeTrade(t, i));
+
+                trades.forEach(t => {
+                    const p = this.calcPnl(t);
+                    if(p > bestTrade.pnl) bestTrade = { coin: t.coin, pnl: p, id: t.id };
+                    if(p < worstTrade.pnl) worstTrade = { coin: t.coin, pnl: p, id: t.id };
+
+                    if(p > 0.05) {
+                        grossProfit += p; wins++;
+                    } else if (p < -0.05) {
+                        grossLoss += Math.abs(p); losses++;
+                    } else {
+                        be++;
+                    }
+                });
+                
+                if (bestTrade.pnl === -Infinity) bestTrade.pnl = 0;
+                if (worstTrade.pnl === Infinity) worstTrade.pnl = 0;
+                
+                this.bestTradeId = bestTrade.id;
+                this.worstTradeId = worstTrade.id;
+
+                const pf = grossLoss === 0 ? (grossProfit > 0 ? '∞' : '0.00') : (grossProfit / grossLoss).toFixed(2);
+
+                document.getElementById('rep-pf').innerText = pf;
+                document.getElementById('rep-w-count').innerText = wins;
+                document.getElementById('rep-l-count').innerText = losses;
+                document.getElementById('rep-b-count').innerText = be;
+
+                document.getElementById('rep-best-coin').innerText = bestTrade.coin;
+                document.getElementById('rep-best-pnl').innerText = (bestTrade.pnl > 0 ? '+' : '') + bestTrade.pnl.toFixed(2) + '%';
+                document.getElementById('rep-worst-coin').innerText = worstTrade.coin;
+                document.getElementById('rep-worst-pnl').innerText = (worstTrade.pnl > 0 ? '+' : '') + worstTrade.pnl.toFixed(2) + '%';
+                
+                document.getElementById('report-textarea').value = this.generateReportText(s);
+                document.getElementById('modal-report').classList.add('active');
+            },
+            
+            scrollToTrade(id) {
+                if (!id) return;
+                this.closeModal('modal-report');
+                
+                // Сброс поиска если элемент скрыт
+                const searchInput = document.getElementById('search-trade');
+                if (searchInput.value) {
+                    searchInput.value = '';
+                    this.renderTrades();
+                }
+
+                setTimeout(() => {
+                    const el = document.querySelector(`[data-trade-id="${id}"]`);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.classList.remove('highlight-pulse');
+                        void el.offsetWidth; 
+                        el.classList.add('highlight-pulse');
+                    }
+                }, 300);
+            },
+            
+            copyReportTextFromModal() {
+                const el = document.getElementById('report-textarea');
+                el.select();
+                document.execCommand('copy');
+                this.showToast('Скопировано!');
+            },
+            
+            copyReport() {
+                const s = this.data[this.state.currentId];
+                const text = this.generateReportText(s);
+                this.execCopy(text);
+            },
+
+            calcPnl(t) {
+                const fixes = t.fixes || t.fixations || [];
+                const dir = t.dir || t.direction || 'long';
+                
+                if(!fixes.length) {
+                    return 0;
+                }
+                
+                let total = 0;
+                fixes.forEach(f => {
+                    const p = parseFloat(f.price || f.p);
+                    const pct = parseFloat(f.percent || f.pct);
+                    if(p && pct) {
+                        const diff = (p - t.entry) / t.entry * 100;
+                        total += diff * (dir === 'long' ? 1 : -1) * t.margin * (pct / 100);
+                    }
+                });
+                return total;
+            },
+
+            calcMetrics(trades) {
+                let wins = 0, losses = 0;
+                if(!trades || !trades.length) return {pnl:0, winrate:0};
+                const normalized = trades.map((t,i) => this.normalizeTrade(t, i));
+                let pnl = 0;
+                normalized.forEach(t => {
+                    const r = this.calcPnl(t);
+                    pnl += r;
+                    if(r > 0.05) wins++;
+                    else if(r < -0.05) losses++;
+                });
+                const denom = (wins + losses) || 1;
+                return { pnl: pnl, winrate: Math.round((wins / denom) * 100) };
+            },
+
+            openCreateModal() { document.getElementById('stat-name').value = ''; document.getElementById('modal-create').classList.add('active'); },
+            saveStat(e) {
+                e.preventDefault();
+                const name = document.getElementById('stat-name').value;
+                const id = 's-' + Date.now();
+                this.data[id] = { name, balance: 0, trades: [] };
+                this.save();
+                this.closeModal('modal-create');
+                this.renderDashboard();
+                this.showToast('Сессия создана');
+            },
+            deleteStat(id) {
+                if(confirm('Удалить сессию?')) { delete this.data[id]; this.save(); this.renderDashboard(); }
+            },
+            openTradeModal() {
+                this.state.editTradeId = null;
+                document.getElementById('trade-coin').value = '';
+                document.getElementById('trade-entry').value = '';
+                document.getElementById('trade-margin').value = 1;
+                document.getElementById('trade-date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('fix-container').innerHTML = '';
+                this.addFixRow();
+                this.setDirection('long');
+                document.getElementById('modal-trade').classList.add('active');
+                this.calcPreview();
+            },
+            setDirection(dir) {
+                this.state.direction = dir;
+                const btnL = document.getElementById('btn-long');
+                const btnS = document.getElementById('btn-short');
+                
+                const activeL = 'bg-green-500 text-white shadow-lg shadow-green-500/30 scale-105';
+                const activeS = 'bg-red-500 text-white shadow-lg shadow-red-500/30 scale-105';
+                const inactive = 'text-[var(--text-muted)] hover:bg-[var(--bg-hover)]';
+                
+                btnL.className = `px-6 md:px-8 py-2 rounded-lg text-sm font-bold transition-all ${dir === 'long' ? activeL : inactive}`;
+                btnS.className = `px-6 md:px-8 py-2 rounded-lg text-sm font-bold transition-all ${dir === 'short' ? activeS : inactive}`;
+                this.calcPreview();
+            },
+            addFixRow(p = '', pct = '') {
+                const div = document.createElement('div');
+                div.className = 'flex gap-3 items-center animate-enter';
+                div.innerHTML = `
+                    <input type="number" step="any" placeholder="Цена" value="${p}" class="fix-p flex-1 bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[var(--accent)]" oninput="app.calcPreview()">
+                    <div class="relative w-20">
+                        <input type="number" step="any" placeholder="%" value="${pct}" class="fix-pct w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[var(--accent)] pr-6" oninput="app.calcPreview()">
+                        <span class="absolute right-2 top-2 text-[var(--text-muted)] text-xs font-bold">%</span>
+                    </div>
+                    <button type="button" onclick="this.parentElement.remove(); app.calcPreview()" class="p-2 rounded-lg hover:bg-red-500/10 text-[var(--text-muted)] hover:text-[var(--danger)] transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                `;
+                document.getElementById('fix-container').appendChild(div);
+            },
+            calcPreview() {
+                const entry = parseFloat(document.getElementById('trade-entry').value);
+                const margin = parseFloat(document.getElementById('trade-margin').value) || 1;
+                if(!entry) { document.getElementById('preview-pnl').innerText = '0.00%'; return; }
+                let total = 0;
+                document.querySelectorAll('#fix-container > div').forEach(row => {
+                    const p = parseFloat(row.querySelector('.fix-p').value);
+                    const pct = parseFloat(row.querySelector('.fix-pct').value);
+                    if(p && pct) {
+                        const raw = (p - entry) / entry * 100;
+                        total += raw * (this.state.direction === 'long' ? 1 : -1) * margin * (pct / 100);
+                    }
+                });
+                const el = document.getElementById('preview-pnl');
+                el.innerText = (total > 0 ? '+' : '') + total.toFixed(2) + '%';
+                el.className = `text-3xl font-bold tracking-tight ${total >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`;
+            },
+            saveTrade(e) {
+                e.preventDefault();
+                const fixes = [];
+                let totalPct = 0;
+                document.querySelectorAll('#fix-container > div').forEach(row => {
+                    const p = parseFloat(row.querySelector('.fix-p').value);
+                    let pct = parseFloat(row.querySelector('.fix-pct').value);
+                    if (!isNaN(p) && !isNaN(pct)) {
+                         pct = parseFloat(pct.toFixed(2)); 
+                         totalPct += pct;
+                         fixes.push({ p, pct });
+                    }
+                });
+                
+                if(totalPct > 100.01) {
+                    this.showToast("Ошибка: Сумма фиксаций > 100%");
+                    return;
+                }
+                
+                const dateVal = document.getElementById('trade-date').value;
+                const ts = dateVal ? new Date(dateVal).getTime() : Date.now();
+                const trade = {
+                    id: this.state.editTradeId || 't-' + Date.now(),
+                    ts: ts,
+                    coin: document.getElementById('trade-coin').value,
+                    entry: parseFloat(document.getElementById('trade-entry').value),
+                    margin: parseFloat(document.getElementById('trade-margin').value),
+                    dir: this.state.direction,
+                    fixes: fixes
+                };
+                const stat = this.data[this.state.currentId];
+                if(this.state.editTradeId) {
+                    const idx = stat.trades.findIndex(t => t.id === this.state.editTradeId);
+                    stat.trades[idx] = { ...stat.trades[idx], ...trade };
+                } else { stat.trades.push(trade); }
+                this.save();
+                this.closeModal('modal-trade');
+                this.renderTrades();
+                this.showToast('Сделка сохранена');
+            },
+            editTrade(id) {
+                const stat = this.data[this.state.currentId];
+                const t = this.normalizeTrade(stat.trades.find(x => x.id === id));
+                if(!t) return;
+                this.state.editTradeId = id;
+                document.getElementById('trade-coin').value = t.coin;
+                document.getElementById('trade-entry').value = t.entry;
+                document.getElementById('trade-margin').value = t.margin;
+                document.getElementById('trade-date').value = new Date(t.ts).toISOString().split('T')[0];
+                this.setDirection(t.dir);
+                const c = document.getElementById('fix-container');
+                c.innerHTML = '';
+                t.fixes.forEach(f => this.addFixRow(f.price || f.p, f.percent || f.pct));
+                if(t.fixes.length === 0) this.addFixRow(); 
+                this.calcPreview();
+                document.getElementById('modal-trade').classList.add('active');
+            },
+            deleteTrade(id) {
+                if(confirm('Удалить?')) {
+                    const s = this.data[this.state.currentId];
+                    s.trades = s.trades.filter(t => t.id !== id);
+                    this.save();
+                    this.renderTrades();
+                }
+            },
+            closeModal(id) { document.getElementById(id).classList.remove('active'); },
+            openSettings() { document.getElementById('settings-panel').classList.remove('translate-x-full'); },
+            closeSettings() { document.getElementById('settings-panel').classList.add('translate-x-full'); },
+            changeSort(v) { this.config.sort = v; this.save(); if(this.state.currentId) this.renderTrades(); },
+            exportData() {
+                const b = new Blob([JSON.stringify(this.data)], {type: 'application/json'});
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(b);
+                a.download = `weeloser_backup.json`;
+                a.click();
+            },
+            importData(input) {
+                const f = input.files[0];
+                if(!f) return;
+                const r = new FileReader();
+                r.onload = (e) => {
+                    try {
+                        const d = JSON.parse(e.target.result);
+                        let count = 0;
+                        const findSessions = (obj) => {
+                            if (!obj || typeof obj !== 'object') return;
+                            if (obj.name && Array.isArray(obj.trades)) {
+                                obj.trades = obj.trades.map((t, i) => this.normalizeTrade(t, i));
+                                const newId = 's-' + Date.now() + Math.random().toString(36).substr(2, 9);
+                                this.data[newId] = obj;
+                                count++;
+                                return;
+                            }
+                            Object.values(obj).forEach(val => findSessions(val));
+                        };
+                        findSessions(d);
+                        if (this.data.currentStatId) delete this.data.currentStatId;
+                        this.save();
+                        if(count > 0) {
+                            this.showToast(`Импортировано: ${count}`);
+                            setTimeout(() => location.reload(), 1000);
+                        } else { this.showToast('Данные не найдены'); }
+                    } catch(err) { console.error(err); this.showToast('Ошибка файла'); }
+                };
+                r.readAsText(f);
+                input.value = '';
+            },
+            resetAll() { if(confirm('Сбросить все данные?')) { localStorage.clear(); location.reload(); } },
+            
+            generateReportText(s) {
+                const m = this.calcMetrics(s.trades);
+                const date = new Date().toLocaleDateString();
+                
+                let grossProfit = 0, grossLoss = 0;
+                let wins = 0, losses = 0, be = 0;
+                let bestTrade = { coin: '---', pnl: -Infinity };
+                let worstTrade = { coin: '---', pnl: Infinity };
+                
+                const trades = s.trades.map((t,i) => this.normalizeTrade(t, i));
+
+                trades.forEach(t => {
+                    const p = this.calcPnl(t);
+                    if(p > bestTrade.pnl) bestTrade = { coin: t.coin, pnl: p };
+                    if(p < worstTrade.pnl) worstTrade = { coin: t.coin, pnl: p };
+
+                    if(p > 0.05) {
+                        grossProfit += p; wins++;
+                    } else if (p < -0.05) {
+                        grossLoss += Math.abs(p); losses++;
+                    } else {
+                        be++;
+                    }
+                });
+                
+                if (bestTrade.pnl === -Infinity) bestTrade.pnl = 0;
+                if (worstTrade.pnl === Infinity) worstTrade.pnl = 0;
+                
+                const pf = grossLoss === 0 ? (grossProfit > 0 ? '∞' : '0.00') : (grossProfit / grossLoss).toFixed(2);
+
+                let text = `📊 Отчет: ${s.name}\n📅 Дата: ${date}\n\n🏆 Winrate: ${m.winrate}%\n💰 P&L: ${m.pnl > 0 ? '+' : ''}${m.pnl.toFixed(2)}%\n📝 Всего сделок: ${s.trades.length}\n\n📈 Profit Factor: ${pf}\n🎯 Win/Loss/BE: ${wins}/${losses}/${be}\n✨ Лучшая сделка: ${bestTrade.coin} (${(bestTrade.pnl > 0 ? '+' : '')}${bestTrade.pnl.toFixed(2)}%)\n💀 Худшая сделка: ${worstTrade.coin} (${(worstTrade.pnl > 0 ? '+' : '')}${worstTrade.pnl.toFixed(2)}%)\n\nСделки:`;
+                
+                const sortedTrades = trades.sort((a,b) => (b.ts - a.ts) || (b.originalIndex - a.originalIndex));
+                sortedTrades.forEach(t => { text += `\n\n${this.formatTradeText(t)}`; });
+                return text;
+            },
+            
+            formatTradeText(t) {
+                const pnl = this.calcPnl(t);
+                const date = new Date(t.ts).toLocaleDateString();
+                let totalPct = 0;
+                let fixStr = t.fixes.map(f => {
+                    const pct = parseFloat(f.percent||f.pct);
+                    totalPct += pct;
+                    return `${f.price||f.p} (${pct}%)`;
+                }).join(', ');
+                
+                if (t.fixes.length === 0) {
+                    fixStr = `${t.entry} (100%)`;
+                } else if (totalPct < 99.99) {
+                    const rem = parseFloat((100 - totalPct).toFixed(2));
+                    if (rem > 0) fixStr += `, ${t.entry} (${rem}%)`;
+                }
+
+                return `Название: ${t.coin} (${(t.dir||'LONG').toUpperCase()})\nДата: ${date}\nВход: ${t.entry}\nМаржа: x${t.margin}\nФиксации: ${fixStr}\nЧистое движение: ${pnl.toFixed(2)}%`;
+            },
+            
+            copyOneTrade(id) {
+                const t = this.normalizeTrade(this.data[this.state.currentId].trades.find(x => x.id === id));
+                if(t) this.execCopy(this.formatTradeText(t));
+            },
+            
+            execCopy(text) {
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(text).then(() => this.showToast('Скопировано!')).catch(() => this.fallbackCopy(text));
+                } else { this.fallbackCopy(text); }
+            },
+            fallbackCopy(text) {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.style.position = "fixed"; ta.style.left = "-9999px";
+                document.body.appendChild(ta);
+                ta.focus(); ta.select();
+                try { document.execCommand('copy'); this.showToast('Скопировано!'); } catch (err) { this.showToast('Ошибка'); }
+                document.body.removeChild(ta);
+            },
+            showToast(msg) {
+                const t = document.createElement('div');
+                t.className = 'bg-[#1e293b] text-white px-6 py-4 rounded-xl shadow-2xl border border-white/10 animate-enter flex items-center gap-3 font-medium text-sm backdrop-blur-md z-[100]';
+                t.innerHTML = `<div class="w-2 h-2 rounded-full bg-[var(--accent)]"></div> ${msg}`;
+                document.getElementById('toast-container').appendChild(t);
+                setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(10px)'; setTimeout(() => t.remove(), 300); }, 3000);
+            }
+        };
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>
