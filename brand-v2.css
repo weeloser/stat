@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Roboto+Mono:wght@500;600&display=swap');
 
 /*
- * Weeloser вЂ” soft premium visual system
+ * Weeloser — soft premium visual system
  * This file intentionally sits above the utility-heavy legacy markup.  The app
  * keeps all of its existing behavior while every surface shares one calm,
  * friendly and accessible visual language.
@@ -251,7 +251,7 @@ textarea:focus-visible {
 }
 
 #view-dashboard h2::before {
-    content: 'РћР‘Р—РћР ';
+    content: 'ОБЗОР';
     display: block;
     width: fit-content;
     margin: 0 0 .6rem;
@@ -696,7 +696,190 @@ body .enh-dashboard {
 }
 
 body .enh-dashboard-bar input,
-body .enh-dashboard-bar select…1555 tokens truncated…elevated) !important;
+body .enh-dashboard-bar select,
+body .enh-dashboard-bar button,
+body .enh-toolbar button,
+body .enh-toolbar input,
+body .enh-toolbar select,
+body .enh-actions button,
+body .enh-session-actions button {
+    min-height: 2.35rem;
+    color: var(--text-main);
+    background: var(--bg-soft) !important;
+    border-color: var(--border) !important;
+    border-radius: .78rem !important;
+}
+
+body .enh-dashboard-bar button:hover,
+body .enh-dashboard-bar button.active,
+body .enh-toolbar button:hover,
+body .enh-toolbar button.active,
+body .enh-actions button:hover,
+body .enh-session-actions button:hover {
+    color: var(--accent) !important;
+    border-color: color-mix(in srgb, var(--accent) 36%, var(--border)) !important;
+    background: color-mix(in srgb, var(--accent) 7%, var(--bg-soft)) !important;
+}
+
+body .enh-stat {
+    padding: .7rem !important;
+    background: var(--bg-soft) !important;
+    border-color: var(--border) !important;
+    border-radius: .85rem !important;
+}
+
+body .enh-stat b {
+    font-family: 'Roboto Mono', Consolas, monospace;
+    letter-spacing: -.03em;
+}
+
+body .enh-chip {
+    padding: .3rem .55rem !important;
+    color: var(--text-muted);
+    background: var(--bg-soft) !important;
+    border-color: var(--border) !important;
+}
+
+body .enh-note {
+    padding: .65rem .75rem !important;
+    border: 0 !important;
+    border-left: 3px solid var(--accent) !important;
+    border-radius: .7rem !important;
+    background: var(--bg-soft) !important;
+}
+
+body .enh-overlay {
+    background: rgba(4, 10, 8, .7) !important;
+    backdrop-filter: blur(12px) saturate(90%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(90%) !important;
+}
+
+body .enh-dialog {
+    padding: 1.15rem !important;
+    color: var(--text-main);
+    background: var(--bg-elevated) !important;
+    border-color: var(--border-strong) !important;
+    border-radius: 1.35rem !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+body .enh-dialog input {
+    padding: .8rem .9rem !important;
+    border-radius: .85rem !important;
+    background: var(--bg-soft) !important;
+}
+
+body .enh-command {
+    min-height: 2.8rem;
+    padding: .75rem .8rem !important;
+    border-radius: .8rem !important;
+}
+
+body .enh-command:hover,
+body .enh-command.active {
+    color: var(--text-main) !important;
+    background: color-mix(in srgb, var(--accent) 8%, var(--bg-soft)) !important;
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--border)) !important;
+}
+
+body .enh-command kbd {
+    padding: .16rem .38rem !important;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border-color: var(--border-strong) !important;
+    border-radius: .45rem !important;
+    box-shadow: 0 1px 0 var(--border-strong);
+}
+
+body .enh-catalog-item {
+    padding: .7rem .75rem !important;
+    background: var(--bg-soft) !important;
+    border-color: var(--border) !important;
+    border-radius: .8rem !important;
+}
+
+/* Mini command line: selectors cover the standalone console and the existing
+   command palette, while letting the command implementation own its behavior. */
+:is(#mini-command, #mini-command-panel, #mini-command-console, #command-console, [data-command-console], .mini-command, .command-console, .cmd-console, .cmd-panel) {
+    color: var(--text-main);
+    background: var(--bg-elevated) !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: 1.35rem !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+:is(#mini-command, #mini-command-panel, #mini-command-console, #command-console, [data-command-console], .mini-command, .command-console, .cmd-console, .cmd-panel) input,
+:is(#mini-command, #mini-command-panel, #mini-command-console, #command-console, [data-command-console], .mini-command, .command-console, .cmd-console, .cmd-panel) textarea {
+    background: var(--bg-soft) !important;
+}
+
+:is([data-command-trigger], #mini-command-trigger, #mini-command-button, #command-console-button, .mini-command-trigger, .cmd-trigger) {
+    color: var(--accent-ink) !important;
+    background: var(--accent) !important;
+    border-color: color-mix(in srgb, var(--accent) 60%, white 10%) !important;
+    box-shadow: 0 8px 22px var(--accent-glow) !important;
+}
+
+[data-theme="light"] :is([data-command-trigger], #mini-command-trigger, #mini-command-button, #command-console-button, .mini-command-trigger, .cmd-trigger) {
+    color: #fff !important;
+}
+
+/* Full natural-language command center */
+#wl-command-trigger {
+    min-width: auto !important;
+    min-height: 2.5rem !important;
+    gap: .5rem;
+    padding: .55rem .8rem !important;
+    color: var(--accent-ink) !important;
+    background: linear-gradient(145deg, #82e4c1, var(--accent-strong)) !important;
+    border: 1px solid rgba(255, 255, 255, .2) !important;
+    border-radius: .88rem !important;
+    box-shadow: 0 9px 24px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, .35) !important;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: -.015em;
+}
+
+[data-theme="light"] #wl-command-trigger {
+    color: #fff !important;
+    background: linear-gradient(145deg, #248b71, #116e59) !important;
+}
+
+#wl-command-trigger:hover {
+    color: var(--accent-ink) !important;
+    border-color: rgba(255, 255, 255, .28) !important;
+    background: linear-gradient(145deg, #91e9ca, #48cca0) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 13px 28px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, .42) !important;
+}
+
+[data-theme="light"] #wl-command-trigger:hover {
+    color: #fff !important;
+    background: linear-gradient(145deg, #2b9479, #16765f) !important;
+}
+
+#wl-command-center {
+    padding: max(4.75rem, env(safe-area-inset-top)) 1rem 1rem !important;
+    color: var(--text-main);
+    background: rgba(4, 10, 8, .7) !important;
+    backdrop-filter: blur(14px) saturate(90%) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(90%) !important;
+}
+
+#wl-command-center[data-open="1"] {
+    animation: wlBackdropIn .2s ease-out both;
+}
+
+body.wl-cc-open {
+    overflow: hidden !important;
+}
+
+.wl-cc-dialog {
+    width: min(58rem, 100%) !important;
+    max-height: min(49rem, calc(100dvh - 5.75rem)) !important;
+    overflow: hidden;
+    color: var(--text-main) !important;
+    background: var(--bg-elevated) !important;
     border: 1px solid var(--border-strong) !important;
     border-radius: 1.55rem !important;
     box-shadow: 0 35px 100px rgba(0, 0, 0, .48), inset 0 1px 0 rgba(255, 255, 255, .03) !important;
@@ -1433,4 +1616,3 @@ body {
         radial-gradient(circle at 92% 4%, rgba(255, 137, 130, .065), transparent 25rem),
         linear-gradient(180deg, color-mix(in srgb, var(--bg-main) 94%, var(--accent) 6%) 0, var(--bg-main) 30rem) !important;
 }
-
