@@ -2,9 +2,11 @@
 <html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Keep the page zoomable for keyboard and low-vision users.  viewport-fit lets
+         the mobile bars respect notches and home indicators. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>weeloser</title>
-    <link rel="icon" href="https://i.postimg.cc/RFZsJw9d/image.png">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%236366f1'/%3E%3Cpath d='M13 18h9l5 25 5-18h8l5 18 5-25h9L50 48H40l-4-14-4 14H22z' fill='white'/%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -17,10 +19,12 @@
             --accent: #6366f1;
             --accent-glow: rgba(99, 102, 241, 0.3);
             --success: #10b981;
-            --danger: #ff0000;
+            --danger: #f87171;
             --neutral: #64748b;
             --glass: rgba(15, 23, 42, 0.95);
             --border: rgba(255, 255, 255, 0.08);
+            --focus-ring: #a5b4fc;
+            --content-max: 80rem;
         }
         [data-theme="light"] {
             --bg-main: #f1f5f9;
@@ -28,17 +32,51 @@
             --bg-hover: #e2e8f0;
             --text-main: #0f172a;
             --text-muted: #64748b;
+            --danger: #dc2626;
+            --focus-ring: #4f46e5;
             --glass: rgba(255, 255, 255, 0.98);
             --border: rgba(0, 0, 0, 0.08);
         }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-main);
+            background-image: radial-gradient(circle at 15% -10%, rgba(99, 102, 241, .16), transparent 34rem),
+                              radial-gradient(circle at 100% 0%, rgba(139, 92, 246, .10), transparent 32rem);
             color: var(--text-main);
             transition: background-color 0.3s ease, color 0.3s ease;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
-            padding-bottom: 90px; 
+            padding-bottom: max(90px, env(safe-area-inset-bottom));
+            line-height: 1.5;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scrollbar-gutter: stable; }
+        ::selection { color: #fff; background: var(--accent); }
+        img, svg { max-width: 100%; }
+        button, input, select, textarea { font: inherit; }
+        button { min-height: 44px; }
+        button:focus-visible, a:focus-visible, [role="button"]:focus-visible,
+        input:focus-visible, select:focus-visible, textarea:focus-visible {
+            outline: 3px solid var(--focus-ring);
+            outline-offset: 2px;
+        }
+        button:disabled, input:disabled, select:disabled, textarea:disabled {
+            cursor: not-allowed;
+            opacity: .55;
+        }
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+        }
+        .safe-area-pb { padding-bottom: env(safe-area-inset-bottom); }
+        .app-nav {
+            height: calc(4rem + env(safe-area-inset-top));
+            padding-top: env(safe-area-inset-top);
+        }
+        @supports not (backdrop-filter: blur(1px)) {
+            .glass-panel { background: var(--bg-card); }
         }
         @media screen and (max-width: 768px) {
             input, select, textarea { font-size: 16px !important; }
@@ -48,8 +86,12 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255,255,255,.035);
             transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-panel:hover { border-color: var(--accent); }
+        @supports (border-color: color-mix(in srgb, black, white)) {
+            .glass-panel:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); }
         }
         .btn-primary {
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -74,6 +116,7 @@
         .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: var(--bg-hover); border-radius: 20px; }
+        .custom-scrollbar { scrollbar-width: thin; scrollbar-color: var(--bg-hover) transparent; }
         
         .modal-backdrop { opacity: 0; visibility: hidden; transition: all 0.3s; }
         .modal-backdrop.active { opacity: 1; visibility: visible; }
@@ -187,26 +230,103 @@
         .stat-value {
             transition: color 0.3s;
         }
+
+        /* Consistent, tactile surfaces for dynamically rendered cards and rows. */
+        #stats-grid { align-items: stretch; }
+        #stats-grid > *, .metric-card { min-width: 0; }
+        #stats-grid > [role="button"] {
+            isolation: isolate;
+            overflow: hidden;
+            min-height: 13rem;
+        }
+        #stats-grid > [role="button"]::before {
+            content: "";
+            position: absolute;
+            width: 11rem;
+            height: 11rem;
+            top: -6rem;
+            right: -4rem;
+            z-index: -1;
+            border-radius: 999px;
+            background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+            transition: transform .35s ease, opacity .35s ease;
+            opacity: .72;
+        }
+        #stats-grid > [role="button"]:hover::before { transform: scale(1.35); opacity: 1; }
+        .metric-card {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .metric-card::after {
+            content: "";
+            position: absolute;
+            inset: auto -20% -65% 20%;
+            height: 90%;
+            background: radial-gradient(ellipse, var(--accent-glow), transparent 68%);
+            opacity: .28;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .trade-card { border-radius: 1rem; border-top: 1px solid var(--border); }
+        .trade-card:focus-within { border-color: var(--focus-ring); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 28%, transparent); }
+        #view-detail > * { min-width: 0; }
+        .modal-backdrop { overscroll-behavior: contain; }
+        .modal-content { max-height: min(88dvh, 52rem); overflow-y: auto; overscroll-behavior: contain; }
+        input, select, textarea {
+            min-height: 44px;
+            transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+        }
+        input:hover, select:hover, textarea:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+
+        @media (hover: hover) and (pointer: fine) {
+            #stats-grid > [role="button"]:hover { transform: translateY(-5px); box-shadow: 0 20px 45px -18px rgba(0,0,0,.45); }
+        }
+
+        @media (min-width: 769px) {
+            body { padding-bottom: 0; }
+        }
+        @media (max-width: 640px) {
+            .glass-panel { backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+            .modal-content { max-height: calc(100dvh - 2rem); border-radius: 1.25rem; }
+            #view-detail .sticky { top: calc(4.25rem + env(safe-area-inset-top)); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .chart-draw { stroke-dasharray: none; stroke-dashoffset: 0; }
+        }
+        @media (forced-colors: active) {
+            .glass-panel, .metric-card, .trade-card { border: 1px solid CanvasText; }
+            button:focus-visible, a:focus-visible, [role="button"]:focus-visible,
+            input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid Highlight; }
+        }
     </style>
+    <link rel="stylesheet" href="brand-v2.css">
 </head>
 <body class="min-h-screen flex flex-col">
+    <noscript><div style="padding:1rem;background:#fee2e2;color:#7f1d1d;text-align:center;font-weight:700">Р”Р»СЏ СЂР°Р±РѕС‚С‹ Р¶СѓСЂРЅР°Р»Р° РІРєР»СЋС‡РёС‚Рµ JavaScript РІ Р±СЂР°СѓР·РµСЂРµ.</div></noscript>
 
-    <nav class="fixed top-0 w-full z-40 glass-panel border-b-0 shadow-sm backdrop-blur-xl h-16">
+    <nav aria-label="РћСЃРЅРѕРІРЅР°СЏ РЅР°РІРёРіР°С†РёСЏ" class="app-nav fixed top-0 w-full z-40 glass-panel border-b-0 shadow-sm backdrop-blur-xl h-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex items-center justify-between h-full">
-                <div class="flex items-center gap-3 cursor-pointer group" onclick="app.goHome()">
+                <button type="button" aria-label="РќР° РіР»Р°РІРЅСѓСЋ" class="flex items-center gap-3 cursor-pointer group bg-transparent border-0 p-0 text-left" onclick="app.goHome()">
                     <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-lg transition-transform duration-300 active:scale-95 group-hover:rotate-6">
-                        <img src="https://i.postimg.cc/RFZsJw9d/image.png" class="w-5 h-5 object-contain" alt="W">
+                        <span class="text-sm font-black tracking-tighter" aria-hidden="true">W</span>
                     </div>
                     <div>
                         <h1 class="text-lg font-bold tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-[var(--text-main)] to-[var(--text-muted)]">weeloser</h1>
                     </div>
-                </div>
+                </button>
                 <div class="flex items-center gap-2">
-                    <button onclick="app.toggleTheme()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)]">
+                    <button type="button" aria-label="РџРµСЂРµРєР»СЋС‡РёС‚СЊ С‚РµРјСѓ" title="РџРµСЂРµРєР»СЋС‡РёС‚СЊ С‚РµРјСѓ" onclick="app.toggleTheme()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)]">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
-                    <button onclick="app.openSettings()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)]">
+                    <button type="button" aria-label="РћС‚РєСЂС‹С‚СЊ РЅР°СЃС‚СЂРѕР№РєРё" title="РќР°СЃС‚СЂРѕР№РєРё" onclick="app.openSettings()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)]">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     </button>
                 </div>
@@ -214,20 +334,20 @@
         </div>
     </nav>
 
-    <div class="fixed bottom-0 left-0 w-full z-30 glass-panel border-t border-[var(--border)] md:hidden safe-area-pb">
+    <div role="navigation" aria-label="РњРѕР±РёР»СЊРЅР°СЏ РЅР°РІРёРіР°С†РёСЏ" class="fixed bottom-0 left-0 w-full z-30 glass-panel border-t border-[var(--border)] md:hidden safe-area-pb">
         <div class="grid grid-cols-3 h-16">
-            <button onclick="app.goHome()" class="flex flex-col items-center justify-center gap-1 text-[var(--text-muted)] hover:text-[var(--accent)] active:text-[var(--accent)]">
+            <button type="button" aria-label="РќР° РіР»Р°РІРЅСѓСЋ" onclick="app.goHome()" class="flex flex-col items-center justify-center gap-1 text-[var(--text-muted)] hover:text-[var(--accent)] active:text-[var(--accent)]">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="text-[10px] font-medium">Главная</span>
+                <span class="text-[10px] font-medium">Р“Р»Р°РІРЅР°СЏ</span>
             </button>
-            <button onclick="app.state.currentId ? app.openTradeModal() : app.openCreateModal()" class="flex flex-col items-center justify-center gap-1 text-[var(--accent)] group">
+            <button type="button" aria-label="Р”РѕР±Р°РІРёС‚СЊ" onclick="app.state.currentId ? app.openTradeModal() : app.openCreateModal()" class="flex flex-col items-center justify-center gap-1 text-[var(--accent)] group">
                 <div class="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 transform -translate-y-4 border-4 border-[var(--bg-main)] group-active:scale-90 transition-transform">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 </div>
             </button>
-            <button onclick="app.openSettings()" class="flex flex-col items-center justify-center gap-1 text-[var(--text-muted)] hover:text-[var(--accent)]">
+            <button type="button" aria-label="РћС‚РєСЂС‹С‚СЊ РЅР°СЃС‚СЂРѕР№РєРё" onclick="app.openSettings()" class="flex flex-col items-center justify-center gap-1 text-[var(--text-muted)] hover:text-[var(--accent)]">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                <span class="text-[10px] font-medium">Меню</span>
+                <span class="text-[10px] font-medium">РњРµРЅСЋ</span>
             </button>
         </div>
     </div>
@@ -237,1108 +357,352 @@
         <div id="view-dashboard" class="animate-enter">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">Статистика</h2>
-                    <p class="text-[var(--text-muted)] text-sm font-medium">Ваши торговые сессии</p>
-                </div>
-                <button onclick="app.openCreateModal()" class="hidden md:flex btn-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg items-center gap-2 hover:shadow-xl transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    Новая сессия
-                </button>
-            </div>
-
-            <div id="stats-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"></div>
-            
-            <div id="empty-state" class="hidden flex-col items-center justify-center py-24 text-center animate-pop">
-                <div class="w-20 h-20 bg-[var(--bg-card)] rounded-2xl flex items-center justify-center mb-6 shadow-lg border border-[var(--border)]">
-                    <svg class="w-8 h-8 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                </div>
-                <h3 class="text-lg font-semibold mb-2">Нет данных</h3>
-                <p class="text-sm text-[var(--text-muted)]">Создайте новую сессию</p>
-            </div>
-        </div>
-
-        <div id="view-detail" class="hidden animate-enter">
-            <div class="flex flex-col lg:flex-row lg:items-center gap-4 mb-6 sticky top-20 z-30 glass-panel p-4 rounded-2xl shadow-xl backdrop-blur-xl">
-                <div class="flex items-center gap-3 flex-1 w-full">
-                    <button onclick="app.goHome()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors group">
-                        <svg class="w-5 h-5 text-[var(--text-muted)] group-hover:text-[var(--text-main)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                    </button>
-                    <div class="overflow-hidden flex-1">
-                        <div class="flex items-center gap-2 group/title">
-                            <h2 id="detail-title" class="text-lg md:text-xl font-bold truncate"></h2>
-                            <button onclick="app.editSessionName()" class="p-1 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                            </button>
-                        </div>
-                        <p class="text-xs text-[var(--text-muted)]" id="detail-subtitle"></p>
-                    </div>
-                    <div class="flex md:hidden items-center gap-1">
-                         <button onclick="app.copyReport()" class="p-2.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-muted)] active:scale-95 transition-transform">
-                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-                         </button>
-                         <button onclick="app.openReportModal()" class="p-2.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] text-[var(--success)] active:scale-95 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="hidden md:flex gap-2">
-                     <button onclick="app.copyReport()" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[var(--bg-hover)] transition-all shadow-sm flex items-center gap-2 group">
-                        <svg class="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-                        Копировать всё
-                    </button>
-                     <button onclick="app.openReportModal()" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[var(--bg-hover)] transition-all shadow-sm flex items-center gap-2">
-                        <svg class="w-4 h-4 text-[var(--success)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        Отчет
-                    </button>
-                    <button onclick="app.openTradeModal()" class="btn-primary text-white px-5 py-2.5 rounded-xl font-bold shadow-lg flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        Сделка
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                <div class="lg:col-span-2 glass-panel rounded-3xl p-5 md:p-6 relative group animate-pop shadow-xl border-t border-white/5">
-                    <div class="flex justify-between items-end mb-4 relative z-10 pointer-events-none">
-                        <div>
-                            <p class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">Рост депозита</p>
-                            <h3 id="chart-total-pnl" class="text-3xl md:text-4xl font-bold tracking-tight">0.00%</h3>
-                        </div>
-                    </div>
-                    <div id="main-chart-container" class="h-[250px] md:h-[280px] w-full relative z-10 touch-pan-y"></div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-main)]/50 to-transparent pointer-events-none"></div>
-                </div>
-
-                <div class="glass-panel rounded-3xl p-6 flex flex-col items-center justify-center relative animate-pop shadow-xl border-t border-white/5" style="animation-delay: 0.1s">
-                    <p class="absolute top-6 left-6 text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Winrate</p>
-                    <div class="relative w-40 h-40 my-4 group touch-pan-y flex items-center justify-center">
-                        <svg id="winrate-chart" viewBox="0 0 100 100" class="circular-chart drop-shadow-2xl">
-                            <circle cx="50" cy="50" r="40" class="circle-bg"/>
-                            <circle id="winrate-circle" cx="50" cy="50" r="40" class="circle-fg" stroke-dasharray="251.327" stroke-dashoffset="251.327"/>
-                        </svg>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center">
-                            <span id="winrate-text" class="text-2xl font-bold tracking-tighter transition-transform duration-300">0%</span>
-                        </div>
-                    </div>
-                    <div class="flex w-full justify-between mt-auto px-2 text-sm font-medium">
-                         <div class="flex items-center gap-2 bg-green-500/10 px-2 py-1 rounded-lg border border-green-500/10">
-                            <div class="w-1.5 h-1.5 rounded-full bg-[var(--success)]"></div>
-                            <span id="wins-count" class="text-[var(--success)] font-bold text-xs">0</span>
-                        </div>
-                        <div class="flex items-center gap-2 bg-gray-500/10 px-2 py-1 rounded-lg border border-gray-500/10">
-                            <div class="w-1.5 h-1.5 rounded-full bg-[var(--neutral)]"></div>
-                            <span id="be-count" class="text-[var(--neutral)] font-bold text-xs">0</span>
-                        </div>
-                        <div class="flex items-center gap-2 bg-red-500/10 px-2 py-1 rounded-lg border border-red-500/10">
-                            <div class="w-1.5 h-1.5 rounded-full bg-[var(--danger)]"></div>
-                            <span id="losses-count" class="text-[var(--danger)] font-bold text-xs">0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-center animate-enter" style="animation-delay: 0.2s">
-                <div class="relative w-full sm:w-72 group">
-                    <input type="text" id="search-trade" placeholder="Поиск..." class="w-full bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-main)] rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:border-[var(--accent)] transition-all shadow-sm text-sm font-medium">
-                    <svg class="w-5 h-5 text-[var(--text-muted)] absolute left-4 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </div>
-                <div class="flex gap-3 w-full sm:w-auto">
-                    <div class="px-5 py-2 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] flex flex-col items-center justify-center flex-1 sm:flex-none min-w-[90px]">
-                        <span class="text-[10px] text-[var(--text-muted)] uppercase font-bold mb-0.5">Ср. Win</span>
-                        <span id="avg-win" class="font-bold text-[var(--success)] text-sm">0.00%</span>
-                    </div>
-                    <div class="px-5 py-2 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] flex flex-col items-center justify-center flex-1 sm:flex-none min-w-[90px]">
-                        <span class="text-[10px] text-[var(--text-muted)] uppercase font-bold mb-0.5">Ср. Loss</span>
-                        <span id="avg-loss" class="font-bold text-[var(--danger)] text-sm">0.00%</span>
-                    </div>
-                </div>
-            </div>
-
-            <div id="trades-list" class="space-y-3 pb-8 animate-enter" style="animation-delay: 0.3s"></div>
-        </div>
-    </main>
-
-    <div id="toast-container" class="fixed bottom-24 md:bottom-8 left-1/2 transform -translate-x-1/2 z-[100] pointer-events-none flex flex-col gap-2 w-full max-w-xs px-4"></div>
-
-    <div id="modal-create" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-backdrop">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="app.closeModal('modal-create')"></div>
-        <div class="modal-content bg-[var(--bg-card)] w-full max-w-md p-6 md:p-8 rounded-t-3xl md:rounded-3xl border border-[var(--border)] shadow-2xl relative">
-            <h3 class="text-2xl font-bold mb-8 text-center">Новая сессия</h3>
-            <form onsubmit="app.saveStat(event)">
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase mb-2 ml-1">Название</label>
-                        <input type="text" id="stat-name" required class="w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-4 py-4 focus:outline-none focus:border-[var(--accent)] font-medium" placeholder="Марафон...">
-                    </div>
-                </div>
-                <button type="submit" class="w-full py-4 rounded-xl btn-primary text-white font-bold shadow-lg mt-8 text-lg">Создать</button>
-            </form>
-        </div>
-    </div>
-    
-    <div id="modal-report" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-backdrop">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="app.closeModal('modal-report')"></div>
-        <div class="modal-content bg-[var(--bg-card)] w-full max-w-4xl p-6 md:p-8 rounded-t-3xl md:rounded-3xl border border-[var(--border)] shadow-2xl relative flex flex-col h-[85vh] md:h-auto md:max-h-[90vh]">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl md:text-2xl font-bold">Детальный отчет</h3>
-                <button onclick="app.closeModal('modal-report')" class="p-2 hover:bg-[var(--bg-hover)] rounded-xl transition-colors">
-                    <svg class="w-6 h-6 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            
-            <div class="overflow-y-auto custom-scrollbar flex-1 pr-1">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                     <div class="metric-card animate-pop" style="animation-delay: 0.05s">
-                        <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Сделок</p>
-                        <p id="rep-total" class="text-lg md:text-2xl font-bold">0</p>
-                     </div>
-                     <div class="metric-card animate-pop" style="animation-delay: 0.1s">
-                        <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Winrate</p>
-                        <p id="rep-winrate" class="text-lg md:text-2xl font-bold">0%</p>
-                     </div>
-                     <div class="metric-card animate-pop" style="animation-delay: 0.15s">
-                        <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Win / Loss / BE</p>
-                        <div class="flex justify-center gap-1 text-sm md:text-lg font-bold">
-                            <span id="rep-w-count" class="text-[var(--success)]">0</span>/<span id="rep-l-count" class="text-[var(--danger)]">0</span>/<span id="rep-b-count" class="text-[var(--neutral)]">0</span>
-                        </div>
-                     </div>
-                     <div class="metric-card animate-pop" style="animation-delay: 0.2s">
-                        <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Profit Factor</p>
-                        <p id="rep-pf" class="text-lg md:text-2xl font-bold">0</p>
-                     </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                     <div class="metric-card clickable animate-pop" style="animation-delay: 0.25s" onclick="app.scrollToTrade(app.bestTradeId)">
-                         <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Лучшая сделка</p>
-                         <div class="flex justify-between items-end w-full">
-                             <span id="rep-best-coin" class="text-xs font-bold text-[var(--text-muted)]">---</span>
-                             <span id="rep-best-pnl" class="text-lg font-bold text-[var(--success)]">0.00%</span>
-                         </div>
-                     </div>
-                     <div class="metric-card clickable animate-pop" style="animation-delay: 0.3s" onclick="app.scrollToTrade(app.worstTradeId)">
-                         <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Худшая сделка</p>
-                         <div class="flex justify-between items-end w-full">
-                             <span id="rep-worst-coin" class="text-xs font-bold text-[var(--text-muted)]">---</span>
-                             <span id="rep-worst-pnl" class="text-lg font-bold text-[var(--danger)]">0.00%</span>
-                         </div>
-                     </div>
-                </div>
-                
-                <div class="bg-[var(--bg-main)] rounded-2xl border border-[var(--border)] overflow-hidden flex flex-col shadow-inner min-h-[200px]">
-                     <div class="p-3 border-b border-[var(--border)] flex justify-between items-center bg-[var(--bg-main)]">
-                         <span class="text-[10px] font-bold uppercase text-[var(--text-muted)] tracking-wider">Текст для копирования</span>
-                         <button onclick="app.copyReportTextFromModal()" class="text-xs text-[var(--accent)] font-bold hover:underline flex items-center gap-1">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-                            Копировать
-                        </button>
-                     </div>
-                     <textarea id="report-textarea" class="w-full h-40 md:h-full bg-transparent p-4 text-xs font-mono focus:outline-none resize-none text-[var(--text-main)] custom-scrollbar leading-relaxed border-none" readonly></textarea>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-trade" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-backdrop">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="app.closeModal('modal-trade')"></div>
-        <div class="modal-content bg-[var(--bg-card)] w-full max-w-2xl p-6 rounded-t-3xl md:rounded-3xl border border-[var(--border)] shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold">Сделка</h3>
-                <div class="flex bg-[var(--bg-main)] rounded-xl p-1 border border-[var(--border)]">
-                    <button type="button" id="btn-long" onclick="app.setDirection('long')" class="px-6 md:px-8 py-2 rounded-lg text-sm font-bold transition-all">LONG</button>
-                    <button type="button" id="btn-short" onclick="app.setDirection('short')" class="px-6 md:px-8 py-2 rounded-lg text-sm font-bold transition-all">SHORT</button>
-                </div>
-            </div>
-            
-            <form onsubmit="app.saveTrade(event)" class="space-y-5">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="md:col-span-1">
-                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase mb-2 ml-1">Тикер</label>
-                        <input type="text" id="trade-coin" required placeholder="BTC" oninput="this.value = this.value.toUpperCase()" class="w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-4 py-3 font-bold tracking-wider focus:outline-none focus:border-[var(--accent)] placeholder-[var(--text-muted)]/30">
-                    </div>
-                    <div class="md:col-span-2">
-                         <label class="block text-xs font-bold text-[var(--text-muted)] uppercase mb-2 ml-1">Дата</label>
-                         <input type="date" id="trade-date" class="w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--accent)] text-sm font-medium">
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase mb-2 ml-1">Вход</label>
-                        <input type="number" step="any" id="trade-entry" required oninput="app.calcPreview()" class="w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--accent)]">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase mb-2 ml-1">Маржа (x)</label>
-                        <input type="number" step="0.25" min="0" id="trade-margin" value="1" oninput="app.calcPreview()" class="w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--accent)]">
-                    </div>
-                </div>
-
-                <div class="bg-[var(--bg-main)] rounded-2xl p-4 border border-[var(--border)]">
-                    <div class="flex justify-between items-center mb-3">
-                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Фиксации</label>
-                        <button type="button" onclick="app.addFixRow()" class="text-xs text-[var(--accent)] font-bold hover:text-white transition-colors flex items-center gap-1 py-1 px-2 rounded hover:bg-[var(--accent)]/10">
-                            + Добавить
-                        </button>
-                    </div>
-                    <div id="fix-container" class="space-y-2"></div>
-                    <p class="text-[10px] text-[var(--text-muted)] mt-2 italic opacity-60 text-center">Если сумма < 100%, остаток будет добавлен по цене входа.</p>
-                </div>
-
-                <div class="flex items-center justify-between bg-[var(--bg-main)] rounded-2xl p-5 border border-[var(--border)] border-dashed">
-                    <span class="text-sm font-medium text-[var(--text-muted)]">P&L:</span>
-                    <span id="preview-pnl" class="text-3xl font-bold tracking-tight">0.00%</span>
-                </div>
-
-                <button type="submit" class="w-full py-4 rounded-xl btn-primary text-white font-bold text-lg shadow-xl hover:scale-[1.01] transition-transform">Сохранить</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="settings-panel" class="fixed inset-y-0 right-0 w-80 bg-[var(--bg-card)] border-l border-[var(--border)] transform translate-x-full transition-transform duration-300 z-[60] shadow-2xl p-6 flex flex-col backdrop-blur-xl">
-        <div class="flex justify-between items-center mb-8">
-            <h3 class="text-xl font-bold">Настройки</h3>
-            <button onclick="app.closeSettings()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] text-[var(--text-muted)] transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-        </div>
-        <div class="space-y-4 flex-1">
-            <div class="bg-[var(--bg-main)] p-4 rounded-2xl border border-[var(--border)]">
-                 <span class="text-xs font-bold text-[var(--text-muted)] uppercase block mb-2">Сортировка</span>
-                 <select id="sort-select" onchange="app.changeSort(this.value)" class="w-full bg-transparent border-b border-[var(--border)] pb-2 text-sm font-medium focus:outline-none focus:border-[var(--accent)] text-[var(--text-main)]">
-                    <option value="newest">Сначала новые</option>
-                    <option value="oldest">Сначала старые</option>
-                    <option value="profit">По профиту</option>
-                </select>
-            </div>
-
-            <div class="pt-4 border-t border-[var(--border)] space-y-3">
-                <button onclick="app.exportData()" class="w-full flex items-center gap-3 p-4 rounded-xl hover:bg-[var(--bg-hover)] transition-colors border border-[var(--border)] group text-left">
-                    <div class="w-8 h-8 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold">Бэкап</p>
-                        <p class="text-[10px] text-[var(--text-muted)]">Сохранить в файл</p>
-                    </div>
-                </button>
-                <div class="relative group">
-                    <input type="file" id="import-file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept=".json" onchange="app.importData(this)">
-                    <button class="w-full flex items-center gap-3 p-4 rounded-xl hover:bg-[var(--bg-hover)] transition-colors border border-[var(--border)] text-left">
-                        <div class="w-8 h-8 rounded-lg bg-[var(--success)]/10 flex items-center justify-center text-[var(--success)]">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold">Импорт</p>
-                            <p class="text-[10px] text-[var(--text-muted)]">Загрузить JSON</p>
-                        </div>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <button onclick="app.resetAll()" class="w-full flex items-center justify-center gap-2 p-4 rounded-xl bg-red-500/10 text-[var(--danger)] hover:bg-red-500/20 transition-colors border border-red-500/10 mt-auto">
-            <span class="font-bold text-sm">Сброс данных</span>
-        </button>
-    </div>
-
-    <script>
-        const app = {
-            data: {},
-            config: { theme: 'dark', sort: 'newest' },
-            state: { currentId: null, editTradeId: null, direction: 'long' },
-            bestTradeId: null,
-            worstTradeId: null,
-
-            init() {
-                try {
-                    const d = localStorage.getItem('weeloser_data');
-                    const c = localStorage.getItem('weeloser_config');
-                    if (d) this.data = JSON.parse(d);
-                    if (c) this.config = JSON.parse(c);
-                } catch(e) { console.error(e); }
-
-                this.applyTheme();
-                this.data.currentStatId && this.data[this.data.currentStatId] ? this.openStat(this.data.currentStatId) : this.renderDashboard();
-                document.getElementById('search-trade').addEventListener('input', (e) => this.renderTrades(e.target.value));
-                document.getElementById('sort-select').value = this.config.sort;
-            },
-
-            save() {
-                try {
-                    localStorage.setItem('weeloser_data', JSON.stringify(this.data));
-                    localStorage.setItem('weeloser_config', JSON.stringify(this.config));
-                } catch(e) { console.error("Storage error", e); }
-            },
-
-            applyTheme() { document.documentElement.setAttribute('data-theme', this.config.theme); },
-            toggleTheme() { this.config.theme = this.config.theme === 'dark' ? 'light' : 'dark'; this.save(); this.applyTheme(); },
-            
-            goHome() {
-                this.state.currentId = null;
-                delete this.data.currentStatId;
-                this.save();
-                document.getElementById('view-detail').classList.add('hidden');
-                document.getElementById('view-dashboard').classList.remove('hidden');
-                this.renderDashboard();
-            },
-
-            renderDashboard() {
-                const grid = document.getElementById('stats-grid');
-                grid.innerHTML = '';
-                const keys = Object.keys(this.data).filter(k => k !== 'currentStatId');
-                
-                const empty = document.getElementById('empty-state');
-                if(keys.length === 0) { empty.classList.remove('hidden'); empty.classList.add('flex'); }
-                else { empty.classList.add('hidden'); empty.classList.remove('flex'); }
-
-                keys.sort((a,b) => {
-                    const tA = parseInt(a.split('-')[1]) || 0;
-                    const tB = parseInt(b.split('-')[1]) || 0;
-                    return tB - tA;
-                }).forEach((id, index) => {
-                    const item = this.data[id];
-                    if(!item || !item.name) return;
-                    const m = this.calcMetrics(item.trades);
-                    let dateDisplay = "Нет даты";
-                    if (item.trades && item.trades.length > 0) {
-                        const sorted = [...item.trades].sort((a,b) => (a.ts || 0) - (b.ts || 0));
-                        dateDisplay = new Date(sorted[0].ts || Date.now()).toLocaleDateString();
-                    } else {
-                         const ts = parseInt(id.split('-')[1]);
-                         if (!isNaN(ts)) dateDisplay = new Date(ts).toLocaleDateString();
-                    }
-
-                    const el = document.createElement('div');
-                    el.style.animationDelay = `${index * 0.05}s`;
-                    el.className = 'glass-panel p-6 rounded-3xl cursor-pointer animate-pop relative group hover:border-[var(--accent)] transition-colors shadow-lg active:scale-[0.98]';
-                    el.onclick = (e) => { if(!e.target.closest('.action-btn')) this.openStat(id); };
-                    
-                    el.innerHTML = `
-                        <div class="flex justify-between items-start mb-6">
-                            <div class="pr-8 overflow-hidden">
-                                <h3 class="font-bold text-lg md:text-xl text-[var(--text-main)] truncate mb-1">${item.name}</h3>
-                                <p class="text-xs text-[var(--text-muted)] font-semibold bg-[var(--bg-hover)] inline-block px-2 py-1 rounded-md border border-[var(--border)]">
-                                    ${dateDisplay} • ${item.trades ? item.trades.length : 0} сделок
-                                </p>
-                            </div>
-                            <button class="action-btn absolute top-6 right-6 text-[var(--text-muted)] hover:text-[var(--danger)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all p-2 rounded-lg hover:bg-[var(--bg-main)]" onclick="app.deleteStat('${id}')">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            </button>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-[var(--bg-main)] p-4 rounded-2xl border border-[var(--border)]">
-                                <p class="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-1">P&L</p>
-                                <p class="text-2xl font-bold ${m.pnl >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]'} truncate">${m.pnl > 0 ? '+' : ''}${m.pnl.toFixed(2)}%</p>
-                            </div>
-                            <div class="bg-[var(--bg-main)] p-4 rounded-2xl border border-[var(--border)] text-right">
-                                <p class="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-1">Winrate</p>
-                                <p class="text-2xl font-bold text-[var(--text-main)]">${m.winrate}%</p>
-                            </div>
-                        </div>
-                    `;
-                    grid.appendChild(el);
-                });
-            },
-
-            openStat(id) {
-                this.state.currentId = id;
-                this.data.currentStatId = id;
-                this.save();
-                document.getElementById('view-dashboard').classList.add('hidden');
-                document.getElementById('view-detail').classList.remove('hidden');
-                const s = this.data[id];
-                document.getElementById('detail-title').innerText = s.name;
-                document.getElementById('detail-subtitle').innerText = `${s.trades ? s.trades.length : 0} сделок`;
-                document.getElementById('search-trade').value = '';
-                this.renderTrades();
-            },
-
-            editSessionName() {
-                const id = this.state.currentId;
-                if (!id || !this.data[id]) return;
-                const newName = prompt('Введите новое название:', this.data[id].name);
-                if (newName && newName.trim() !== '') {
-                    this.data[id].name = newName.trim();
-                    this.save();
-                    document.getElementById('detail-title').innerText = newName.trim();
-                    this.showToast('Название изменено');
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">РЎС‚Р°С‚РёСЃС‚РёРєР°</h2>
+                    <p class="text-[var(--text-muted)] text-sm font-medium">Р’Р°С€Рё С‚РѕСЂРіРѕРІС‹Рµ С…22153 tokens truncated…tem(CONFIG_KEY, JSON.stringify(this.config));
+                    return true;
+                } catch (error) {
+                    console.error('Storage error', error);
+                    showDataError('РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ РґР°РЅРЅС‹Рµ: С…СЂР°РЅРёР»РёС‰Рµ РЅРµРґРѕСЃС‚СѓРїРЅРѕ РёР»Рё Р·Р°РїРѕР»РЅРµРЅРѕ');
+                    return false;
                 }
-            },
+            };
 
-            normalizeTrade(t, index) {
-                return {
-                    ...t,
-                    dir: t.dir || t.direction || 'long',
-                    fixes: t.fixes || t.fixations || [],
-                    ts: t.ts || (t.date ? new Date(t.date).getTime() : Date.now()),
-                    originalIndex: index
-                };
-            },
+            const originalInit = app.init;
+            app.init = function () {
+                // Validate persisted JSON before the legacy initializer consumes it.
+                try {
+                    const rawData = localStorage.getItem(DATA_KEY);
+                    const rawConfig = localStorage.getItem(CONFIG_KEY);
+                    const data = rawData ? normalizeData(JSON.parse(rawData)) : {};
+                    const config = rawConfig ? normalizeConfig(JSON.parse(rawConfig)) : normalizeConfig({});
+                    localStorage.setItem(DATA_KEY, JSON.stringify(data));
+                    localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+                } catch (error) {
+                    console.error('Invalid persisted data', error);
+                    try {
+                        localStorage.removeItem(DATA_KEY);
+                        localStorage.removeItem(CONFIG_KEY);
+                    } catch (_) { /* Storage may be disabled completely. */ }
+                }
 
-            renderTrades(query = '') {
-                const stat = this.data[this.state.currentId];
-                const list = document.getElementById('trades-list');
-                list.innerHTML = '';
-                if (!stat.trades) stat.trades = [];
-                
-                let trades = stat.trades.map((t, i) => this.normalizeTrade(t, i)).filter(t => t.coin && t.coin.toUpperCase().includes(query.toUpperCase()));
-                
-                if (this.config.sort === 'newest') trades.sort((a,b) => (b.ts - a.ts) || (b.originalIndex - a.originalIndex));
-                else if (this.config.sort === 'oldest') trades.sort((a,b) => (a.ts - b.ts) || (a.originalIndex - b.originalIndex));
-                else if (this.config.sort === 'profit') trades.sort((a,b) => this.calcPnl(b) - this.calcPnl(a));
+                const result = originalInit.call(this);
+                this.data = normalizeData(this.data);
+                this.config = normalizeConfig(this.config);
+                if (this.state.currentId && !this.data[this.state.currentId]) this.state.currentId = null;
+                return result;
+            };
 
-                this.updateCharts(trades);
+            const originalRenderDashboard = app.renderDashboard;
+            app.renderDashboard = function () {
+                this.data = normalizeData(this.data);
+                try {
+                    return originalRenderDashboard.call(this);
+                } catch (error) {
+                    console.error('Dashboard render error', error);
+                    showDataError('РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РѕР±СЂР°Р·РёС‚СЊ РѕРґРЅСѓ РёР· СЃРµСЃСЃРёР№');
+                }
+            };
 
-                if (trades.length === 0) {
-                    list.innerHTML = '<div class="text-center py-12 text-[var(--text-muted)] opacity-50 font-medium animate-pop">Сделок не найдено</div>';
+            const originalOpenStat = app.openStat;
+            app.openStat = function (id) {
+                if (!isSafeId(String(id ?? '')) || !isObject(this.data?.[id])) {
+                    this.state.currentId = null;
+                    delete this.data.currentStatId;
+                    return this.renderDashboard();
+                }
+                this.data[id] = normalizeSession(this.data[id]);
+                return originalOpenStat.call(this, id);
+            };
+
+            const originalRenderTrades = app.renderTrades;
+            app.renderTrades = function (query = '') {
+                const id = this.state.currentId;
+                if (!id || !isObject(this.data?.[id])) return;
+                this.data[id] = normalizeSession(this.data[id]);
+                try {
+                    return originalRenderTrades.call(this, plainText(query, '', 80));
+                } catch (error) {
+                    console.error('Trade render error', error);
+                    const list = document.getElementById('trades-list');
+                    if (list) list.textContent = 'РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РѕР±СЂР°Р·РёС‚СЊ СЃРґРµР»РєРё. РџСЂРѕРІРµСЂСЊС‚Рµ РёРјРїРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Рµ РґР°РЅРЅС‹Рµ.';
+                }
+            };
+
+            const originalUpdateCharts = app.updateCharts;
+            app.updateCharts = function (trades) {
+                // The original renderer binds pointer listeners on every refresh.
+                // Replacing the empty host prevents those closures accumulating.
+                const host = document.getElementById('main-chart-container');
+                if (host?.parentNode) host.replaceWith(host.cloneNode(false));
+                try {
+                    return originalUpdateCharts.call(this, Array.isArray(trades) ? trades : []);
+                } catch (error) {
+                    console.error('Chart render error', error);
+                    const currentHost = document.getElementById('main-chart-container');
+                    if (currentHost) currentHost.textContent = 'Р“СЂР°С„РёРє РІСЂРµРјРµРЅРЅРѕ РЅРµРґРѕСЃС‚СѓРїРµРЅ';
+                }
+            };
+
+            app.animateNumbers = function (element, start, end, duration = 700, isPct = true) {
+                if (!element) return;
+                const from = asNumber(start, 0);
+                const to = asNumber(end, 0);
+                const time = Math.max(0, asNumber(duration, 0));
+                const previousFrame = animationFrames.get(element);
+                if (previousFrame) cancelAnimationFrame(previousFrame);
+
+                const format = value => `${value > 0 && isPct ? '+' : ''}${value.toFixed(2)}${isPct ? '%' : ''}`;
+                if (!time || typeof requestAnimationFrame !== 'function') {
+                    element.textContent = format(to);
                     return;
                 }
 
-                trades.forEach((t, i) => {
-                    const pnl = this.calcPnl(t);
-                    const isWin = pnl > 0.05;
-                    const isLoss = pnl < -0.05;
-                    
-                    const dateStr = new Date(t.ts).toLocaleDateString();
-                    
-                    let pnlColor = isWin ? 'text-[var(--success)]' : (isLoss ? 'text-[var(--danger)]' : 'text-[var(--neutral)]');
-                    let cardBorderColor = isWin ? 'var(--success)' : (isLoss ? 'var(--danger)' : 'var(--neutral)');
-                    
-                    let badgeClass = t.dir === 'long' 
-                        ? 'bg-green-500/10 text-green-500 border-green-500/20' 
-                        : 'bg-red-500/10 text-red-500 border-red-500/20';
-
-                    const el = document.createElement('div');
-                    el.className = `trade-card glass-panel p-4 md:p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center gap-5 border-l-4 transition-all animate-enter`;
-                    el.style.borderColor = cardBorderColor;
-                    el.style.borderLeftStyle = 'solid';
-                    el.style.animationDelay = `${Math.min(i * 0.03, 0.3)}s`;
-                    el.dataset.tradeId = t.id;
-
-                    let totalFixPct = 0;
-                    let fixItemsHTML = t.fixes.map(f => {
-                        const pct = parseFloat(f.percent || f.pct) || 0;
-                        totalFixPct += pct;
-                        return `<div class="text-xs font-mono text-[var(--text-main)] bg-[var(--bg-hover)] px-2 py-1 rounded border border-[var(--border)] whitespace-nowrap">
-                            <span class="font-bold">${f.price || f.p}</span> <span class="text-[var(--text-muted)]">(${pct}%)</span>
-                         </div>`;
-                    }).join('');
-
-                    if (totalFixPct < 99.99 && t.fixes.length > 0) {
-                        const rem = parseFloat((100 - totalFixPct).toFixed(2));
-                        if (rem > 0) {
-                            fixItemsHTML += `<div class="text-xs font-mono text-[var(--text-muted)] bg-[var(--bg-hover)] px-2 py-1 rounded border border-[var(--border)] whitespace-nowrap opacity-75">
-                                <span class="font-bold">${t.entry}</span> <span class="text-[var(--text-muted)]">(${rem}%)</span>
-                             </div>`;
-                        }
-                    } else if (t.fixes.length === 0) {
-                         fixItemsHTML = `<div class="text-xs font-mono text-[var(--text-muted)] bg-[var(--bg-hover)] px-2 py-1 rounded border border-[var(--border)] whitespace-nowrap opacity-75">
-                                <span class="font-bold">${t.entry}</span> <span class="text-[var(--text-muted)]">(100%)</span>
-                             </div>`;
-                    }
-
-                    const fixHTML = `<div class="flex flex-wrap gap-2 mt-3 bg-[var(--bg-main)] p-3 rounded-xl border border-[var(--border)] items-center">
-                            <span class="text-[10px] font-bold text-[var(--text-muted)] uppercase mr-2">Фиксации</span>
-                            ${fixItemsHTML}
-                         </div>`;
-                    
-                    const pnlStr = (pnl > 0 ? '+' : '') + pnl.toFixed(2) + '%';
-                    
-                    el.innerHTML = `
-                        <div class="flex-1 w-full">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-bold text-lg md:text-xl bg-[var(--bg-hover)] border border-[var(--border)] shadow-sm text-[var(--text-main)]">
-                                        ${t.coin.substring(0,1)}
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold text-lg leading-none tracking-tight">${t.coin}</h4>
-                                        <div class="flex gap-2 mt-1">
-                                            <span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border ${badgeClass}">${(t.dir).toUpperCase()}</span>
-                                            <span class="text-[10px] font-bold bg-[var(--bg-hover)] px-2 py-0.5 rounded text-[var(--text-muted)] uppercase tracking-wider border border-[var(--border)]">x${t.margin}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wide mb-1">Дата</p>
-                                    <p class="font-mono text-xs md:text-sm font-medium bg-[var(--bg-main)] px-2 py-1 rounded border border-[var(--border)]">${dateStr}</p>
-                                </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 gap-4 bg-[var(--bg-main)] p-4 rounded-xl border border-[var(--border)] mb-2">
-                                <div>
-                                    <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Вход</p>
-                                    <p class="font-mono text-sm md:text-base font-bold text-[var(--text-main)]">${t.entry}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-1">Результат</p>
-                                    <p class="font-bold font-mono text-lg md:text-xl ${pnlColor}">${pnlStr}</p>
-                                </div>
-                            </div>
-                            ${fixHTML}
-                        </div>
-                        
-                        <div class="flex md:flex-col gap-2 w-full md:w-auto border-t md:border-t-0 md:border-l border-[var(--border)] pt-3 md:pt-0 md:pl-4 justify-center">
-                             <button onclick="app.copyOneTrade('${t.id}')" class="p-3 rounded-xl bg-[var(--bg-main)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors flex-1 md:flex-none flex justify-center items-center group" title="Копировать">
-                                 <svg class="w-5 h-5 md:group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-                            </button>
-                            <button onclick="app.editTrade('${t.id}')" class="p-3 rounded-xl bg-[var(--bg-main)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-main)] hover:border-[var(--text-main)] transition-colors flex-1 md:flex-none flex justify-center items-center group">
-                                <svg class="w-5 h-5 md:group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                            </button>
-                            <button onclick="app.deleteTrade('${t.id}')" class="p-3 rounded-xl bg-[var(--bg-main)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--danger)] hover:border-[var(--danger)] transition-colors flex-1 md:flex-none flex justify-center items-center group">
-                                <svg class="w-5 h-5 md:group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            </button>
-                        </div>
-                    `;
-                    list.appendChild(el);
-                });
-            },
-
-            animateNumbers(obj, start, end, duration = 1000, isPct = true) {
-                if (!obj) return;
-                let startTimestamp = null;
-                const step = (timestamp) => {
-                    if (!startTimestamp) startTimestamp = timestamp;
-                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                    const ease = 1 - Math.pow(1 - progress, 4); 
-                    const current = start + (end - start) * ease;
-                    obj.innerText = (current > 0 && isPct ? '+' : '') + current.toFixed(2) + (isPct ? '%' : '');
-                    if (progress < 1) {
-                        window.requestAnimationFrame(step);
-                    } else {
-                        obj.innerText = (end > 0 && isPct ? '+' : '') + end.toFixed(2) + (isPct ? '%' : '');
-                    }
+                const startedAt = performance.now();
+                const step = now => {
+                    const progress = Math.min((now - startedAt) / time, 1);
+                    const eased = 1 - Math.pow(1 - progress, 4);
+                    element.textContent = format(from + (to - from) * eased);
+                    if (progress < 1) animationFrames.set(element, requestAnimationFrame(step));
+                    else animationFrames.delete(element);
                 };
-                window.requestAnimationFrame(step);
-            },
+                animationFrames.set(element, requestAnimationFrame(step));
+            };
 
-            updateCharts(trades) {
-                const sorted = [...trades].sort((a,b) => (a.ts - b.ts) || (a.originalIndex - b.originalIndex));
-                
-                let balance = 0;
-                const points = sorted.map((t, i) => {
-                    balance += this.calcPnl(t);
-                    return { x: i, y: balance, coin: t.coin, pnl: this.calcPnl(t), date: new Date(t.ts).toLocaleDateString() };
-                });
+            const originalSaveStat = app.saveStat;
+            app.saveStat = function (event) {
+                event?.preventDefault?.();
+                const input = document.getElementById('stat-name');
+                const name = plainText(input?.value, '', 100);
+                if (!name) return this.showToast('Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ СЃРµСЃСЃРёРё');
+                if (input) input.value = name;
+                return originalSaveStat.call(this, event || { preventDefault() {} });
+            };
 
-                const container = document.getElementById('main-chart-container');
-                const totalEl = document.getElementById('chart-total-pnl');
-                
-                if(points.length < 1) {
-                    container.innerHTML = '<div class="absolute inset-0 flex items-center justify-center text-[var(--text-muted)] opacity-50 text-sm">Мало данных для графика</div>';
-                    totalEl.innerText = '0.00%';
-                    totalEl.className = 'text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-muted)]';
-                } else {
-                    const max = Math.max(0, ...points.map(p => p.y));
-                    const min = Math.min(0, ...points.map(p => p.y));
-                    const range = (max - min) || 1;
-                    const w = container.clientWidth;
-                    const h = container.clientHeight;
-                    const pad = 20;
-                    const usableH = h - pad * 2;
-
-                    const getX = (i) => (i / Math.max(1, points.length - 1)) * w;
-                    const getY = (val) => h - pad - ((val - min) / range) * usableH;
-
-                    let pathD = `M ${getX(0)} ${getY(points[0].y)}`;
-                    if (points.length > 1) {
-                        for(let i=1; i<points.length; i++) {
-                            pathD += ` L ${getX(i)} ${getY(points[i].y)}`;
-                        }
-                    } else {
-                        pathD = `M 0 ${getY(points[0].y)} L ${w} ${getY(points[0].y)}`;
-                    }
-                    const areaD = `${pathD} L ${w} ${h} L 0 ${h} Z`;
-
-                    container.innerHTML = `
-                        <svg width="100%" height="100%" style="overflow:visible">
-                            <defs>
-                                <linearGradient id="mainGrad" x1="0" x2="0" y1="0" y2="1">
-                                    <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.5"/>
-                                    <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
-                                </linearGradient>
-                            </defs>
-                            <path d="${areaD}" fill="url(#mainGrad)" class="transition-all duration-500"/>
-                            <path d="${pathD}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="chart-draw drop-shadow-[0_0_15px_var(--accent)]"/>
-                        </svg>
-                        <div id="chart-cursor-line" class="chart-cursor-line"></div>
-                        <div id="chart-tooltip" class="chart-tooltip"></div>
-                    `;
-                    
-                    const cursorLine = document.getElementById('chart-cursor-line');
-                    const tooltip = document.getElementById('chart-tooltip');
-                    
-                    const showTooltip = (clientX) => {
-                        const rect = container.getBoundingClientRect();
-                        const relX = Math.max(0, Math.min(clientX - rect.left, w));
-                        
-                        let closestIdx = 0;
-                        if (points.length > 1) {
-                            closestIdx = Math.round((relX / w) * (points.length - 1));
-                        }
-                        
-                        const point = points[closestIdx];
-                        const px = points.length > 1 ? getX(closestIdx) : relX;
-                        const py = getY(point.y);
-
-                        cursorLine.style.left = `${px}px`;
-                        cursorLine.style.opacity = '1';
-
-                        tooltip.style.left = `${px}px`;
-                        tooltip.style.top = `${py}px`;
-                        tooltip.style.opacity = '1';
-                        const plClass = point.pnl >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]';
-                        tooltip.innerHTML = `
-                            <div class="text-[var(--text-muted)] text-[10px]">${point.date}</div>
-                            <div class="font-bold ${plClass}">${point.coin} ${point.pnl > 0 ? '+' : ''}${point.pnl.toFixed(2)}%</div>
-                            <div class="text-[var(--text-main)] text-[10px] mt-1">Общий: ${(point.y > 0 ? '+' : '')}${point.y.toFixed(2)}%</div>
-                        `;
-                    };
-
-                    container.addEventListener('mousemove', (e) => showTooltip(e.clientX));
-                    container.addEventListener('touchmove', (e) => {
-                         if(e.touches[0]) showTooltip(e.touches[0].clientX);
-                    }, {passive: true});
-
-                    container.addEventListener('mouseleave', () => {
-                        cursorLine.style.opacity = '0';
-                        tooltip.style.opacity = '0';
-                    });
-                    container.addEventListener('touchend', () => {
-                         setTimeout(() => {
-                            cursorLine.style.opacity = '0';
-                            tooltip.style.opacity = '0';
-                         }, 1000);
-                    });
-                    
-                    const total = points[points.length-1].y;
-                    this.animateNumbers(totalEl, 0, total);
-                    totalEl.className = `text-3xl md:text-4xl font-bold tracking-tight ${total >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`;
+            const originalOpenTradeModal = app.openTradeModal;
+            app.openTradeModal = function () {
+                if (!this.state.currentId || !isObject(this.data?.[this.state.currentId])) {
+                    this.showToast('РЎРЅР°С‡Р°Р»Р° СЃРѕР·РґР°Р№С‚Рµ РёР»Рё РѕС‚РєСЂРѕР№С‚Рµ СЃРµСЃСЃРёСЋ');
+                    return this.openCreateModal();
                 }
+                return originalOpenTradeModal.call(this);
+            };
 
-                let wins = 0, losses = 0, be = 0;
-                let winSum = 0, lossSum = 0;
-                trades.forEach(t => {
-                    const p = this.calcPnl(t);
-                    if(p > 0.05) { wins++; winSum += p; }
-                    else if(p < -0.05) { losses++; lossSum += p; }
-                    else be++;
-                });
-                
-                const m = this.calcMetrics(trades);
-                const winrate = m.winrate;
+            const originalSaveTrade = app.saveTrade;
+            app.saveTrade = function (event) {
+                event?.preventDefault?.();
+                const session = this.data?.[this.state.currentId];
+                if (!isObject(session)) return this.showToast('РЎРµСЃСЃРёСЏ РЅРµ РЅР°Р№РґРµРЅР°');
 
-                const circumference = 2 * Math.PI * 40;
-                const offset = circumference - ((winrate / 100) * circumference);
-                
-                const circle = document.getElementById('winrate-circle');
-                if(circle) {
-                    circle.style.strokeDashoffset = offset;
-                }
-                
-                this.animateNumbers(document.getElementById('winrate-text'), 0, winrate, 1000, true);
-                document.getElementById('wins-count').innerText = wins;
-                document.getElementById('losses-count').innerText = losses;
-                document.getElementById('be-count').innerText = be;
-                
-                const avgWin = wins ? winSum / wins : 0;
-                const avgLoss = losses ? lossSum / losses : 0;
+                const coinInput = document.getElementById('trade-coin');
+                const entryInput = document.getElementById('trade-entry');
+                const marginInput = document.getElementById('trade-margin');
+                const dateInput = document.getElementById('trade-date');
+                const coin = plainText(coinInput?.value, '', 32).toUpperCase();
+                const entry = asNumber(entryInput?.value, NaN);
+                const margin = asNumber(marginInput?.value, NaN);
+                if (!coin) return this.showToast('РЈРєР°Р¶РёС‚Рµ РёРЅСЃС‚СЂСѓРјРµРЅС‚');
+                if (!Number.isFinite(entry) || entry <= 0) return this.showToast('Р¦РµРЅР° РІС…РѕРґР° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ');
+                if (!Number.isFinite(margin) || margin <= 0 || margin > 1000) return this.showToast('РџР»РµС‡Рѕ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РѕС‚ 0 РґРѕ 1000');
+                if (dateInput?.value && !Number.isFinite(Date.parse(dateInput.value))) return this.showToast('РЈРєР°Р¶РёС‚Рµ РєРѕСЂСЂРµРєС‚РЅСѓСЋ РґР°С‚Сѓ');
 
-                document.getElementById('avg-win').innerText = '+' + avgWin.toFixed(2) + '%';
-                document.getElementById('avg-loss').innerText = avgLoss.toFixed(2) + '%';
-            },
-            
-            openReportModal() {
-                const s = this.data[this.state.currentId];
-                const m = this.calcMetrics(s.trades);
-                
-                document.getElementById('rep-total').innerText = s.trades.length;
-                document.getElementById('rep-winrate').innerText = m.winrate + '%';
-                
-                let grossProfit = 0, grossLoss = 0;
-                let wins = 0, losses = 0, be = 0;
-                let bestTrade = { coin: '---', pnl: -Infinity, id: null };
-                let worstTrade = { coin: '---', pnl: Infinity, id: null };
-
-                const trades = s.trades.map((t,i) => this.normalizeTrade(t, i));
-
-                trades.forEach(t => {
-                    const p = this.calcPnl(t);
-                    if(p > bestTrade.pnl) bestTrade = { coin: t.coin, pnl: p, id: t.id };
-                    if(p < worstTrade.pnl) worstTrade = { coin: t.coin, pnl: p, id: t.id };
-
-                    if(p > 0.05) {
-                        grossProfit += p; wins++;
-                    } else if (p < -0.05) {
-                        grossLoss += Math.abs(p); losses++;
-                    } else {
-                        be++;
-                    }
-                });
-                
-                if (bestTrade.pnl === -Infinity) bestTrade.pnl = 0;
-                if (worstTrade.pnl === Infinity) worstTrade.pnl = 0;
-                
-                this.bestTradeId = bestTrade.id;
-                this.worstTradeId = worstTrade.id;
-
-                const pf = grossLoss === 0 ? (grossProfit > 0 ? '∞' : '0.00') : (grossProfit / grossLoss).toFixed(2);
-
-                document.getElementById('rep-pf').innerText = pf;
-                document.getElementById('rep-w-count').innerText = wins;
-                document.getElementById('rep-l-count').innerText = losses;
-                document.getElementById('rep-b-count').innerText = be;
-
-                document.getElementById('rep-best-coin').innerText = bestTrade.coin;
-                document.getElementById('rep-best-pnl').innerText = (bestTrade.pnl > 0 ? '+' : '') + bestTrade.pnl.toFixed(2) + '%';
-                document.getElementById('rep-worst-coin').innerText = worstTrade.coin;
-                document.getElementById('rep-worst-pnl').innerText = (worstTrade.pnl > 0 ? '+' : '') + worstTrade.pnl.toFixed(2) + '%';
-                
-                document.getElementById('report-textarea').value = this.generateReportText(s);
-                document.getElementById('modal-report').classList.add('active');
-            },
-            
-            scrollToTrade(id) {
-                if (!id) return;
-                this.closeModal('modal-report');
-                
-                const searchInput = document.getElementById('search-trade');
-                if (searchInput.value) {
-                    searchInput.value = '';
-                    this.renderTrades();
-                }
-
-                setTimeout(() => {
-                    const el = document.querySelector(`[data-trade-id="${id}"]`);
-                    if (el) {
-                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        el.classList.remove('highlight-pulse');
-                        void el.offsetWidth; 
-                        el.classList.add('highlight-pulse');
-                    }
-                }, 300);
-            },
-            
-            copyReportTextFromModal() {
-                const el = document.getElementById('report-textarea');
-                el.select();
-                document.execCommand('copy');
-                this.showToast('Скопировано!');
-            },
-            
-            copyReport() {
-                const s = this.data[this.state.currentId];
-                const text = this.generateReportText(s);
-                this.execCopy(text);
-            },
-
-            calcPnl(t) {
-                try {
-                    const fixes = t.fixes || t.fixations || [];
-                    const dir = t.dir || t.direction || 'long';
-                    
-                    if(!fixes.length) {
-                        return 0;
-                    }
-                    
-                    let total = 0;
-                    fixes.forEach(f => {
-                        const p = parseFloat(f.price || f.p);
-                        const pct = parseFloat(f.percent || f.pct);
-                        if(!isNaN(p) && !isNaN(pct)) {
-                            const diff = (p - t.entry) / t.entry * 100;
-                            total += diff * (dir === 'long' ? 1 : -1) * t.margin * (pct / 100);
-                        }
-                    });
-                    return isNaN(total) ? 0 : total;
-                } catch(e) { return 0; }
-            },
-
-            calcMetrics(trades) {
-                let wins = 0, losses = 0;
-                if(!trades || !trades.length) return {pnl:0, winrate:0};
-                const normalized = trades.map((t,i) => this.normalizeTrade(t, i));
-                let pnl = 0;
-                normalized.forEach(t => {
-                    const r = this.calcPnl(t);
-                    pnl += r;
-                    if(r > 0.05) wins++;
-                    else if(r < -0.05) losses++;
-                });
-                const denom = (wins + losses) || 1;
-                return { pnl: pnl, winrate: Math.round((wins / denom) * 100) };
-            },
-
-            openCreateModal() { document.getElementById('stat-name').value = ''; document.getElementById('modal-create').classList.add('active'); },
-            saveStat(e) {
-                e.preventDefault();
-                const name = document.getElementById('stat-name').value;
-                if (!name || !name.trim()) return; 
-                const id = 's-' + Date.now();
-                this.data[id] = { name: name.trim(), balance: 0, trades: [] };
-                this.save();
-                this.closeModal('modal-create');
-                this.renderDashboard();
-                this.showToast('Сессия создана');
-            },
-            deleteStat(id) {
-                if(confirm('Удалить сессию?')) { delete this.data[id]; this.save(); this.renderDashboard(); }
-            },
-            openTradeModal() {
-                this.state.editTradeId = null;
-                document.getElementById('trade-coin').value = '';
-                document.getElementById('trade-entry').value = '';
-                document.getElementById('trade-margin').value = 1;
-                document.getElementById('trade-date').value = new Date().toISOString().split('T')[0];
-                document.getElementById('fix-container').innerHTML = '';
-                this.addFixRow();
-                this.setDirection('long');
-                document.getElementById('modal-trade').classList.add('active');
-                this.calcPreview();
-            },
-            setDirection(dir) {
-                this.state.direction = dir;
-                const btnL = document.getElementById('btn-long');
-                const btnS = document.getElementById('btn-short');
-                
-                const activeL = 'bg-green-500 text-white shadow-lg shadow-green-500/30 scale-105';
-                const activeS = 'bg-red-500 text-white shadow-lg shadow-red-500/30 scale-105';
-                const inactive = 'text-[var(--text-muted)] hover:bg-[var(--bg-hover)]';
-                
-                btnL.className = `px-6 md:px-8 py-2 rounded-lg text-sm font-bold transition-all ${dir === 'long' ? activeL : inactive}`;
-                btnS.className = `px-6 md:px-8 py-2 rounded-lg text-sm font-bold transition-all ${dir === 'short' ? activeS : inactive}`;
-                this.calcPreview();
-            },
-            addFixRow(p = '', pct = '') {
-                const div = document.createElement('div');
-                div.className = 'flex gap-3 items-center animate-enter';
-                div.innerHTML = `
-                    <input type="number" step="any" placeholder="Цена" value="${p}" class="fix-p flex-1 bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[var(--accent)]" oninput="app.calcPreview()">
-                    <div class="relative w-20">
-                        <input type="number" step="any" placeholder="%" value="${pct}" class="fix-pct w-full bg-[var(--bg-main)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[var(--accent)] pr-6" oninput="app.calcPreview()">
-                        <span class="absolute right-2 top-2 text-[var(--text-muted)] text-xs font-bold">%</span>
-                    </div>
-                    <button type="button" onclick="this.parentElement.remove(); app.calcPreview()" class="p-2 rounded-lg hover:bg-red-500/10 text-[var(--text-muted)] hover:text-[var(--danger)] transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-                `;
-                document.getElementById('fix-container').appendChild(div);
-            },
-            calcPreview() {
-                const entry = parseFloat(document.getElementById('trade-entry').value);
-                const margin = parseFloat(document.getElementById('trade-margin').value) || 1;
-                if(!entry) { document.getElementById('preview-pnl').innerText = '0.00%'; return; }
-                let total = 0;
+                let totalPercent = 0;
+                let invalidFix = false;
                 document.querySelectorAll('#fix-container > div').forEach(row => {
-                    const p = parseFloat(row.querySelector('.fix-p').value);
-                    const pct = parseFloat(row.querySelector('.fix-pct').value);
-                    if(!isNaN(p) && !isNaN(pct)) {
-                        const raw = (p - entry) / entry * 100;
-                        total += raw * (this.state.direction === 'long' ? 1 : -1) * margin * (pct / 100);
-                    }
+                    const price = asNumber(row.querySelector('.fix-p')?.value, NaN);
+                    const percent = asNumber(row.querySelector('.fix-pct')?.value, NaN);
+                    if ((!Number.isNaN(price) || !Number.isNaN(percent)) &&
+                        (!Number.isFinite(price) || price <= 0 || !Number.isFinite(percent) || percent <= 0)) invalidFix = true;
+                    if (Number.isFinite(percent) && percent > 0) totalPercent += percent;
                 });
-                const el = document.getElementById('preview-pnl');
-                el.innerText = (total > 0 ? '+' : '') + total.toFixed(2) + '%';
-                el.className = `text-3xl font-bold tracking-tight ${total >= 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`;
-            },
-            saveTrade(e) {
-                e.preventDefault();
-                try {
-                    const fixes = [];
-                    let totalPct = 0;
-                    document.querySelectorAll('#fix-container > div').forEach(row => {
-                        const p = parseFloat(row.querySelector('.fix-p').value);
-                        let pct = parseFloat(row.querySelector('.fix-pct').value);
-                        if (!isNaN(p) && !isNaN(pct)) {
-                             pct = parseFloat(pct.toFixed(2)); 
-                             totalPct += pct;
-                             fixes.push({ p, pct });
-                        }
-                    });
-                    
-                    if(totalPct > 100.01) {
-                        this.showToast("Ошибка: Сумма фиксаций > 100%");
-                        return;
-                    }
-                    
-                    const dateVal = document.getElementById('trade-date').value;
-                    const ts = dateVal ? new Date(dateVal).getTime() : Date.now();
-                    const trade = {
-                        id: this.state.editTradeId || 't-' + Date.now(),
-                        ts: ts,
-                        coin: document.getElementById('trade-coin').value.trim().toUpperCase(),
-                        entry: parseFloat(document.getElementById('trade-entry').value),
-                        margin: parseFloat(document.getElementById('trade-margin').value),
-                        dir: this.state.direction,
-                        fixes: fixes
-                    };
-                    
-                    if (!trade.coin || isNaN(trade.entry) || isNaN(trade.margin)) return;
+                if (invalidFix) return this.showToast('РџСЂРѕРІРµСЂСЊС‚Рµ С†РµРЅСѓ Рё РїСЂРѕС†РµРЅС‚ С„РёРєСЃР°С†РёРё');
+                if (totalPercent > 100.0001) return this.showToast('РЎСѓРјРјР° С„РёРєСЃР°С†РёР№ РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 100%');
 
-                    const stat = this.data[this.state.currentId];
-                    if(this.state.editTradeId) {
-                        const idx = stat.trades.findIndex(t => t.id === this.state.editTradeId);
-                        if (idx !== -1) stat.trades[idx] = { ...stat.trades[idx], ...trade };
-                    } else { stat.trades.push(trade); }
-                    this.save();
-                    this.closeModal('modal-trade');
-                    this.renderTrades();
-                    this.showToast('Сделка сохранена');
-                } catch (err) { console.error(err); this.showToast('Ошибка сохранения'); }
-            },
-            editTrade(id) {
-                const stat = this.data[this.state.currentId];
-                const t = this.normalizeTrade(stat.trades.find(x => x.id === id));
-                if(!t) return;
-                this.state.editTradeId = id;
-                document.getElementById('trade-coin').value = t.coin;
-                document.getElementById('trade-entry').value = t.entry;
-                document.getElementById('trade-margin').value = t.margin;
-                document.getElementById('trade-date').value = new Date(t.ts).toISOString().split('T')[0];
-                this.setDirection(t.dir);
-                const c = document.getElementById('fix-container');
-                c.innerHTML = '';
-                t.fixes.forEach(f => this.addFixRow(f.price || f.p, f.percent || f.pct));
-                if(t.fixes.length === 0) this.addFixRow(); 
-                this.calcPreview();
-                document.getElementById('modal-trade').classList.add('active');
-            },
-            deleteTrade(id) {
-                if(confirm('Удалить?')) {
-                    const s = this.data[this.state.currentId];
-                    s.trades = s.trades.filter(t => t.id !== id);
-                    this.save();
-                    this.renderTrades();
+                if (coinInput) coinInput.value = coin;
+                return originalSaveTrade.call(this, event || { preventDefault() {} });
+            };
+
+            const originalEditTrade = app.editTrade;
+            app.editTrade = function (id) {
+                const session = this.data?.[this.state.currentId];
+                if (!isObject(session) || !Array.isArray(session.trades) || !session.trades.some(trade => trade.id === id)) {
+                    return this.showToast('РЎРґРµР»РєР° РЅРµ РЅР°Р№РґРµРЅР°');
                 }
-            },
-            closeModal(id) { document.getElementById(id).classList.remove('active'); },
-            openSettings() { document.getElementById('settings-panel').classList.remove('translate-x-full'); },
-            closeSettings() { document.getElementById('settings-panel').classList.add('translate-x-full'); },
-            changeSort(v) { this.config.sort = v; this.save(); if(this.state.currentId) this.renderTrades(); },
-            exportData() {
+                return originalEditTrade.call(this, id);
+            };
+
+            app.deleteTrade = function (id) {
+                const session = this.data?.[this.state.currentId];
+                if (!isObject(session) || !Array.isArray(session.trades)) return;
+                if (!confirm('РЈРґР°Р»РёС‚СЊ СЃРґРµР»РєСѓ?')) return;
+                session.trades = session.trades.filter(trade => trade.id !== id);
+                this.save();
+                this.renderTrades(document.getElementById('search-trade')?.value || '');
+                this.showToast('РЎРґРµР»РєР° СѓРґР°Р»РµРЅР°');
+            };
+
+            app.deleteStat = function (id) {
+                if (!isObject(this.data?.[id]) || !confirm('РЈРґР°Р»РёС‚СЊ СЃРµСЃСЃРёСЋ?')) return;
+                delete this.data[id];
+                if (this.state.currentId === id || this.data.currentStatId === id) {
+                    this.state.currentId = null;
+                    delete this.data.currentStatId;
+                }
+                this.save();
+                document.getElementById('view-detail')?.classList.add('hidden');
+                document.getElementById('view-dashboard')?.classList.remove('hidden');
+                this.renderDashboard();
+                this.showToast('РЎРµСЃСЃРёСЏ СѓРґР°Р»РµРЅР°');
+            };
+
+            app.exportData = function () {
                 try {
-                    const b = new Blob([JSON.stringify(this.data)], {type: 'application/json'});
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(b);
-                    a.download = `weeloser_backup.json`;
-                    a.click();
-                } catch(e) { this.showToast('Ошибка экспорта'); }
-            },
-            importData(input) {
-                const f = input.files[0];
-                if(!f) return;
-                const r = new FileReader();
-                r.onload = (e) => {
-                    try {
-                        const d = JSON.parse(e.target.result);
-                        let count = 0;
-                        const findSessions = (obj) => {
-                            if (!obj || typeof obj !== 'object') return;
-                            if (obj.name && Array.isArray(obj.trades)) {
-                                obj.trades = obj.trades.map((t, i) => this.normalizeTrade(t, i));
-                                const newId = 's-' + Date.now() + Math.random().toString(36).substr(2, 9);
-                                this.data[newId] = obj;
-                                count++;
-                                return;
-                            }
-                            Object.values(obj).forEach(val => findSessions(val));
-                        };
-                        findSessions(d);
-                        if (this.data.currentStatId) delete this.data.currentStatId;
-                        this.save();
-                        if(count > 0) {
-                            this.showToast(`Импортировано: ${count}`);
-                            setTimeout(() => location.reload(), 1000);
-                        } else { this.showToast('Данные не найдены'); }
-                    } catch(err) { console.error(err); this.showToast('Ошибка файла'); }
-                };
-                r.readAsText(f);
+                    const snapshot = normalizeData(this.data);
+                    const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `weeloser-backup-${new Date().toISOString().slice(0, 10)}.json`;
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                    this.showToast('Р РµР·РµСЂРІРЅР°СЏ РєРѕРїРёСЏ СЃРѕР·РґР°РЅР°');
+                } catch (error) {
+                    console.error('Export error', error);
+                    this.showToast('РћС€РёР±РєР° СЌРєСЃРїРѕСЂС‚Р°');
+                }
+            };
+
+            app.importData = function (input) {
+                const file = input?.files?.[0];
+                if (!file) return;
                 input.value = '';
-            },
-            resetAll() { if(confirm('Сбросить все данные?')) { localStorage.clear(); location.reload(); } },
-            
-            generateReportText(s) {
-                const m = this.calcMetrics(s.trades);
-                const date = new Date().toLocaleDateString();
-                
-                let grossProfit = 0, grossLoss = 0;
-                let wins = 0, losses = 0, be = 0;
-                let bestTrade = { coin: '---', pnl: -Infinity };
-                let worstTrade = { coin: '---', pnl: Infinity };
-                
-                const trades = s.trades.map((t,i) => this.normalizeTrade(t, i));
+                if (file.size > MAX_IMPORT_BYTES) return this.showToast('Р¤Р°Р№Р» СЃР»РёС€РєРѕРј Р±РѕР»СЊС€РѕР№ (РјР°РєСЃРёРјСѓРј 10 РњР‘)');
 
-                trades.forEach(t => {
-                    const p = this.calcPnl(t);
-                    if(p > bestTrade.pnl) bestTrade = { coin: t.coin, pnl: p };
-                    if(p < worstTrade.pnl) worstTrade = { coin: t.coin, pnl: p };
+                const reader = new FileReader();
+                reader.onerror = () => this.showToast('РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ С„Р°Р№Р»');
+                reader.onload = event => {
+                    try {
+                        const parsed = JSON.parse(String(event.target?.result ?? ''));
+                        const stack = [parsed];
+                        const sessions = [];
+                        let visited = 0;
 
-                    if(p > 0.05) {
-                        grossProfit += p; wins++;
-                    } else if (p < -0.05) {
-                        grossLoss += Math.abs(p); losses++;
-                    } else {
-                        be++;
+                        while (stack.length && sessions.length < MAX_SESSIONS && visited < 50000) {
+                            const value = stack.pop();
+                            visited++;
+                            if (!isObject(value) && !Array.isArray(value)) continue;
+                            if (isObject(value) && Array.isArray(value.trades)) {
+                                sessions.push(value);
+                                continue;
+                            }
+                            Object.values(value).forEach(child => {
+                                if (isObject(child) || Array.isArray(child)) stack.push(child);
+                            });
+                        }
+
+                        if (!sessions.length) return this.showToast('Р’ С„Р°Р№Р»Рµ РЅРµ РЅР°Р№РґРµРЅРѕ СЃРµСЃСЃРёР№');
+                        const occupied = new Set(Object.keys(this.data || {}));
+                        sessions.forEach((session, index) => {
+                            const id = makeId('s', occupied);
+                            occupied.add(id);
+                            this.data[id] = normalizeSession(session, `РРјРїРѕСЂС‚ ${index + 1}`);
+                        });
+                        delete this.data.currentStatId;
+                        this.state.currentId = null;
+                        this.save();
+                        this.closeSettings();
+                        document.getElementById('view-detail')?.classList.add('hidden');
+                        document.getElementById('view-dashboard')?.classList.remove('hidden');
+                        this.renderDashboard();
+                        this.showToast(`РРјРїРѕСЂС‚РёСЂРѕРІР°РЅРѕ СЃРµСЃСЃРёР№: ${sessions.length}`);
+                    } catch (error) {
+                        console.error('Import error', error);
+                        this.showToast('РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ JSON-С„Р°Р№Р»');
                     }
-                });
-                
-                if (bestTrade.pnl === -Infinity) bestTrade.pnl = 0;
-                if (worstTrade.pnl === Infinity) worstTrade.pnl = 0;
-                
-                const pf = grossLoss === 0 ? (grossProfit > 0 ? '∞' : '0.00') : (grossProfit / grossLoss).toFixed(2);
+                };
+                reader.readAsText(file);
+            };
 
-                let text = `📊 Отчет: ${s.name}\n📅 Дата: ${date}\n\n🏆 Winrate: ${m.winrate}%\n💰 P&L: ${m.pnl > 0 ? '+' : ''}${m.pnl.toFixed(2)}%\n📝 Всего сделок: ${s.trades.length}\n\n📈 Profit Factor: ${pf}\n🎯 Win/Loss/BE: ${wins}/${losses}/${be}\n✨ Лучшая сделка: ${bestTrade.coin} (${(bestTrade.pnl > 0 ? '+' : '')}${bestTrade.pnl.toFixed(2)}%)\n💀 Худшая сделка: ${worstTrade.coin} (${(worstTrade.pnl > 0 ? '+' : '')}${worstTrade.pnl.toFixed(2)}%)\n\nСделки:`;
-                
-                const sortedTrades = trades.sort((a,b) => (b.ts - a.ts) || (b.originalIndex - a.originalIndex));
-                sortedTrades.forEach(t => { text += `\n\n${this.formatTradeText(t)}`; });
-                return text;
-            },
-            
-            formatTradeText(t) {
-                const pnl = this.calcPnl(t);
-                const date = new Date(t.ts).toLocaleDateString();
-                let totalPct = 0;
-                let fixStr = t.fixes.map(f => {
-                    const pct = parseFloat(f.percent||f.pct);
-                    totalPct += pct;
-                    return `${f.price||f.p} (${pct}%)`;
-                }).join(', ');
-                
-                if (t.fixes.length === 0) {
-                    fixStr = `${t.entry} (100%)`;
-                } else if (totalPct < 99.99) {
-                    const rem = parseFloat((100 - totalPct).toFixed(2));
-                    if (rem > 0) fixStr += `, ${t.entry} (${rem}%)`;
+            app.resetAll = function () {
+                if (!confirm('РЎР±СЂРѕСЃРёС‚СЊ РІСЃРµ РґР°РЅРЅС‹Рµ РїСЂРёР»РѕР¶РµРЅРёСЏ?')) return;
+                try {
+                    localStorage.removeItem(DATA_KEY);
+                    localStorage.removeItem(CONFIG_KEY);
+                    localStorage.removeItem('weeloser_enhancements_v1');
+                    sessionStorage.removeItem('weeloser_trade_draft_v1');
+                } catch (error) {
+                    console.error('Reset error', error);
                 }
+                location.reload();
+            };
 
-                return `Название: ${t.coin} (${(t.dir||'LONG').toUpperCase()})\nДата: ${date}\nВход: ${t.entry}\nМаржа: x${t.margin}\nФиксации: ${fixStr}\nЧистое движение: ${pnl.toFixed(2)}%`;
-            },
-            
-            copyOneTrade(id) {
-                const t = this.normalizeTrade(this.data[this.state.currentId].trades.find(x => x.id === id));
-                if(t) this.execCopy(this.formatTradeText(t));
-            },
-            
-            execCopy(text) {
-                if (navigator.clipboard && window.isSecureContext) {
-                    navigator.clipboard.writeText(text).then(() => this.showToast('Скопировано!')).catch(() => this.fallbackCopy(text));
-                } else { this.fallbackCopy(text); }
-            },
-            fallbackCopy(text) {
-                const ta = document.createElement("textarea");
-                ta.value = text;
-                ta.style.position = "fixed"; ta.style.left = "-9999px";
-                document.body.appendChild(ta);
-                ta.focus(); ta.select();
-                try { document.execCommand('copy'); this.showToast('Скопировано!'); } catch (err) { this.showToast('Ошибка'); }
-                document.body.removeChild(ta);
-            },
-            showToast(msg) {
-                const t = document.createElement('div');
-                t.className = 'bg-[#1e293b] text-white px-6 py-4 rounded-xl shadow-2xl border border-white/10 animate-enter flex items-center gap-3 font-medium text-sm backdrop-blur-md z-[100]';
-                t.innerHTML = `<div class="w-2 h-2 rounded-full bg-[var(--accent)]"></div> ${msg}`;
-                document.getElementById('toast-container').appendChild(t);
-                setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(10px)'; setTimeout(() => t.remove(), 300); }, 3000);
-            }
-        };
-        window.onload = () => app.init();
+            app.copyReportTextFromModal = function () {
+                const textarea = document.getElementById('report-textarea');
+                if (textarea) this.execCopy(textarea.value);
+            };
+
+            app.copyOneTrade = function (id) {
+                const session = this.data?.[this.state.currentId];
+                const source = Array.isArray(session?.trades) ? session.trades.find(trade => trade.id === id) : null;
+                if (!source) return this.showToast('РЎРґРµР»РєР° РЅРµ РЅР°Р№РґРµРЅР°');
+                this.execCopy(this.formatTradeText(normalizeTrade(source)));
+            };
+
+            const originalOpenReportModal = app.openReportModal;
+            app.openReportModal = function () {
+                const session = this.data?.[this.state.currentId];
+                if (!isObject(session)) return this.showToast('РЎРµСЃСЃРёСЏ РЅРµ РЅР°Р№РґРµРЅР°');
+                session.trades = Array.isArray(session.trades) ? session.trades : [];
+                return originalOpenReportModal.call(this);
+            };
+
+            const originalCloseModal = app.closeModal;
+            app.closeModal = function (id) {
+                if (!document.getElementById(id)) return;
+                return originalCloseModal.call(this, id);
+            };
+
+            app.showToast = function (message) {
+                const container = document.getElementById('toast-container');
+                if (!container) return;
+                while (container.children.length >= 4) container.firstElementChild?.remove();
+
+                const toast = document.createElement('div');
+                toast.className = 'bg-[#1e293b] text-white px-6 py-4 rounded-xl shadow-2xl border border-white/10 animate-enter flex items-center gap-3 font-medium text-sm backdrop-blur-md z-[100]';
+                toast.setAttribute('role', 'status');
+                toast.setAttribute('aria-live', 'polite');
+                const dot = document.createElement('span');
+                dot.className = 'w-2 h-2 shrink-0 rounded-full bg-[var(--accent)]';
+                const label = document.createElement('span');
+                label.textContent = plainText(message, 'Р“РѕС‚РѕРІРѕ', 240);
+                toast.append(dot, label);
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(10px)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            };
+
+            window.addEventListener('storage', event => {
+                if (event.key !== DATA_KEY && event.key !== CONFIG_KEY) return;
+                try {
+                    if (event.key === DATA_KEY && event.newValue) app.data = normalizeData(JSON.parse(event.newValue));
+                    if (event.key === CONFIG_KEY && event.newValue) {
+                        app.config = normalizeConfig(JSON.parse(event.newValue));
+                        app.applyTheme();
+                    }
+                    if (app.state.currentId && app.data[app.state.currentId]) app.renderTrades();
+                    else app.renderDashboard();
+                } catch (error) {
+                    console.warn('Cross-tab sync ignored invalid data', error);
+                }
+            });
+        })();
     </script>
+    <script src="enhancements.js"></script>
+    <script src="command-console.js"></script>
 </body>
 </html>
+
