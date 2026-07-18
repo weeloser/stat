@@ -309,12 +309,12 @@
     <link rel="stylesheet" href="brand-v2.css">
 </head>
 <body class="min-h-screen flex flex-col">
-    <noscript><div style="padding:1rem;background:#fee2e2;color:#7f1d1d;text-align:center;font-weight:700">Р”Р»СЏ СЂР°Р±РѕС‚С‹ Р¶СѓСЂРЅР°Р»Р° РІРєР»СЋС‡РёС‚Рµ JavaScript РІ Р±СЂР°СѓР·РµСЂРµ.</div></noscript>
+    <noscript><div style="padding:1rem;background:#fee2e2;color:#7f1d1d;text-align:center;font-weight:700">Для работы журнала включите JavaScript в браузере.</div></noscript>
 
-    <nav aria-label="РћСЃРЅРѕРІРЅР°СЏ РЅР°РІРёРіР°С†РёСЏ" class="app-nav fixed top-0 w-full z-40 glass-panel border-b-0 shadow-sm backdrop-blur-xl h-16">
+    <nav aria-label="Основная навигация" class="app-nav fixed top-0 w-full z-40 glass-panel border-b-0 shadow-sm backdrop-blur-xl h-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex items-center justify-between h-full">
-                <button type="button" aria-label="РќР° РіР»Р°РІРЅСѓСЋ" class="flex items-center gap-3 cursor-pointer group bg-transparent border-0 p-0 text-left" onclick="app.goHome()">
+                <button type="button" aria-label="На главную" class="flex items-center gap-3 cursor-pointer group bg-transparent border-0 p-0 text-left" onclick="app.goHome()">
                     <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-lg transition-transform duration-300 active:scale-95 group-hover:rotate-6">
                         <span class="text-sm font-black tracking-tighter" aria-hidden="true">W</span>
                     </div>
@@ -323,10 +323,10 @@
                     </div>
                 </button>
                 <div class="flex items-center gap-2">
-                    <button type="button" aria-label="РџРµСЂРµРєР»СЋС‡РёС‚СЊ С‚РµРјСѓ" title="РџРµСЂРµРєР»СЋС‡РёС‚СЊ С‚РµРјСѓ" onclick="app.toggleTheme()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)]">
+                    <button type="button" aria-label="Переключить тему" title="Переключить тему" onclick="app.toggleTheme()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)]">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
-                    <button type="button" aria-label="РћС‚РєСЂС‹С‚СЊ РЅР°СЃС‚СЂРѕР№РєРё" title="РќР°СЃС‚СЂРѕР№РєРё" onclick="app.openSettings()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)]">
+                    <button type="button" aria-label="Открыть настройки" title="Настройки" onclick="app.openSettings()" class="p-2 rounded-xl hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)]">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     </button>
                 </div>
@@ -334,20 +334,20 @@
         </div>
     </nav>
 
-    <div role="navigation" aria-label="РњРѕР±РёР»СЊРЅР°СЏ РЅР°РІРёРіР°С†РёСЏ" class="fixed bottom-0 left-0 w-full z-30 glass-panel border-t border-[var(--border)] md:hidden safe-area-pb">
+    <div role="navigation" aria-label="Мобильная навигация" class="fixed bottom-0 left-0 w-full z-30 glass-panel border-t border-[var(--border)] md:hidden safe-area-pb">
         <div class="grid grid-cols-3 h-16">
-            <button type="button" aria-label="РќР° РіР»Р°РІРЅСѓСЋ" onclick="app.goHome()" class="flex flex-col items-center justify-center gap-1 text-[var(--text-muted)] hover:text-[var(--accent)] active:text-[var(--accent)]">
+            <button type="button" aria-label="На главную" onclick="app.goHome()" class="flex flex-col items-center justify-center gap-1 text-[var(--text-muted)] hover:text-[var(--accent)] active:text-[var(--accent)]">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="text-[10px] font-medium">Р“Р»Р°РІРЅР°СЏ</span>
+                <span class="text-[10px] font-medium">Главная</span>
             </button>
-            <button type="button" aria-label="Р”РѕР±Р°РІРёС‚СЊ" onclick="app.state.currentId ? app.openTradeModal() : app.openCreateModal()" class="flex flex-col items-center justify-center gap-1 text-[var(--accent)] group">
+            <button type="button" aria-label="Добавить" onclick="app.state.currentId ? app.openTradeModal() : app.openCreateModal()" class="flex flex-col items-center justify-center gap-1 text-[var(--accent)] group">
                 <div class="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 transform -translate-y-4 border-4 border-[var(--bg-main)] group-active:scale-90 transition-transform">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 </div>
             </button>
-            <button type="button" aria-label="РћС‚РєСЂС‹С‚СЊ РЅР°СЃС‚СЂРѕР№РєРё" onclick="app.openSettings()" class="flex flex-col items-center justify-center gap-1 text-[var(--text-muted)] hover:text-[var(--accent)]">
+            <button type="button" aria-label="Открыть настройки" onclick="app.openSettings()" class="flex flex-col items-center justify-center gap-1 text-[var(--text-muted)] hover:text-[var(--accent)]">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                <span class="text-[10px] font-medium">РњРµРЅСЋ</span>
+                <span class="text-[10px] font-medium">Меню</span>
             </button>
         </div>
     </div>
@@ -357,12 +357,50 @@
         <div id="view-dashboard" class="animate-enter">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">РЎС‚Р°С‚РёСЃС‚РёРєР°</h2>
-                    <p class="text-[var(--text-muted)] text-sm font-medium">Р’Р°С€Рё С‚РѕСЂРіРѕРІС‹Рµ С…22153 tokens truncated…tem(CONFIG_KEY, JSON.stringify(this.config));
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">Статистика</h2>
+                    <p class="text-[var(--text-muted)] text-sm font-medium">Ваши торговые сессии</p>
+                </div>
+                <button onclick="app.openCreateModal()" class="hidden md:flex btn-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg items-center gap-2 hover:shadow-xl transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>…21126 tokens truncated…                total += movement * (normalized.dir === 'long' ? 1 : -1) * normalized.margin * (fix.pct / 100);
+                }
+                return Number.isFinite(total) ? Math.max(-1e9, Math.min(1e9, total)) : 0;
+            };
+
+            app.calcMetrics = function (trades) {
+                let pnl = 0;
+                let wins = 0;
+                let losses = 0;
+                let be = 0;
+                const list = Array.isArray(trades) ? trades : [];
+
+                list.forEach((trade, index) => {
+                    const result = this.calcPnl(normalizeTrade(trade, index));
+                    pnl += result;
+                    if (result > 0.05) wins++;
+                    else if (result < -0.05) losses++;
+                    else be++;
+                });
+
+                const decided = wins + losses;
+                return {
+                    pnl: Number.isFinite(pnl) ? pnl : 0,
+                    winrate: decided ? Math.round((wins / decided) * 100) : 0,
+                    wins,
+                    losses,
+                    be
+                };
+            };
+
+            app.save = function () {
+                this.data = normalizeData(this.data);
+                this.config = normalizeConfig(this.config);
+                try {
+                    localStorage.setItem(DATA_KEY, JSON.stringify(this.data));
+                    localStorage.setItem(CONFIG_KEY, JSON.stringify(this.config));
                     return true;
                 } catch (error) {
                     console.error('Storage error', error);
-                    showDataError('РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ РґР°РЅРЅС‹Рµ: С…СЂР°РЅРёР»РёС‰Рµ РЅРµРґРѕСЃС‚СѓРїРЅРѕ РёР»Рё Р·Р°РїРѕР»РЅРµРЅРѕ');
+                    showDataError('Не удалось сохранить данные: хранилище недоступно или заполнено');
                     return false;
                 }
             };
@@ -399,7 +437,7 @@
                     return originalRenderDashboard.call(this);
                 } catch (error) {
                     console.error('Dashboard render error', error);
-                    showDataError('РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РѕР±СЂР°Р·РёС‚СЊ РѕРґРЅСѓ РёР· СЃРµСЃСЃРёР№');
+                    showDataError('Не удалось отобразить одну из сессий');
                 }
             };
 
@@ -424,7 +462,7 @@
                 } catch (error) {
                     console.error('Trade render error', error);
                     const list = document.getElementById('trades-list');
-                    if (list) list.textContent = 'РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РѕР±СЂР°Р·РёС‚СЊ СЃРґРµР»РєРё. РџСЂРѕРІРµСЂСЊС‚Рµ РёРјРїРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Рµ РґР°РЅРЅС‹Рµ.';
+                    if (list) list.textContent = 'Не удалось отобразить сделки. Проверьте импортированные данные.';
                 }
             };
 
@@ -439,7 +477,7 @@
                 } catch (error) {
                     console.error('Chart render error', error);
                     const currentHost = document.getElementById('main-chart-container');
-                    if (currentHost) currentHost.textContent = 'Р“СЂР°С„РёРє РІСЂРµРјРµРЅРЅРѕ РЅРµРґРѕСЃС‚СѓРїРµРЅ';
+                    if (currentHost) currentHost.textContent = 'График временно недоступен';
                 }
             };
 
@@ -473,7 +511,7 @@
                 event?.preventDefault?.();
                 const input = document.getElementById('stat-name');
                 const name = plainText(input?.value, '', 100);
-                if (!name) return this.showToast('Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ СЃРµСЃСЃРёРё');
+                if (!name) return this.showToast('Введите название сессии');
                 if (input) input.value = name;
                 return originalSaveStat.call(this, event || { preventDefault() {} });
             };
@@ -481,7 +519,7 @@
             const originalOpenTradeModal = app.openTradeModal;
             app.openTradeModal = function () {
                 if (!this.state.currentId || !isObject(this.data?.[this.state.currentId])) {
-                    this.showToast('РЎРЅР°С‡Р°Р»Р° СЃРѕР·РґР°Р№С‚Рµ РёР»Рё РѕС‚РєСЂРѕР№С‚Рµ СЃРµСЃСЃРёСЋ');
+                    this.showToast('Сначала создайте или откройте сессию');
                     return this.openCreateModal();
                 }
                 return originalOpenTradeModal.call(this);
@@ -491,7 +529,7 @@
             app.saveTrade = function (event) {
                 event?.preventDefault?.();
                 const session = this.data?.[this.state.currentId];
-                if (!isObject(session)) return this.showToast('РЎРµСЃСЃРёСЏ РЅРµ РЅР°Р№РґРµРЅР°');
+                if (!isObject(session)) return this.showToast('Сессия не найдена');
 
                 const coinInput = document.getElementById('trade-coin');
                 const entryInput = document.getElementById('trade-entry');
@@ -500,10 +538,10 @@
                 const coin = plainText(coinInput?.value, '', 32).toUpperCase();
                 const entry = asNumber(entryInput?.value, NaN);
                 const margin = asNumber(marginInput?.value, NaN);
-                if (!coin) return this.showToast('РЈРєР°Р¶РёС‚Рµ РёРЅСЃС‚СЂСѓРјРµРЅС‚');
-                if (!Number.isFinite(entry) || entry <= 0) return this.showToast('Р¦РµРЅР° РІС…РѕРґР° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ');
-                if (!Number.isFinite(margin) || margin <= 0 || margin > 1000) return this.showToast('РџР»РµС‡Рѕ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РѕС‚ 0 РґРѕ 1000');
-                if (dateInput?.value && !Number.isFinite(Date.parse(dateInput.value))) return this.showToast('РЈРєР°Р¶РёС‚Рµ РєРѕСЂСЂРµРєС‚РЅСѓСЋ РґР°С‚Сѓ');
+                if (!coin) return this.showToast('Укажите инструмент');
+                if (!Number.isFinite(entry) || entry <= 0) return this.showToast('Цена входа должна быть больше нуля');
+                if (!Number.isFinite(margin) || margin <= 0 || margin > 1000) return this.showToast('Плечо должно быть от 0 до 1000');
+                if (dateInput?.value && !Number.isFinite(Date.parse(dateInput.value))) return this.showToast('Укажите корректную дату');
 
                 let totalPercent = 0;
                 let invalidFix = false;
@@ -514,8 +552,8 @@
                         (!Number.isFinite(price) || price <= 0 || !Number.isFinite(percent) || percent <= 0)) invalidFix = true;
                     if (Number.isFinite(percent) && percent > 0) totalPercent += percent;
                 });
-                if (invalidFix) return this.showToast('РџСЂРѕРІРµСЂСЊС‚Рµ С†РµРЅСѓ Рё РїСЂРѕС†РµРЅС‚ С„РёРєСЃР°С†РёРё');
-                if (totalPercent > 100.0001) return this.showToast('РЎСѓРјРјР° С„РёРєСЃР°С†РёР№ РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 100%');
+                if (invalidFix) return this.showToast('Проверьте цену и процент фиксации');
+                if (totalPercent > 100.0001) return this.showToast('Сумма фиксаций не может превышать 100%');
 
                 if (coinInput) coinInput.value = coin;
                 return originalSaveTrade.call(this, event || { preventDefault() {} });
@@ -525,7 +563,7 @@
             app.editTrade = function (id) {
                 const session = this.data?.[this.state.currentId];
                 if (!isObject(session) || !Array.isArray(session.trades) || !session.trades.some(trade => trade.id === id)) {
-                    return this.showToast('РЎРґРµР»РєР° РЅРµ РЅР°Р№РґРµРЅР°');
+                    return this.showToast('Сделка не найдена');
                 }
                 return originalEditTrade.call(this, id);
             };
@@ -533,15 +571,15 @@
             app.deleteTrade = function (id) {
                 const session = this.data?.[this.state.currentId];
                 if (!isObject(session) || !Array.isArray(session.trades)) return;
-                if (!confirm('РЈРґР°Р»РёС‚СЊ СЃРґРµР»РєСѓ?')) return;
+                if (!confirm('Удалить сделку?')) return;
                 session.trades = session.trades.filter(trade => trade.id !== id);
                 this.save();
                 this.renderTrades(document.getElementById('search-trade')?.value || '');
-                this.showToast('РЎРґРµР»РєР° СѓРґР°Р»РµРЅР°');
+                this.showToast('Сделка удалена');
             };
 
             app.deleteStat = function (id) {
-                if (!isObject(this.data?.[id]) || !confirm('РЈРґР°Р»РёС‚СЊ СЃРµСЃСЃРёСЋ?')) return;
+                if (!isObject(this.data?.[id]) || !confirm('Удалить сессию?')) return;
                 delete this.data[id];
                 if (this.state.currentId === id || this.data.currentStatId === id) {
                     this.state.currentId = null;
@@ -551,7 +589,7 @@
                 document.getElementById('view-detail')?.classList.add('hidden');
                 document.getElementById('view-dashboard')?.classList.remove('hidden');
                 this.renderDashboard();
-                this.showToast('РЎРµСЃСЃРёСЏ СѓРґР°Р»РµРЅР°');
+                this.showToast('Сессия удалена');
             };
 
             app.exportData = function () {
@@ -566,10 +604,10 @@
                     link.click();
                     link.remove();
                     setTimeout(() => URL.revokeObjectURL(url), 1000);
-                    this.showToast('Р РµР·РµСЂРІРЅР°СЏ РєРѕРїРёСЏ СЃРѕР·РґР°РЅР°');
+                    this.showToast('Резервная копия создана');
                 } catch (error) {
                     console.error('Export error', error);
-                    this.showToast('РћС€РёР±РєР° СЌРєСЃРїРѕСЂС‚Р°');
+                    this.showToast('Ошибка экспорта');
                 }
             };
 
@@ -577,10 +615,10 @@
                 const file = input?.files?.[0];
                 if (!file) return;
                 input.value = '';
-                if (file.size > MAX_IMPORT_BYTES) return this.showToast('Р¤Р°Р№Р» СЃР»РёС€РєРѕРј Р±РѕР»СЊС€РѕР№ (РјР°РєСЃРёРјСѓРј 10 РњР‘)');
+                if (file.size > MAX_IMPORT_BYTES) return this.showToast('Файл слишком большой (максимум 10 МБ)');
 
                 const reader = new FileReader();
-                reader.onerror = () => this.showToast('РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ С„Р°Р№Р»');
+                reader.onerror = () => this.showToast('Не удалось прочитать файл');
                 reader.onload = event => {
                     try {
                         const parsed = JSON.parse(String(event.target?.result ?? ''));
@@ -601,12 +639,12 @@
                             });
                         }
 
-                        if (!sessions.length) return this.showToast('Р’ С„Р°Р№Р»Рµ РЅРµ РЅР°Р№РґРµРЅРѕ СЃРµСЃСЃРёР№');
+                        if (!sessions.length) return this.showToast('В файле не найдено сессий');
                         const occupied = new Set(Object.keys(this.data || {}));
                         sessions.forEach((session, index) => {
                             const id = makeId('s', occupied);
                             occupied.add(id);
-                            this.data[id] = normalizeSession(session, `РРјРїРѕСЂС‚ ${index + 1}`);
+                            this.data[id] = normalizeSession(session, `Импорт ${index + 1}`);
                         });
                         delete this.data.currentStatId;
                         this.state.currentId = null;
@@ -615,17 +653,17 @@
                         document.getElementById('view-detail')?.classList.add('hidden');
                         document.getElementById('view-dashboard')?.classList.remove('hidden');
                         this.renderDashboard();
-                        this.showToast(`РРјРїРѕСЂС‚РёСЂРѕРІР°РЅРѕ СЃРµСЃСЃРёР№: ${sessions.length}`);
+                        this.showToast(`Импортировано сессий: ${sessions.length}`);
                     } catch (error) {
                         console.error('Import error', error);
-                        this.showToast('РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ JSON-С„Р°Р№Р»');
+                        this.showToast('Некорректный JSON-файл');
                     }
                 };
                 reader.readAsText(file);
             };
 
             app.resetAll = function () {
-                if (!confirm('РЎР±СЂРѕСЃРёС‚СЊ РІСЃРµ РґР°РЅРЅС‹Рµ РїСЂРёР»РѕР¶РµРЅРёСЏ?')) return;
+                if (!confirm('Сбросить все данные приложения?')) return;
                 try {
                     localStorage.removeItem(DATA_KEY);
                     localStorage.removeItem(CONFIG_KEY);
@@ -645,14 +683,14 @@
             app.copyOneTrade = function (id) {
                 const session = this.data?.[this.state.currentId];
                 const source = Array.isArray(session?.trades) ? session.trades.find(trade => trade.id === id) : null;
-                if (!source) return this.showToast('РЎРґРµР»РєР° РЅРµ РЅР°Р№РґРµРЅР°');
+                if (!source) return this.showToast('Сделка не найдена');
                 this.execCopy(this.formatTradeText(normalizeTrade(source)));
             };
 
             const originalOpenReportModal = app.openReportModal;
             app.openReportModal = function () {
                 const session = this.data?.[this.state.currentId];
-                if (!isObject(session)) return this.showToast('РЎРµСЃСЃРёСЏ РЅРµ РЅР°Р№РґРµРЅР°');
+                if (!isObject(session)) return this.showToast('Сессия не найдена');
                 session.trades = Array.isArray(session.trades) ? session.trades : [];
                 return originalOpenReportModal.call(this);
             };
@@ -675,7 +713,7 @@
                 const dot = document.createElement('span');
                 dot.className = 'w-2 h-2 shrink-0 rounded-full bg-[var(--accent)]';
                 const label = document.createElement('span');
-                label.textContent = plainText(message, 'Р“РѕС‚РѕРІРѕ', 240);
+                label.textContent = plainText(message, 'Готово', 240);
                 toast.append(dot, label);
                 container.appendChild(toast);
                 setTimeout(() => {
@@ -705,4 +743,3 @@
     <script src="command-console.js"></script>
 </body>
 </html>
-
